@@ -125,60 +125,6 @@ class TransMotor():
 				#print("lf rpm: " + str(rpm))
 				self.motor_rpm = rpm
 				self.motor.writeSpeed(rpm)
-				
-				#self.control_speed(vx, wz)
-	'''
-	def control_speed(self, vx, wz):
-		if self.name == "rf" or self.name == "rb":
-			if self.position <= 0:
-				lin_vel  = self.motor_lin_vel(vx, wz)
-				speed = lin_vel / self.wheel_radius
-				rpm = self.rads_to_rpm(speed)
-
-			else:
-				lin_vel  = self.motor_lin_vel(vx, wz)
-				if self.complement == 0:
-					speed = lin_vel / self.wheel_radius
-				else:
-					speed = lin_vel / self.wheel_radius * abs(math.sin(self.position)/math.sin(self.complement))
-				rpm = self.rads_to_rpm(speed)
-
-		elif self.name == "lf" or self.name == "lb":
-			if self.position >= 0:
-				lin_vel  = self.motor_lin_vel(vx, wz)
-				speed = lin_vel / self.wheel_radius
-				rpm = self.rads_to_rpm(speed)
-
-			else:
-				lin_vel  = self.motor_lin_vel(vx, wz)
-				if self.complement == 0:
-					speed = lin_vel / self.wheel_radius
-				else:
-					speed = lin_vel / self.wheel_radius * abs(math.sin(self.position)/math.sin(self.complement))
-				rpm = self.rads_to_rpm(speed)
-		self.motor.writeSpeed(rpm)
-	'''	
-	def control_speed(self, vx, wz):
-		direction = (vx/wz) / abs(vx/wz)
-		if direction < 0:
-			if self.name == "lb" or self.name == "lf":
-				lin_vel  = self.motor_lin_vel(vx, wz)
-				speed = lin_vel / self.wheel_radius
-				rpm = self.rads_to_rpm(speed)
-			
-			elif self.name == "rb" or self.name == "rf":
-				if abs(self.position) <= self.tolerance:
-					lin_vel = wz * self.length / (2 * abs(math.sin(self.complement)))
-					speed = lin_vel / self.wheel_radius
-					rpm = -self.rads_to_rpm(speed)
-
-				else:
-					lin_vel = wz * self.length / (2 * abs(math.sin(self.position)))
-					speed = lin_vel / self.wheel_radius
-					rpm = -self.rads_to_rpm(speed)
-
-			self.motor_rpm = rpm
-			self.motor.writeSpeed(rpm)	
 
 		elif direction > 0:
 			if self.name == "rb" or self.name == "rf":
@@ -200,6 +146,6 @@ class TransMotor():
 			self.motor.writeSpeed(rpm)
 	
 	def pub_wheel_vel(self):
-		self.wheel_velocity = self.sign*self.motor.readSpeed()#self.sign * self.rpm_to_rads(self.motor.readSpeed()) * self.wheel_radius
+		self.wheel_velocity = -self.sign * self.rpm_to_rads(self.motor.readSpeed()) * self.wheel_radius
 		self.wheel_vel_pub.publish(self.wheel_velocity)
 		#print(self.name, self.wheel_velocity, self.motor_rpm)
