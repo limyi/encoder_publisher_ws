@@ -1,0 +1,4 @@
+<launch>
+	<include file="$(find panthera_locomotion)/launch/steer2.launch"/>
+	<include file="$(find panthera_locomotion)/launch/trans2.launch"/>
+</launch>

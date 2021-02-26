@@ -1,0 +1,19 @@
+lb_pid: {'kp': 22, 'ki': 12, 'kd': 15, 'ir': 75}#{'kp': 25, 'ki': 20, 'kd': 20, 'ir': 75}
+lb_serial_number: 'FT4IXXKB'#'FT4IT45E'#FT40DJ6B'
+lb_max_speed: 800
+
+lf_pid: {'kp': 30, 'ki': 23, 'kd': 18, 'ir': 75}
+lf_serial_number: 'FT40DDFO'
+lf_max_speed: 1600
+
+
+rb_pid: {'kp': 30, 'ki': 10, 'kd': 18, 'ir': 75}
+rb_serial_number: 'FT40DD7D'
+rb_max_speed: 1600
+
+ 
+rf_pid: {'kp': 33, 'ki': 13, 'kd': 18, 'ir': 75}
+rf_serial_number: 'FT40B4Y7'
+rf_max_speed: 1600
+
+angle_tolerance: 1.5
