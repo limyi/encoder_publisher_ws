@@ -99,7 +99,7 @@ class Ds4Controller():
 		self.rec_r = data.button_r2
 		self.rec_l = data.button_l2
 
-		self.mode = (self.mode + data.button_options) % 2
+		#self.mode = (self.mode + data.button_options) % 2
 		#self.reconfig(not self.mode)
 
 		self.d_vx = data.button_triangle# and (not data.button_share)
@@ -110,7 +110,7 @@ class Ds4Controller():
 
 		self.input_list = [self.forward, self.rot_right, self.rot_left, self.reverse, self.stop, 
 						   self.forward_right, self.forward_left, self.reverse_right, self.reverse_left,
-						   self.holo_right, self.holo_left, self.d_vx, self.d_wz, self.decrease, self.mode, self.rec_r, self.rec_l]
+						   self.holo_right, self.holo_left, self.d_vx, self.d_wz, self.decrease, self.rec_r, self.rec_l]
 		'''
 		print("forward: " + str(self.forward))
 		print("rot_right: " + str(self.rot_right))
@@ -186,7 +186,18 @@ class Ds4Controller():
 		rb = -rf
 		return (lb,rb,lf,rf)
 
+	def filter_input(self, x):
+		output = 0
+		if x < -90:
+			output = -90
+		elif x > 90:
+			output = 90
+		elif -90 <= x <= 90:
+			output = x
+		return output
+
 	def locomotion(self):
+		self.mode = 1 * (not self.rot_right) * (not self.rot_left) * (not self.holo_right) * (not self.holo_left) * (not self.rec_l) * (not self.rec_r)
 		self.reconfig(not self.mode)
 		self.change_wz()
 		self.change_vx()
@@ -198,10 +209,10 @@ class Ds4Controller():
 		recon_l = self.rec_l * 90
 		recon_move = (self.rec_r or self.rec_l) * f
 		lb,rb,lf,rf = self.adjust_wheels(f, s)
-		self.twist.linear.x = lb + h_r + h_l + recon_l
-		self.twist.linear.y = rb + h_r + h_l + recon_r
-		self.twist.linear.z = lf + h_r + h_l + recon_l
-		self.twist.angular.x = rf + h_r + h_l + recon_r
+		self.twist.linear.x = self.filter_input(lb + h_r + h_l + recon_l)
+		self.twist.linear.y = self.filter_input(rb + h_r + h_l + recon_r)
+		self.twist.linear.z = self.filter_input(lf + h_r + h_l + recon_l)
+		self.twist.angular.x = self.filter_input(rf + h_r + h_l + recon_r)
 		self.twist.angular.y = 0
 		self.twist.angular.z = 0
 		self.pub.publish(self.twist)
@@ -223,9 +234,12 @@ class Ds4Controller():
 
 	def run(self):
 		if sum(self.input_list) != self.pub_once:
-			self.pub_once = sum(self.input_list)
-			self.locomotion()
-			self.print_instructions()
+			if sum(self.input_list) > 2:
+				print("Error: Pressing more than 2 buttons")
+			else:
+				self.pub_once = sum(self.input_list)
+				self.locomotion()
+				self.print_instructions()
 		else:
 			self.pub_once = sum(self.input_list)
 		#print(sum(self.input_list), self.mode)
