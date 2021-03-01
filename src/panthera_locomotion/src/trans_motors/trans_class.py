@@ -99,7 +99,7 @@ class TransMotor():
 				rpm = 0
 				speed = 0
 				self.motor_rpm = rpm
-				#self.motor.writeSpeed(rpm)
+				self.motor.writeSpeed(rpm)
 				#print(" rpm: 0")
 
 			else:
@@ -107,7 +107,7 @@ class TransMotor():
 				rpm = self.rads_to_rpm(speed)
 				#print("lf rpm: " + str(rpm))
 				self.motor_rpm = rpm
-				#self.motor.writeSpeed(rpm)			
+				self.motor.writeSpeed(rpm)			
 
 		else:
 			if wz == 0:
@@ -115,7 +115,7 @@ class TransMotor():
 				rpm = self.rads_to_rpm(speed)
 				#print("lf rpm: " + str(rpm))
 				self.motor_rpm = rpm
-				#self.motor.writeSpeed(rpm)
+				self.motor.writeSpeed(rpm)
 
 			else:
 				
@@ -124,9 +124,9 @@ class TransMotor():
 				rpm = self.rads_to_rpm(speed)
 				#print("lf rpm: " + str(rpm))
 				self.motor_rpm = rpm
-				#self.motor.writeSpeed(rpm)
+				self.motor.writeSpeed(rpm)
 	
 	def pub_wheel_vel(self):
-		self.wheel_velocity = self.rpm_to_rads(self.motor.readSpeed()) * self.wheel_radius
+		self.wheel_velocity = self.sign*self.rpm_to_rads(self.motor.readSpeed()) * self.wheel_radius
 		self.wheel_vel_pub.publish(self.wheel_velocity)
 		#print(self.name, self.wheel_velocity, self.motor_rpm)
