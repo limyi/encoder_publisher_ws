@@ -558,6 +558,188 @@ std_msgs_generate_messages_py/fast:
 .PHONY : std_msgs_generate_messages_py/fast
 
 #=============================================================================
+# Target rules for targets named roboclaw_driver_generate_messages_cpp
+
+# Build rule for target.
+roboclaw_driver_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roboclaw_driver_generate_messages_cpp
+.PHONY : roboclaw_driver_generate_messages_cpp
+
+# fast build rule for target.
+roboclaw_driver_generate_messages_cpp/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/roboclaw_driver_generate_messages_cpp.dir/build.make roboclaw_driver/CMakeFiles/roboclaw_driver_generate_messages_cpp.dir/build
+.PHONY : roboclaw_driver_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named _roboclaw_driver_generate_messages_check_deps_Stats
+
+# Build rule for target.
+_roboclaw_driver_generate_messages_check_deps_Stats: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 _roboclaw_driver_generate_messages_check_deps_Stats
+.PHONY : _roboclaw_driver_generate_messages_check_deps_Stats
+
+# fast build rule for target.
+_roboclaw_driver_generate_messages_check_deps_Stats/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/_roboclaw_driver_generate_messages_check_deps_Stats.dir/build.make roboclaw_driver/CMakeFiles/_roboclaw_driver_generate_messages_check_deps_Stats.dir/build
+.PHONY : _roboclaw_driver_generate_messages_check_deps_Stats/fast
+
+#=============================================================================
+# Target rules for targets named _roboclaw_driver_generate_messages_check_deps_SpeedCommand
+
+# Build rule for target.
+_roboclaw_driver_generate_messages_check_deps_SpeedCommand: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 _roboclaw_driver_generate_messages_check_deps_SpeedCommand
+.PHONY : _roboclaw_driver_generate_messages_check_deps_SpeedCommand
+
+# fast build rule for target.
+_roboclaw_driver_generate_messages_check_deps_SpeedCommand/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/_roboclaw_driver_generate_messages_check_deps_SpeedCommand.dir/build.make roboclaw_driver/CMakeFiles/_roboclaw_driver_generate_messages_check_deps_SpeedCommand.dir/build
+.PHONY : _roboclaw_driver_generate_messages_check_deps_SpeedCommand/fast
+
+#=============================================================================
+# Target rules for targets named _catkin_empty_exported_target
+
+# Build rule for target.
+_catkin_empty_exported_target: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 _catkin_empty_exported_target
+.PHONY : _catkin_empty_exported_target
+
+# fast build rule for target.
+_catkin_empty_exported_target/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/_catkin_empty_exported_target.dir/build.make roboclaw_driver/CMakeFiles/_catkin_empty_exported_target.dir/build
+.PHONY : _catkin_empty_exported_target/fast
+
+#=============================================================================
+# Target rules for targets named roboclaw_driver_generate_messages
+
+# Build rule for target.
+roboclaw_driver_generate_messages: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roboclaw_driver_generate_messages
+.PHONY : roboclaw_driver_generate_messages
+
+# fast build rule for target.
+roboclaw_driver_generate_messages/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/roboclaw_driver_generate_messages.dir/build.make roboclaw_driver/CMakeFiles/roboclaw_driver_generate_messages.dir/build
+.PHONY : roboclaw_driver_generate_messages/fast
+
+#=============================================================================
+# Target rules for targets named roboclaw_driver_generate_messages_eus
+
+# Build rule for target.
+roboclaw_driver_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roboclaw_driver_generate_messages_eus
+.PHONY : roboclaw_driver_generate_messages_eus
+
+# fast build rule for target.
+roboclaw_driver_generate_messages_eus/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/roboclaw_driver_generate_messages_eus.dir/build.make roboclaw_driver/CMakeFiles/roboclaw_driver_generate_messages_eus.dir/build
+.PHONY : roboclaw_driver_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named roboclaw_driver_geneus
+
+# Build rule for target.
+roboclaw_driver_geneus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roboclaw_driver_geneus
+.PHONY : roboclaw_driver_geneus
+
+# fast build rule for target.
+roboclaw_driver_geneus/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/roboclaw_driver_geneus.dir/build.make roboclaw_driver/CMakeFiles/roboclaw_driver_geneus.dir/build
+.PHONY : roboclaw_driver_geneus/fast
+
+#=============================================================================
+# Target rules for targets named roboclaw_driver_gennodejs
+
+# Build rule for target.
+roboclaw_driver_gennodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roboclaw_driver_gennodejs
+.PHONY : roboclaw_driver_gennodejs
+
+# fast build rule for target.
+roboclaw_driver_gennodejs/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/roboclaw_driver_gennodejs.dir/build.make roboclaw_driver/CMakeFiles/roboclaw_driver_gennodejs.dir/build
+.PHONY : roboclaw_driver_gennodejs/fast
+
+#=============================================================================
+# Target rules for targets named roboclaw_driver_generate_messages_lisp
+
+# Build rule for target.
+roboclaw_driver_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roboclaw_driver_generate_messages_lisp
+.PHONY : roboclaw_driver_generate_messages_lisp
+
+# fast build rule for target.
+roboclaw_driver_generate_messages_lisp/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/roboclaw_driver_generate_messages_lisp.dir/build.make roboclaw_driver/CMakeFiles/roboclaw_driver_generate_messages_lisp.dir/build
+.PHONY : roboclaw_driver_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named roboclaw_driver_genlisp
+
+# Build rule for target.
+roboclaw_driver_genlisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roboclaw_driver_genlisp
+.PHONY : roboclaw_driver_genlisp
+
+# fast build rule for target.
+roboclaw_driver_genlisp/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/roboclaw_driver_genlisp.dir/build.make roboclaw_driver/CMakeFiles/roboclaw_driver_genlisp.dir/build
+.PHONY : roboclaw_driver_genlisp/fast
+
+#=============================================================================
+# Target rules for targets named roboclaw_driver_genpy
+
+# Build rule for target.
+roboclaw_driver_genpy: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roboclaw_driver_genpy
+.PHONY : roboclaw_driver_genpy
+
+# fast build rule for target.
+roboclaw_driver_genpy/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/roboclaw_driver_genpy.dir/build.make roboclaw_driver/CMakeFiles/roboclaw_driver_genpy.dir/build
+.PHONY : roboclaw_driver_genpy/fast
+
+#=============================================================================
+# Target rules for targets named roboclaw_driver_gencpp
+
+# Build rule for target.
+roboclaw_driver_gencpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roboclaw_driver_gencpp
+.PHONY : roboclaw_driver_gencpp
+
+# fast build rule for target.
+roboclaw_driver_gencpp/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/roboclaw_driver_gencpp.dir/build.make roboclaw_driver/CMakeFiles/roboclaw_driver_gencpp.dir/build
+.PHONY : roboclaw_driver_gencpp/fast
+
+#=============================================================================
+# Target rules for targets named roboclaw_driver_generate_messages_nodejs
+
+# Build rule for target.
+roboclaw_driver_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roboclaw_driver_generate_messages_nodejs
+.PHONY : roboclaw_driver_generate_messages_nodejs
+
+# fast build rule for target.
+roboclaw_driver_generate_messages_nodejs/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/roboclaw_driver_generate_messages_nodejs.dir/build.make roboclaw_driver/CMakeFiles/roboclaw_driver_generate_messages_nodejs.dir/build
+.PHONY : roboclaw_driver_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named roboclaw_driver_generate_messages_py
+
+# Build rule for target.
+roboclaw_driver_generate_messages_py: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 roboclaw_driver_generate_messages_py
+.PHONY : roboclaw_driver_generate_messages_py
+
+# fast build rule for target.
+roboclaw_driver_generate_messages_py/fast:
+	$(MAKE) -f roboclaw_driver/CMakeFiles/roboclaw_driver_generate_messages_py.dir/build.make roboclaw_driver/CMakeFiles/roboclaw_driver_generate_messages_py.dir/build
+.PHONY : roboclaw_driver_generate_messages_py/fast
+
+#=============================================================================
 # Target rules for targets named ds4_driver_generate_messages_py
 
 # Build rule for target.
@@ -571,30 +753,30 @@ ds4_driver_generate_messages_py/fast:
 .PHONY : ds4_driver_generate_messages_py/fast
 
 #=============================================================================
-# Target rules for targets named ds4_driver_generate_messages_nodejs
+# Target rules for targets named ds4_driver_genpy
 
 # Build rule for target.
-ds4_driver_generate_messages_nodejs: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ds4_driver_generate_messages_nodejs
-.PHONY : ds4_driver_generate_messages_nodejs
+ds4_driver_genpy: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ds4_driver_genpy
+.PHONY : ds4_driver_genpy
 
 # fast build rule for target.
-ds4_driver_generate_messages_nodejs/fast:
-	$(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/build
-.PHONY : ds4_driver_generate_messages_nodejs/fast
+ds4_driver_genpy/fast:
+	$(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_genpy.dir/build.make ds4_driver/CMakeFiles/ds4_driver_genpy.dir/build
+.PHONY : ds4_driver_genpy/fast
 
 #=============================================================================
-# Target rules for targets named ds4_driver_genlisp
+# Target rules for targets named ds4_driver_generate_messages
 
 # Build rule for target.
-ds4_driver_genlisp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ds4_driver_genlisp
-.PHONY : ds4_driver_genlisp
+ds4_driver_generate_messages: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ds4_driver_generate_messages
+.PHONY : ds4_driver_generate_messages
 
 # fast build rule for target.
-ds4_driver_genlisp/fast:
-	$(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_genlisp.dir/build.make ds4_driver/CMakeFiles/ds4_driver_genlisp.dir/build
-.PHONY : ds4_driver_genlisp/fast
+ds4_driver_generate_messages/fast:
+	$(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages.dir/build
+.PHONY : ds4_driver_generate_messages/fast
 
 #=============================================================================
 # Target rules for targets named ds4_driver_gennodejs
@@ -649,45 +831,6 @@ sensor_msgs_generate_messages_nodejs/fast:
 .PHONY : sensor_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
-# Target rules for targets named sensor_msgs_generate_messages_cpp
-
-# Build rule for target.
-sensor_msgs_generate_messages_cpp: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_cpp
-.PHONY : sensor_msgs_generate_messages_cpp
-
-# fast build rule for target.
-sensor_msgs_generate_messages_cpp/fast:
-	$(MAKE) -f ds4_driver/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build.make ds4_driver/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build
-.PHONY : sensor_msgs_generate_messages_cpp/fast
-
-#=============================================================================
-# Target rules for targets named sensor_msgs_generate_messages_eus
-
-# Build rule for target.
-sensor_msgs_generate_messages_eus: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_eus
-.PHONY : sensor_msgs_generate_messages_eus
-
-# fast build rule for target.
-sensor_msgs_generate_messages_eus/fast:
-	$(MAKE) -f ds4_driver/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build.make ds4_driver/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build
-.PHONY : sensor_msgs_generate_messages_eus/fast
-
-#=============================================================================
-# Target rules for targets named _catkin_empty_exported_target
-
-# Build rule for target.
-_catkin_empty_exported_target: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 _catkin_empty_exported_target
-.PHONY : _catkin_empty_exported_target
-
-# fast build rule for target.
-_catkin_empty_exported_target/fast:
-	$(MAKE) -f ds4_driver/CMakeFiles/_catkin_empty_exported_target.dir/build.make ds4_driver/CMakeFiles/_catkin_empty_exported_target.dir/build
-.PHONY : _catkin_empty_exported_target/fast
-
-#=============================================================================
 # Target rules for targets named sensor_msgs_generate_messages_lisp
 
 # Build rule for target.
@@ -714,30 +857,30 @@ ds4_driver_generate_messages_lisp/fast:
 .PHONY : ds4_driver_generate_messages_lisp/fast
 
 #=============================================================================
-# Target rules for targets named ds4_driver_genpy
+# Target rules for targets named sensor_msgs_generate_messages_cpp
 
 # Build rule for target.
-ds4_driver_genpy: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ds4_driver_genpy
-.PHONY : ds4_driver_genpy
+sensor_msgs_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_cpp
+.PHONY : sensor_msgs_generate_messages_cpp
 
 # fast build rule for target.
-ds4_driver_genpy/fast:
-	$(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_genpy.dir/build.make ds4_driver/CMakeFiles/ds4_driver_genpy.dir/build
-.PHONY : ds4_driver_genpy/fast
+sensor_msgs_generate_messages_cpp/fast:
+	$(MAKE) -f ds4_driver/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build.make ds4_driver/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build
+.PHONY : sensor_msgs_generate_messages_cpp/fast
 
 #=============================================================================
-# Target rules for targets named ds4_driver_generate_messages
+# Target rules for targets named sensor_msgs_generate_messages_eus
 
 # Build rule for target.
-ds4_driver_generate_messages: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ds4_driver_generate_messages
-.PHONY : ds4_driver_generate_messages
+sensor_msgs_generate_messages_eus: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sensor_msgs_generate_messages_eus
+.PHONY : sensor_msgs_generate_messages_eus
 
 # fast build rule for target.
-ds4_driver_generate_messages/fast:
-	$(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages.dir/build
-.PHONY : ds4_driver_generate_messages/fast
+sensor_msgs_generate_messages_eus/fast:
+	$(MAKE) -f ds4_driver/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build.make ds4_driver/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build
+.PHONY : sensor_msgs_generate_messages_eus/fast
 
 #=============================================================================
 # Target rules for targets named _ds4_driver_generate_messages_check_deps_Trackpad
@@ -829,6 +972,32 @@ ds4_driver_gencpp: cmake_check_build_system
 ds4_driver_gencpp/fast:
 	$(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_gencpp.dir/build.make ds4_driver/CMakeFiles/ds4_driver_gencpp.dir/build
 .PHONY : ds4_driver_gencpp/fast
+
+#=============================================================================
+# Target rules for targets named ds4_driver_generate_messages_nodejs
+
+# Build rule for target.
+ds4_driver_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ds4_driver_generate_messages_nodejs
+.PHONY : ds4_driver_generate_messages_nodejs
+
+# fast build rule for target.
+ds4_driver_generate_messages_nodejs/fast:
+	$(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/build
+.PHONY : ds4_driver_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named ds4_driver_genlisp
+
+# Build rule for target.
+ds4_driver_genlisp: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 ds4_driver_genlisp
+.PHONY : ds4_driver_genlisp
+
+# fast build rule for target.
+ds4_driver_genlisp/fast:
+	$(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_genlisp.dir/build.make ds4_driver/CMakeFiles/ds4_driver_genlisp.dir/build
+.PHONY : ds4_driver_genlisp/fast
 
 #=============================================================================
 # Target rules for targets named panthera_locomotion_generate_messages_py
@@ -1419,20 +1588,31 @@ help:
 	@echo "... std_msgs_generate_messages_nodejs"
 	@echo "... roscpp_generate_messages_nodejs"
 	@echo "... std_msgs_generate_messages_py"
+	@echo "... roboclaw_driver_generate_messages_cpp"
+	@echo "... _roboclaw_driver_generate_messages_check_deps_Stats"
+	@echo "... _roboclaw_driver_generate_messages_check_deps_SpeedCommand"
+	@echo "... _catkin_empty_exported_target"
+	@echo "... roboclaw_driver_generate_messages"
+	@echo "... roboclaw_driver_generate_messages_eus"
+	@echo "... roboclaw_driver_geneus"
+	@echo "... roboclaw_driver_gennodejs"
+	@echo "... roboclaw_driver_generate_messages_lisp"
+	@echo "... roboclaw_driver_genlisp"
+	@echo "... roboclaw_driver_genpy"
+	@echo "... roboclaw_driver_gencpp"
+	@echo "... roboclaw_driver_generate_messages_nodejs"
+	@echo "... roboclaw_driver_generate_messages_py"
 	@echo "... ds4_driver_generate_messages_py"
-	@echo "... ds4_driver_generate_messages_nodejs"
-	@echo "... ds4_driver_genlisp"
+	@echo "... ds4_driver_genpy"
+	@echo "... ds4_driver_generate_messages"
 	@echo "... ds4_driver_gennodejs"
 	@echo "... sensor_msgs_generate_messages_py"
 	@echo "... _ds4_driver_generate_messages_check_deps_Feedback"
 	@echo "... sensor_msgs_generate_messages_nodejs"
-	@echo "... sensor_msgs_generate_messages_cpp"
-	@echo "... sensor_msgs_generate_messages_eus"
-	@echo "... _catkin_empty_exported_target"
 	@echo "... sensor_msgs_generate_messages_lisp"
 	@echo "... ds4_driver_generate_messages_lisp"
-	@echo "... ds4_driver_genpy"
-	@echo "... ds4_driver_generate_messages"
+	@echo "... sensor_msgs_generate_messages_cpp"
+	@echo "... sensor_msgs_generate_messages_eus"
 	@echo "... _ds4_driver_generate_messages_check_deps_Trackpad"
 	@echo "... _ds4_driver_generate_messages_check_deps_Report"
 	@echo "... ds4_driver_generate_messages_eus"
@@ -1440,6 +1620,8 @@ help:
 	@echo "... ds4_driver_geneus"
 	@echo "... ds4_driver_generate_messages_cpp"
 	@echo "... ds4_driver_gencpp"
+	@echo "... ds4_driver_generate_messages_nodejs"
+	@echo "... ds4_driver_genlisp"
 	@echo "... panthera_locomotion_generate_messages_py"
 	@echo "... panthera_locomotion_gennodejs"
 	@echo "... panthera_locomotion_generate_messages_nodejs"

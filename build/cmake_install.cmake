@@ -133,6 +133,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/joel/encoder_publisher_ws/build/gtest/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/can_encoder_pub/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/key_command_pub/cmake_install.cmake")
+  include("/home/joel/encoder_publisher_ws/build/roboclaw_driver/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/ds4_driver/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/panthera_locomotion/cmake_install.cmake")
 

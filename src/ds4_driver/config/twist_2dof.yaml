@@ -9,6 +9,6 @@ inputs:
     z: axis_right_x
 scales:
   linear:
-    x: 0.375
+    x: 1.0
   angular:
-    z: 0.5
+    z: 1.0

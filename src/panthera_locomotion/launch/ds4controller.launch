@@ -1,4 +1,5 @@
 <launch>
 	<include file="$(find ds4_driver)/launch/ds4_twist.launch"/>
-	<node name="Controller" type="ds4_controller.py" pkg="panthera_locomotion" output="screen"/>
+	<!--node name="Controller" type="ds4_controller.py" pkg="panthera_locomotion" output="screen"/-->
+	<node name="Controller" type="new_controller.py" pkg="panthera_locomotion" output="screen"/>
 </launch>
