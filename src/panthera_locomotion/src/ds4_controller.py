@@ -10,7 +10,7 @@ from ds4_driver.msg import Status as st
 class Ds4Controller():
 	def __init__(self):
 		rospy.init_node('Controller')
-		self.mode = 0 # Mode 0:= reconfiguration, Mode 1:= movement steering
+		self.mode = 1 # Mode 0:= reconfiguration, Mode 1:= movement steering
 		rospy.Subscriber('/status', st, self.ds4_sub)
 		rospy.Subscriber('/can_encoder', Twist, self.encoder_pos)
 
@@ -136,6 +136,7 @@ class Ds4Controller():
 			self.wz += (1*(not self.decrease) + self.decrease) * self.step
 
 	def check(self):
+		print("Mode (0->reconfig , 1->smooth): " + str(self.mode))
 		if self.mode == 0:
 			req = StatusRequest()
 			req.reconfig = True
@@ -148,14 +149,6 @@ class Ds4Controller():
 				lf = self.lf_status(req)
 				rf = self.rf_status(req)
 				signal = (lb.status and rb.status and lf.status and rf.status)
-				'''
-				print('\n')
-				print("{lf:<5} || {rf:>5}".format(lf=lf,rf=rf))
-				print("------||------")
-				print("------||------")
-				print("{lb:<5} || {rb:>5}".format(lb=lb,rb=rb))
-				print('\n')
-				'''
 				print([lb.status, rb.status, lf.status, rf.status])
 				print("Status of steering motors:" + str(signal))
 		else:
@@ -273,7 +266,7 @@ class Ds4Controller():
 		print("WZ: " + str(self.wz))
 		print("Turning Radius: " + str(round(self.vx/self.wz,2)))
 		print("Robot Width: " + str(self.width))
-		print("Mode (0->reconfig , 1->smooth): " + str(self.mode))
+		#print("Mode (0->reconfig , 1->smooth): " + str(self.mode))
 
 if __name__ == "__main__":
 	start = Ds4Controller()
