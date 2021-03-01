@@ -188,7 +188,7 @@ class Ds4Controller():
 
 	def locomotion(self):
 		####
-		b = self.custom_twist(self.brush*100)
+		b = self.custom_twist(self.brush*-100)
 		a = self.custom_twist(self.act*100)
 		v = self.custom_twist(self.vac*100)
 		self.brushes.publish(b)
