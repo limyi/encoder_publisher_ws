@@ -11,6 +11,9 @@ class Ds4Controller():
 	def __init__(self):
 		rospy.init_node('Controller')
 		self.mode = 1
+		self.brush = Button()
+		self.act = Button()
+		self.vac = Button()
 		rospy.Subscriber('/cmd_vel', Twist, self.cmd_sub)
 		rospy.Subscriber('/status', st, self.ds4_sub)
 		rospy.Subscriber('/can_encoder', Twist, self.encoder_pos)
@@ -19,15 +22,11 @@ class Ds4Controller():
 		self.recon = rospy.Publisher('/reconfig', Twist, queue_size=1)
 
 		#### 
-		self.brushes = rospy.Publisher('/brushes_topic', Twist, queue_size=1)
+		self.brushes = rospy.Publisher('/linear_actuators', Twist, queue_size=1)
 		self.actuators = rospy.Publisher('/actuators_topic', Twist, queue_size=1)
 		self.vacuum = rospy.Publisher('/vacuum_topic', Twist, queue_size=1)
-
-		self.brush = 0
-		self.act = 0
-		self.vac = 0
 		###
-
+		'''
 		rospy.wait_for_service('/lb_steer_status')
 		rospy.wait_for_service('/lf_steer_status')
 		rospy.wait_for_service('/rb_steer_status')
@@ -47,7 +46,7 @@ class Ds4Controller():
 		self.lf_stat = rospy.ServiceProxy('lf_reconfig_status', Status)
 		self.rb_stat = rospy.ServiceProxy('rb_reconfig_status', Status)
 		self.rf_stat = rospy.ServiceProxy('rf_reconfig_status', Status)
-		
+		'''
 		self.width = 0.6
 		self.length = 1.31
 
@@ -110,13 +109,14 @@ class Ds4Controller():
 		self.decrease = -data.button_share
 
 		###
-		self.brush = (self.brush + data.button_options)%2
-		self.act = (self.act + data.button_square)%2
-		self.vac = (self.vac + data.button_circle)%2
+		self.brush.value = data.button_options
+		self.act.value = data.button_square
+		self.vac.value = data.button_circle
+		self.brush.change_state()
+		#print(self.brush.state)
 		###
 
-		self.input_list = [self.brush, self.act, self.vac,
-						   self.linear_x, self.angular_z, self.rot_right, self.rot_left,
+		self.input_list = [self.linear_x, self.angular_z, self.rot_right, self.rot_left,
 						   self.holo_right, self.holo_left, self.d_vx, self.d_wz, self.decrease, self.rec_r, self.rec_l]
 
 
@@ -202,12 +202,14 @@ class Ds4Controller():
 		self.change_vx()
 		f = self.linear_x * self.vx
 		s = self.angular_z * self.wz
+
 		if f == 0:
 			s = (-self.rot_right + self.rot_left) * self.wz
 		elif f < 0:
 			s = -s
 		else:
 			pass
+
 		h_r = self.holo_right * 90
 		h_l = -self.holo_left * 90
 		recon_r = self.rec_r * 90
@@ -244,7 +246,7 @@ class Ds4Controller():
 			else:
 				self.pub_once = sum(self.input_list)
 				self.locomotion()
-				self.print_instructions()
+				#self.print_instructions()
 		else:
 			self.pub_once = sum(self.input_list)
 
@@ -290,6 +292,31 @@ class Ds4Controller():
 		print("[square]: Actuators -> " + str(self.act))
 		print("[circle]: Vacuum -> " + str(self.vac))
 		#print("Mode (0->reconfig , 1->smooth): " + str(self.mode))
+
+class Button():
+	def __init__(self):
+		self.state = 0
+		self.value = 0
+		self.check = 0
+
+	def change_state(self):
+		if self.check == self.value:
+			pass
+		else:
+			if self.value == 1 and self.state == 0:
+				self.state = 1 # init press
+
+			elif self.value == 0 and self.state == 1:
+				self.state = 2 # button pressed
+
+			elif self.value == 1 and self.state == 2:
+				self.state = 0
+
+			else:
+				pass
+
+		self.check = self.value
+
 
 if __name__ == "__main__":
 	start = Ds4Controller()
