@@ -11,9 +11,9 @@ class Ds4Controller():
 	def __init__(self):
 		rospy.init_node('Controller')
 		self.mode = 1
-		self.brush = Button()
-		self.act = Button()
-		self.vac = Button()
+		self.brush = Button(0,1)
+		self.act = Button(-1,1)
+		self.vac = Button(0,1)
 		rospy.Subscriber('/cmd_vel', Twist, self.cmd_sub)
 		rospy.Subscriber('/status', st, self.ds4_sub)
 		rospy.Subscriber('/can_encoder', Twist, self.encoder_pos)
@@ -112,11 +112,15 @@ class Ds4Controller():
 		self.brush.value = data.button_options
 		self.act.value = data.button_square
 		self.vac.value = data.button_circle
+		#print(self.brush.data)
 		self.brush.change_state()
+		self.act.change_state()
+		self.vac.change_state()
 		#print(self.brush.state)
 		###
 
-		self.input_list = [self.linear_x, self.angular_z, self.rot_right, self.rot_left,
+		self.input_list = [self.brush.data, self.act.data, self.vac.data,
+						   self.linear_x, self.angular_z, self.rot_right, self.rot_left,
 						   self.holo_right, self.holo_left, self.d_vx, self.d_wz, self.decrease, self.rec_r, self.rec_l]
 
 
@@ -187,17 +191,15 @@ class Ds4Controller():
 		return output
 
 	def locomotion(self):
-		####
-		b = self.custom_twist(self.brush*-100)
-		a = self.custom_twist(self.act*100)
-		v = self.custom_twist(self.vac*100)
+		b = self.custom_twist(self.brush.data*100)
 		self.brushes.publish(b)
+		a = self.custom_twist(self.act.data*100)
 		self.actuators.publish(a)
+		v = self.custom_twist(self.vac.data*100)
 		self.vacuum.publish(v)
-		####
 
 		self.mode = 1 * (not self.rot_right) * (not self.rot_left) * (not self.holo_right) * (not self.holo_left) * (not self.rec_l) * (not self.rec_r)
-		self.reconfig(not self.mode)
+		#self.reconfig(not self.mode)
 		self.change_wz()
 		self.change_vx()
 		f = self.linear_x * self.vx
@@ -227,7 +229,8 @@ class Ds4Controller():
 		if self.mode != 0:
 			pass
 		else:
-			self.check()
+			#self.check()
+			pass
 
 		self.reconfiguring.linear.x = self.rec_l * recon_move
 		self.reconfiguring.linear.y = self.rec_r * recon_move
@@ -294,10 +297,13 @@ class Ds4Controller():
 		#print("Mode (0->reconfig , 1->smooth): " + str(self.mode))
 
 class Button():
-	def __init__(self):
+	def __init__(self, low_limit, high_limit):
 		self.state = 0
 		self.value = 0
 		self.check = 0
+		self.data = 0
+		self.low_limit = low_limit
+		self.high_limit = high_limit
 
 	def change_state(self):
 		if self.check == self.value:
@@ -305,12 +311,15 @@ class Button():
 		else:
 			if self.value == 1 and self.state == 0:
 				self.state = 1 # init press
+				self.data = self.high_limit
 
 			elif self.value == 0 and self.state == 1:
 				self.state = 2 # button pressed
+				self.data = self.high_limit
 
 			elif self.value == 1 and self.state == 2:
 				self.state = 0
+				self.data = self.low_limit
 
 			else:
 				pass
