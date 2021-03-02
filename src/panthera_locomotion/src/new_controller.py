@@ -26,7 +26,7 @@ class Ds4Controller():
 		self.actuators = rospy.Publisher('/actuators_topic', Twist, queue_size=1)
 		self.vacuum = rospy.Publisher('/vacuum_topic', Twist, queue_size=1)
 		###
-		'''
+		
 		rospy.wait_for_service('/lb_steer_status')
 		rospy.wait_for_service('/lf_steer_status')
 		rospy.wait_for_service('/rb_steer_status')
@@ -46,7 +46,7 @@ class Ds4Controller():
 		self.lf_stat = rospy.ServiceProxy('lf_reconfig_status', Status)
 		self.rb_stat = rospy.ServiceProxy('rb_reconfig_status', Status)
 		self.rf_stat = rospy.ServiceProxy('rf_reconfig_status', Status)
-		'''
+		
 		self.width = 0.6
 		self.length = 1.31
 
@@ -112,15 +112,12 @@ class Ds4Controller():
 		self.brush.value = data.button_options
 		self.act.value = data.button_square
 		self.vac.value = data.button_circle
-		#print(self.brush.data)
 		self.brush.change_state()
 		self.act.change_state()
 		self.vac.change_state()
-		#print(self.brush.state)
 		###
 
-		self.input_list = [self.brush.data, self.act.data, self.vac.data,
-						   self.linear_x, self.angular_z, self.rot_right, self.rot_left,
+		self.input_list = [self.linear_x, self.angular_z, self.rot_right, self.rot_left,
 						   self.holo_right, self.holo_left, self.d_vx, self.d_wz, self.decrease, self.rec_r, self.rec_l]
 
 
@@ -191,15 +188,8 @@ class Ds4Controller():
 		return output
 
 	def locomotion(self):
-		b = self.custom_twist(self.brush.data*100)
-		self.brushes.publish(b)
-		a = self.custom_twist(self.act.data*100)
-		self.actuators.publish(a)
-		v = self.custom_twist(self.vac.data*100)
-		self.vacuum.publish(v)
-
 		self.mode = 1 * (not self.rot_right) * (not self.rot_left) * (not self.holo_right) * (not self.holo_left) * (not self.rec_l) * (not self.rec_r)
-		#self.reconfig(not self.mode)
+		self.reconfig(not self.mode)
 		self.change_wz()
 		self.change_vx()
 		f = self.linear_x * self.vx
@@ -229,8 +219,8 @@ class Ds4Controller():
 		if self.mode != 0:
 			pass
 		else:
-			#self.check()
-			pass
+			self.check()
+			#pass
 
 		self.reconfiguring.linear.x = self.rec_l * recon_move
 		self.reconfiguring.linear.y = self.rec_r * recon_move
@@ -243,6 +233,12 @@ class Ds4Controller():
 		self.pub.publish(self.twist)
 
 	def run(self):
+		b = self.custom_twist(self.brush.data*100)
+		self.brushes.publish(b)
+		a = self.custom_twist(self.act.data*100)
+		self.actuators.publish(a)
+		v = self.custom_twist(self.vac.data*100)
+		self.vacuum.publish(v)
 		if sum(self.input_list) != self.pub_once:
 			if sum(self.input_list) > 5:
 				print("Error: Pressing more than 2 buttons")
