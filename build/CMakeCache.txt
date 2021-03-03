@@ -423,10 +423,10 @@ roboclaw_driver_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/roboclaw
 roboclaw_driver_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/roboclaw_driver
 
 //Value Computed by CMake
-roboclaw_node_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/roboclaw_ros/roboclaw_node
+roboclaw_node_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/roboclaw_node
 
 //Value Computed by CMake
-roboclaw_node_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/roboclaw_ros/roboclaw_node
+roboclaw_node_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/roboclaw_node
 
 //The directory containing a CMake configuration file for rosconsole.
 rosconsole_DIR:PATH=/opt/ros/melodic/share/rosconsole/cmake

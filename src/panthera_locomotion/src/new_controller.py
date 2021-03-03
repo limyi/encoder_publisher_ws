@@ -199,9 +199,9 @@ class Ds4Controller():
 		self.change_wz()
 		s = self.angular_z * self.wz
 		if s >= 0:
-			s = min(abs(s), abs(f/(self.width/2)))
+			s = min(abs(s), abs(f/(self.width+0.2/2)))
 		else:
-			s = max(s, -abs(f/(self.width/2)))
+			s = max(s, -abs(f/(self.width+0.2/2)))
 		
 		if f == 0:
 			s = (-self.rot_right + self.rot_left) * self.wz
@@ -244,7 +244,7 @@ class Ds4Controller():
 		b = self.custom_twist(self.brush.data*-100)
 		self.brushes.publish(b)
 		a = self.custom_twist(self.act.data*100)
-		#self.actuators.publish(a)
+		self.actuators.publish(a)
 		v = self.custom_twist(self.vac.data*100)
 		self.vacuum.publish(v)
 		if sum(self.input_list) != self.pub_once:

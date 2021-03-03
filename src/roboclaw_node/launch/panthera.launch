@@ -3,7 +3,7 @@
 
     <arg name="dev0" default="/dev/ttyACM0"/>
 	<arg name="dev1" default="/dev/ttyACM1"/>
-    <arg name="baud" default="19200"/>
+    <arg name="baud" default="2400"/>
     <arg name="address0" default="128"/>
     <arg name="address1" default="129"/>
     <arg name="max_speed" default="2.0"/>
@@ -12,7 +12,7 @@
     <arg name="run_diag" default="true"/>
 
     <node if="$(arg run_diag)" pkg="roboclaw_node" type="brushes.py" name="brushes_node">
-        <param name="~dev" value="$(arg dev1)"/>
+        <param name="~dev" value="$(arg dev0)"/>
         <param name="~baud" value="$(arg baud)"/>
         <param name="~address" value="$(arg address1)"/>
         <param name="~max_speed" value="$(arg max_speed)"/>
@@ -21,7 +21,7 @@
     </node>
 
     <node if="$(arg run_diag)" pkg="roboclaw_node" type="actuators.py" name="actuators_node">
-        <param name="~dev" value="$(arg dev0)"/>
+        <param name="~dev" value="$(arg dev1)"/>
         <param name="~baud" value="$(arg baud)"/>
         <param name="~address" value="$(arg address0)"/>
         <param name="~max_speed" value="$(arg max_speed)"/>

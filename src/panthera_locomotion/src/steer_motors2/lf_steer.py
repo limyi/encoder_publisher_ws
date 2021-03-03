@@ -162,7 +162,7 @@ if __name__ == "__main__":
         period = 0.05
         rate = rospy.Rate(20)
         while not rospy.is_shutdown():
-            if abs(lf_steer.position) >= 180:
+            if abs(lf_steer.position) >= 200:
                 lf_steer.motor.writeSpeed(0)
                 break
             else:

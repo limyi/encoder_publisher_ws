@@ -7,6 +7,6 @@
 subdirs("gtest")
 subdirs("can_encoder_pub")
 subdirs("key_command_pub")
-subdirs("roboclaw_driver")
 subdirs("ds4_driver")
+subdirs("roboclaw_node")
 subdirs("panthera_locomotion")
