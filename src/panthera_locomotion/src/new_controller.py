@@ -10,10 +10,14 @@ from ds4_driver.msg import Status as st
 class Ds4Controller():
 	def __init__(self):
 		rospy.init_node('Controller')
-		self.mode = 1
-		self.brush = Button(0,1)
+
+		self.mode = 1 # mode 1:=smooth , mode 0:=reconfig
+
+		# Toggle buttons for roboclaw
+		self.brush = Button(0,0.01)
 		self.act = Button(-1,1)
 		self.vac = Button(0,1)
+
 		rospy.Subscriber('/cmd_vel', Twist, self.cmd_sub)
 		rospy.Subscriber('/status', st, self.ds4_sub)
 		rospy.Subscriber('/can_encoder', Twist, self.encoder_pos)
@@ -21,7 +25,7 @@ class Ds4Controller():
 		self.pub = rospy.Publisher('/panthera_cmd', Twist, queue_size=1)
 		self.recon = rospy.Publisher('/reconfig', Twist, queue_size=1)
 
-		#### 
+		####  publisher for roboclaw
 		self.brushes = rospy.Publisher('/linear_actuator', Twist, queue_size=1)
 		self.actuators = rospy.Publisher('/actuators_topic', Twist, queue_size=1)
 		self.vacuum = rospy.Publisher('/vacuum_topic', Twist, queue_size=1)
@@ -50,6 +54,7 @@ class Ds4Controller():
 		self.width = 0.6
 		self.length = 1.31
 
+		# cmd vel
 		self.linear_x = 0
 		self.angular_z = 0
 
@@ -108,7 +113,7 @@ class Ds4Controller():
 		self.d_wz = data.button_cross# and (not data.button_share)
 		self.decrease = -data.button_share
 
-		###
+		### Brushes roboclaw stuff
 		self.brush.value = data.button_options
 		self.act.value = data.button_square
 		self.vac.value = data.button_circle
@@ -188,21 +193,28 @@ class Ds4Controller():
 		return output
 
 	def locomotion(self):
+		prev_mode = self.mode
+
+		# determine mode: mode 1 -> smooth | mode 0 -> reconfig
 		self.mode = 1 * (not self.rot_right) * (not self.rot_left) * (not self.holo_right) * (not self.holo_left) * (not self.rec_l) * (not self.rec_r)
 		self.reconfig(not self.mode)
 
 		if sum(self.input_list) == 0:
 			self.reconfig(True)
 
+		# update vx and wz
 		f = self.linear_x * self.vx
 		self.change_vx()
 		self.change_wz()
 		s = self.angular_z * self.wz
+
+		### control max wz wrt to vx ###
 		if s >= 0:
 			s = min(abs(s), abs(f/(self.width+0.2/2)))
 		else:
 			s = max(s, -abs(f/(self.width+0.2/2)))
 		
+		### joystick calibration for reverse turning ###
 		if f == 0:
 			s = (-self.rot_right + self.rot_left) * self.wz
 		elif f < 0:
@@ -210,6 +222,7 @@ class Ds4Controller():
 		else:
 			pass
 
+		# determin and publish wheel angles and speed
 		h_r = self.holo_right * 90
 		h_l = -self.holo_left * 90
 		recon_r = self.rec_r * 90
@@ -224,18 +237,27 @@ class Ds4Controller():
 		#self.twist.angular.z = 0
 		self.pub.publish(self.twist)
 
+		# check wheels aligned
 		if self.mode != 0:
-			pass
+			if prev_mode == 0:
+				self.twist.angular.y = 0
+				self.twist.angular.z = 0
+				self.pub.publish(self.twist)
+				self.check()
+			else:
+				pass
 		else:
 			self.check()
 			pass
 
+		# wheel speeds for reconfig
 		self.reconfiguring.linear.x = self.rec_l * recon_move
 		self.reconfiguring.linear.y = self.rec_r * recon_move
 		self.reconfiguring.linear.z = self.rec_l * recon_move
 		self.reconfiguring.angular.x = self.rec_r * recon_move
 		self.recon.publish(self.reconfiguring)
 
+		# cmd_vel for robot
 		self.twist.angular.y = f * (not self.rec_r and not self.rec_l)
 		self.twist.angular.z = s * (not self.rec_r and not self.rec_l)
 		self.pub.publish(self.twist)
@@ -248,7 +270,7 @@ class Ds4Controller():
 		v = self.custom_twist(self.vac.data*100)
 		self.vacuum.publish(v)
 		if sum(self.input_list) != self.pub_once:
-			if sum(self.input_list) > 5:
+			if sum(self.input_list) > 2:
 				print("Error: Pressing more than 2 buttons")
 			else:
 				self.pub_once = sum(self.input_list)
@@ -264,10 +286,6 @@ class Ds4Controller():
 		print('\n')
 		print("    MOVEMENT    ")
 		print("    --------    ")
-		#print("[up]: Forward")
-		#print("[right]: Rotate Right")
-		#print("[left]: Rotate Left")
-		#print("[down]: Reverse" + '\n')
 		print("[Left joystick]: Forward/Backwards")
 		print("[Right joystick]: Left/Right")
 		print("[left]: Rotate Left")
@@ -278,12 +296,10 @@ class Ds4Controller():
 		print("[r1] + [up]: Holonomic Right")
 		print("[l1] + [up]: Holonomic Left")
 		print("[r2] + [up]/[down]: Right Contract/Expand")
-		print("[l2] + [down]/[up]: Right Contract/Expand" + '\n')
+		print("[l2] + [down]/[up]: Left Contract/Expand" + '\n')
 
 		print("    ADJUST SPEED    ")
 		print("    ------------    ")
-		#print("[left] + [right/left]: Turn Right/Left")
-		#print("[down] + [right/left]: Reverse Right/Left")
 		print("[Triangle/Cross]: + VX/WZ")
 		print("[share] + [triangle/cross]: - VX/WZ" + '\n')
 
@@ -291,7 +307,6 @@ class Ds4Controller():
 		print("    -----------------")
 		print("VX: " + str(self.vx))
 		print("WZ: " + str(self.wz))
-		#print("Turning Radius: " + str(round(self.vx/self.wz,2)))
 		print("Robot Width: " + str(self.width) + '\n')
 
 		print("    Cleaning:")
@@ -299,7 +314,6 @@ class Ds4Controller():
 		print("[options]: Brushes -> " + str(self.brush.data))
 		print("[square]: Actuators -> " + str(self.act.data))
 		print("[circle]: Vacuum -> " + str(self.vac.data))
-		#print("Mode (0->reconfig , 1->smooth): " + str(self.mode))
 
 class Button():
 	def __init__(self, low_limit, high_limit):
