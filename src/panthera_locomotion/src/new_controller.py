@@ -22,7 +22,7 @@ class Ds4Controller():
 		self.recon = rospy.Publisher('/reconfig', Twist, queue_size=1)
 
 		#### 
-		self.brushes = rospy.Publisher('/linear_actuators', Twist, queue_size=1)
+		self.brushes = rospy.Publisher('/linear_actuator', Twist, queue_size=1)
 		self.actuators = rospy.Publisher('/actuators_topic', Twist, queue_size=1)
 		self.vacuum = rospy.Publisher('/vacuum_topic', Twist, queue_size=1)
 		###
@@ -67,8 +67,8 @@ class Ds4Controller():
 		self.decrease = 0
 
 		#### Initial VX, WZ and reconfig speed ####
-		self.vx = 0.045
-		self.wz = 0.04618
+		self.vx = 0.085
+		self.wz = 0.08618
 		self.reconfig_vel = 0.1
 
 		self.step = 0.01 # Step to adjust speed
@@ -136,7 +136,7 @@ class Ds4Controller():
 			while self.d_wz == 1:
 				pass
 			self.wz += (1*(not self.decrease) + self.decrease) * self.step
-
+		
 	def check(self):
 		req = StatusRequest()
 		req.reconfig = True
@@ -190,11 +190,19 @@ class Ds4Controller():
 	def locomotion(self):
 		self.mode = 1 * (not self.rot_right) * (not self.rot_left) * (not self.holo_right) * (not self.holo_left) * (not self.rec_l) * (not self.rec_r)
 		self.reconfig(not self.mode)
-		self.change_wz()
-		self.change_vx()
-		f = self.linear_x * self.vx
-		s = self.angular_z * self.wz
 
+		if sum(self.input_list) == 0:
+			self.reconfig(True)
+
+		f = self.linear_x * self.vx
+		self.change_vx()
+		self.change_wz()
+		s = self.angular_z * self.wz
+		if s >= 0:
+			s = min(abs(s), abs(f/(self.width/2)))
+		else:
+			s = max(s, -abs(f/(self.width/2)))
+		
 		if f == 0:
 			s = (-self.rot_right + self.rot_left) * self.wz
 		elif f < 0:
@@ -220,7 +228,7 @@ class Ds4Controller():
 			pass
 		else:
 			self.check()
-			#pass
+			pass
 
 		self.reconfiguring.linear.x = self.rec_l * recon_move
 		self.reconfiguring.linear.y = self.rec_r * recon_move
@@ -228,15 +236,15 @@ class Ds4Controller():
 		self.reconfiguring.angular.x = self.rec_r * recon_move
 		self.recon.publish(self.reconfiguring)
 
-		self.twist.angular.y = f #* (not self.rec_r and not self.rec_l)
-		self.twist.angular.z = s #* (not self.rec_r and not self.rec_l)
+		self.twist.angular.y = f * (not self.rec_r and not self.rec_l)
+		self.twist.angular.z = s * (not self.rec_r and not self.rec_l)
 		self.pub.publish(self.twist)
 
 	def run(self):
-		b = self.custom_twist(self.brush.data*100)
+		b = self.custom_twist(self.brush.data*-100)
 		self.brushes.publish(b)
 		a = self.custom_twist(self.act.data*100)
-		self.actuators.publish(a)
+		#self.actuators.publish(a)
 		v = self.custom_twist(self.vac.data*100)
 		self.vacuum.publish(v)
 		if sum(self.input_list) != self.pub_once:
@@ -245,9 +253,10 @@ class Ds4Controller():
 			else:
 				self.pub_once = sum(self.input_list)
 				self.locomotion()
-				#self.print_instructions()
+				self.print_instructions()
 		else:
 			self.pub_once = sum(self.input_list)
+			self.print_instructions()
 
 		#print(sum(self.input_list), self.mode)
 
@@ -282,14 +291,14 @@ class Ds4Controller():
 		print("    -----------------")
 		print("VX: " + str(self.vx))
 		print("WZ: " + str(self.wz))
-		print("Turning Radius: " + str(round(self.vx/self.wz,2)))
+		#print("Turning Radius: " + str(round(self.vx/self.wz,2)))
 		print("Robot Width: " + str(self.width) + '\n')
 
 		print("    Cleaning:")
 		print("    ---------")
-		print("[options]: Brushes -> " + str(self.brush))
-		print("[square]: Actuators -> " + str(self.act))
-		print("[circle]: Vacuum -> " + str(self.vac))
+		print("[options]: Brushes -> " + str(self.brush.data))
+		print("[square]: Actuators -> " + str(self.act.data))
+		print("[circle]: Vacuum -> " + str(self.vac.data))
 		#print("Mode (0->reconfig , 1->smooth): " + str(self.mode))
 
 class Button():
