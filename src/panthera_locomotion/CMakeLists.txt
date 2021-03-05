@@ -9,6 +9,7 @@ project(panthera_locomotion)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
+  roscpp
   rospy
   std_msgs
   std_srvs
@@ -110,7 +111,7 @@ generate_messages(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES panthera_locomotion
- CATKIN_DEPENDS geometry_msgs rospy std_msgs message_runtime nav_msgs tf tf_conversions tf2_ros
+ CATKIN_DEPENDS geometry_msgs roscpp rospy std_msgs message_runtime nav_msgs tf tf_conversions tf2_ros
 #  DEPENDS system_lib
 )
 
@@ -139,21 +140,23 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/panthera_locomotion_node.cpp)
+add_executable(panthera_twist_node src/panthera_twist.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
 ## e.g. "rosrun someones_pkg node" instead of "rosrun someones_pkg someones_pkg_node"
-# set_target_properties(${PROJECT_NAME}_node PROPERTIES OUTPUT_NAME node PREFIX "")
+# set_target_properties(panthera_twist_node PROPERTIES OUTPUT_NAME node PREFIX "")
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(panthera_twist_node ${panthera_twist_node_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(panthera_twist_node
+  ${catkin_LIBRARIES}
+)
 
 #############
 ## Install ##

@@ -333,6 +333,21 @@ panthera_locomotion_generate_messages_lisp/fast:
 .PHONY : panthera_locomotion_generate_messages_lisp/fast
 
 # Convenience name for target.
+panthera_locomotion/CMakeFiles/panthera_twist_node.dir/rule:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 panthera_locomotion/CMakeFiles/panthera_twist_node.dir/rule
+.PHONY : panthera_locomotion/CMakeFiles/panthera_twist_node.dir/rule
+
+# Convenience name for target.
+panthera_twist_node: panthera_locomotion/CMakeFiles/panthera_twist_node.dir/rule
+
+.PHONY : panthera_twist_node
+
+# fast build rule for target.
+panthera_twist_node/fast:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f panthera_locomotion/CMakeFiles/panthera_twist_node.dir/build.make panthera_locomotion/CMakeFiles/panthera_twist_node.dir/build
+.PHONY : panthera_twist_node/fast
+
+# Convenience name for target.
 panthera_locomotion/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 panthera_locomotion/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
 .PHONY : panthera_locomotion/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
@@ -422,6 +437,33 @@ panthera_locomotion_generate_messages_eus/fast:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_eus.dir/build.make panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_eus.dir/build
 .PHONY : panthera_locomotion_generate_messages_eus/fast
 
+src/panthera_twist.o: src/panthera_twist.cpp.o
+
+.PHONY : src/panthera_twist.o
+
+# target to build an object file
+src/panthera_twist.cpp.o:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f panthera_locomotion/CMakeFiles/panthera_twist_node.dir/build.make panthera_locomotion/CMakeFiles/panthera_twist_node.dir/src/panthera_twist.cpp.o
+.PHONY : src/panthera_twist.cpp.o
+
+src/panthera_twist.i: src/panthera_twist.cpp.i
+
+.PHONY : src/panthera_twist.i
+
+# target to preprocess a source file
+src/panthera_twist.cpp.i:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f panthera_locomotion/CMakeFiles/panthera_twist_node.dir/build.make panthera_locomotion/CMakeFiles/panthera_twist_node.dir/src/panthera_twist.cpp.i
+.PHONY : src/panthera_twist.cpp.i
+
+src/panthera_twist.s: src/panthera_twist.cpp.s
+
+.PHONY : src/panthera_twist.s
+
+# target to generate assembly for a file
+src/panthera_twist.cpp.s:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f panthera_locomotion/CMakeFiles/panthera_twist_node.dir/build.make panthera_locomotion/CMakeFiles/panthera_twist_node.dir/src/panthera_twist.cpp.s
+.PHONY : src/panthera_twist.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -445,6 +487,7 @@ help:
 	@echo "... std_srvs_generate_messages_cpp"
 	@echo "... panthera_locomotion_generate_messages_cpp"
 	@echo "... panthera_locomotion_generate_messages_lisp"
+	@echo "... panthera_twist_node"
 	@echo "... std_srvs_generate_messages_nodejs"
 	@echo "... panthera_locomotion_gennodejs"
 	@echo "... panthera_locomotion_gencpp"
@@ -452,6 +495,9 @@ help:
 	@echo "... test"
 	@echo "... std_srvs_generate_messages_eus"
 	@echo "... panthera_locomotion_generate_messages_eus"
+	@echo "... src/panthera_twist.o"
+	@echo "... src/panthera_twist.i"
+	@echo "... src/panthera_twist.s"
 .PHONY : help
 
 

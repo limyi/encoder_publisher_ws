@@ -16,7 +16,7 @@ class Ds4Controller():
 		# Toggle buttons for roboclaw
 		self.brush = Button(0,0.01)
 		self.act = Button(-1,1)
-		self.vac = Button(0,1)
+		self.vac = Button(-1,1)
 
 		rospy.Subscriber('/cmd_vel', Twist, self.cmd_sub)
 		rospy.Subscriber('/status', st, self.ds4_sub)
@@ -85,11 +85,14 @@ class Ds4Controller():
 
 		self.pub_once = 0
 
-	def custom_twist(self, val):
+	def custom_twist(self, val1, val2):
 		ts = Twist()
-		ts.angular.x = val
-		ts.angular.y = val
-		ts.angular.z = val
+		ts.linear.x = val1
+		ts.linear.y = val1
+		ts.linear.z = val1
+		ts.angular.x = val2
+		ts.angular.y = val2
+		ts.angular.z = val2
 		return ts
 
 	def encoder_pos(self,data):
@@ -263,11 +266,11 @@ class Ds4Controller():
 		self.pub.publish(self.twist)
 
 	def run(self):
-		b = self.custom_twist(self.brush.data*-100)
+		b = self.custom_twist(0, self.brush.data*-100)
 		self.brushes.publish(b)
-		a = self.custom_twist(self.act.data*100)
+		a = self.custom_twist(0, self.act.data*100)
 		self.actuators.publish(a)
-		v = self.custom_twist(self.vac.data*100)
+		v = self.custom_twist(self.vac.data*100, 0)
 		self.vacuum.publish(v)
 		if sum(self.input_list) != self.pub_once:
 			if sum(self.input_list) > 2:

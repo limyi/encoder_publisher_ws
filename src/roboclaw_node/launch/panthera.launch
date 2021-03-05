@@ -3,9 +3,11 @@
 
     <arg name="dev0" default="/dev/ttyACM0"/>
 	<arg name="dev1" default="/dev/ttyACM1"/>
+    <arg name="dev2" default="/dev/ttyACM2"/>
     <arg name="baud" default="2400"/>
     <arg name="address0" default="128"/>
     <arg name="address1" default="129"/>
+    <arg name="address2" default="130"/>
     <arg name="max_speed" default="2.0"/>
     <arg name="ticks_per_meter" default="4342.2"/>
     <arg name="base_width" default="0.315"/>
@@ -21,13 +23,23 @@
     </node>
 
     <node if="$(arg run_diag)" pkg="roboclaw_node" type="actuators.py" name="actuators_node">
-        <param name="~dev" value="$(arg dev1)"/>
+        <param name="~dev" value="$(arg dev2)"/>
         <param name="~baud" value="$(arg baud)"/>
         <param name="~address" value="$(arg address0)"/>
         <param name="~max_speed" value="$(arg max_speed)"/>
         <param name="~ticks_per_meter" value="$(arg ticks_per_meter)"/>
         <param name="~base_width" value="$(arg base_width)"/>
     </node>
+
+    <node if="$(arg run_diag)" pkg="roboclaw_node" type="vacuum.py" name="vacuum_node">
+        <param name="~dev" value="$(arg dev1)"/>
+        <param name="~baud" value="$(arg baud)"/>
+        <param name="~address" value="$(arg address2)"/>
+        <param name="~max_speed" value="$(arg max_speed)"/>
+        <param name="~ticks_per_meter" value="$(arg ticks_per_meter)"/>
+        <param name="~base_width" value="$(arg base_width)"/>
+    </node>
+
 
 
     <node pkg="diagnostic_aggregator" type="aggregator_node"

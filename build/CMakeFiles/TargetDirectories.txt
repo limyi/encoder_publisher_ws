@@ -147,6 +147,7 @@
 /home/joel/encoder_publisher_ws/build/panthera_locomotion/CMakeFiles/std_srvs_generate_messages_cpp.dir
 /home/joel/encoder_publisher_ws/build/panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_cpp.dir
 /home/joel/encoder_publisher_ws/build/panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_lisp.dir
+/home/joel/encoder_publisher_ws/build/panthera_locomotion/CMakeFiles/panthera_twist_node.dir
 /home/joel/encoder_publisher_ws/build/panthera_locomotion/CMakeFiles/std_srvs_generate_messages_nodejs.dir
 /home/joel/encoder_publisher_ws/build/panthera_locomotion/CMakeFiles/panthera_locomotion_gennodejs.dir
 /home/joel/encoder_publisher_ws/build/panthera_locomotion/CMakeFiles/panthera_locomotion_gencpp.dir

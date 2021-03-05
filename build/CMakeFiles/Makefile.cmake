@@ -372,6 +372,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "panthera_locomotion/CMakeFiles/std_srvs_generate_messages_cpp.dir/DependInfo.cmake"
   "panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_cpp.dir/DependInfo.cmake"
   "panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_lisp.dir/DependInfo.cmake"
+  "panthera_locomotion/CMakeFiles/panthera_twist_node.dir/DependInfo.cmake"
   "panthera_locomotion/CMakeFiles/std_srvs_generate_messages_nodejs.dir/DependInfo.cmake"
   "panthera_locomotion/CMakeFiles/panthera_locomotion_gennodejs.dir/DependInfo.cmake"
   "panthera_locomotion/CMakeFiles/panthera_locomotion_gencpp.dir/DependInfo.cmake"

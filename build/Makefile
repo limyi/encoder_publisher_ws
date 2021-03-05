@@ -1299,6 +1299,19 @@ panthera_locomotion_generate_messages_lisp/fast:
 .PHONY : panthera_locomotion_generate_messages_lisp/fast
 
 #=============================================================================
+# Target rules for targets named panthera_twist_node
+
+# Build rule for target.
+panthera_twist_node: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 panthera_twist_node
+.PHONY : panthera_twist_node
+
+# fast build rule for target.
+panthera_twist_node/fast:
+	$(MAKE) -f panthera_locomotion/CMakeFiles/panthera_twist_node.dir/build.make panthera_locomotion/CMakeFiles/panthera_twist_node.dir/build
+.PHONY : panthera_twist_node/fast
+
+#=============================================================================
 # Target rules for targets named std_srvs_generate_messages_nodejs
 
 # Build rule for target.
@@ -1476,6 +1489,7 @@ help:
 	@echo "... std_srvs_generate_messages_cpp"
 	@echo "... panthera_locomotion_generate_messages_cpp"
 	@echo "... panthera_locomotion_generate_messages_lisp"
+	@echo "... panthera_twist_node"
 	@echo "... std_srvs_generate_messages_nodejs"
 	@echo "... panthera_locomotion_gennodejs"
 	@echo "... panthera_locomotion_gencpp"
