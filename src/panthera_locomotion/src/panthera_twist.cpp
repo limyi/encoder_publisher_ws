@@ -16,12 +16,7 @@ class TwistFilter
 		pub = nh->advertise<geometry_msgs::Twist>("/panthera_cmd", 100);
 		sub = nh->subscribe("/twist_cmd", 1000, &TwistFilter::read_cmd, this);
 		width_sub = nh->subscribe("/can_encoder", 1000, &TwistFilter::read_width, this);
-		/**
-		while (ros::ok())
-		{	
-			TwistFilter::run();
-			rate.sleep();
-		}**/
+		//TwistFilter::run();
 	}
 
 	double rad_to_deg(double rad)
@@ -30,15 +25,19 @@ class TwistFilter
 
 		return deg;
 	}
+	struct vels
+	{
+		double vx, wz;
+	};
 
 	struct Angles
-		{
-			double lb, rb, lf, rf;
-		};
+	{
+		double lb, rb, lf, rf;
+	};
 
 	auto adjust_wheels(double vx, double wz)
 	{	
-		width = TwistFilter::get_width;
+		double width = TwistFilter::get_width();
 		Angles ang;
 		double radius = 0.0;
 
@@ -60,8 +59,14 @@ class TwistFilter
 	}
 	double get_width()
 	{
-		std::cout << width << std::endl;
+		//std::cout << width << std::endl;
 		return width;
+	}
+
+	auto get_vels()
+	{	
+		vels velocities{linear_x, angular_z};
+		return velocities;
 	}
 
 	void read_width(const geometry_msgs::Twist& msg)
@@ -73,8 +78,8 @@ class TwistFilter
 	{
 		linear_x = msg.linear.x;
 		angular_z = msg.angular.z;
-		std::cout << linear_x << std::endl;
-		//std::cout << width << std::endl;
+		TwistFilter::run();
+		/**
 		Angles a = TwistFilter::adjust_wheels(linear_x, angular_z);
 		geometry_msgs::Twist ts;
 		ts.linear.x = a.lb;
@@ -85,19 +90,20 @@ class TwistFilter
 		ts.angular.z = angular_z;
 
 		pub.publish(ts);
-		//TwistFilter::run();
+		**/
 	}
 
 	void run()
 	{	
+		vels v = TwistFilter::get_vels();
 		Angles a = adjust_wheels(linear_x, angular_z);
 		geometry_msgs::Twist ts;
 		ts.linear.x = a.lb;
 		ts.linear.y = a.rb;
 		ts.linear.z = a.lf;
 		ts.angular.x = a.rf;
-		ts.angular.y = linear_x;
-		ts.angular.z = angular_z;
+		ts.angular.y = v.vx;
+		ts.angular.z = v.wz;
 
 		pub.publish(ts);
 	}
@@ -119,7 +125,7 @@ int main(int argc, char** argv)
 	ros::init(argc, argv, "panthera_twist_node");
 	ros::NodeHandle nh;
 	TwistFilter panthera = TwistFilter(&nh);
-
+	//panthera.run();
 	ros::spin();
 	return 0;
 }
