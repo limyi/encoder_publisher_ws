@@ -6,6 +6,7 @@ from geometry_msgs.msg import Twist, Point32
 from std_msgs.msg import Empty
 from panthera_locomotion.srv import Status, StatusRequest, StatusResponse
 from ds4_driver.msg import Status as st
+from ds4_driver.msg import Feedback
 
 class Ds4Controller():
 	def __init__(self):
@@ -24,6 +25,7 @@ class Ds4Controller():
 
 		self.pub = rospy.Publisher('/panthera_cmd', Twist, queue_size=1)
 		self.recon = rospy.Publisher('/reconfig', Twist, queue_size=1)
+		self.vibrate = rospy.Publisher('/set_feedback', Feedback, queue_size=1)
 
 		####  publisher for roboclaw
 		self.brushes = rospy.Publisher('/linear_actuator', Twist, queue_size=1)
@@ -85,6 +87,11 @@ class Ds4Controller():
 
 		self.pub_once = 0
 
+		self.vb = Feedback()
+		self.vb.set_rumble = True
+		self.vb.rumble_duration = 0.5
+		self.vb.rumble_small = 0.5
+
 	def custom_twist(self, val1, val2):
 		ts = Twist()
 		ts.linear.x = val1
@@ -96,6 +103,15 @@ class Ds4Controller():
 		return ts
 
 	def encoder_pos(self,data):
+		lb = data.linear.x
+		rb = data.linear.y
+		lf = data.linear.z
+		rf = data.angular.x
+		wheels = [lb,rb,lf,rf]
+		for i in wheels:
+			if abs(i) > 100:
+				#print(i)
+				self.vibrate.publish(self.vb)
 		self.width = (data.angular.y + data.angular.z)/2
 
 	def cmd_sub(self, data):

@@ -22,6 +22,7 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "can_encoder");
     ros::NodeHandle n;
     ros::Publisher can_encoder = n.advertise<geometry_msgs::Twist>("can_encoder", 10);
+
     ros::Rate loop_rate(10);
 
     int s, i;
