@@ -1,0 +1,5 @@
+costmap_topic: "/map"
+robot_length: 1.5
+robot_width: 1.0
+safety_dist: 0.1
+clear_tolerance: 10

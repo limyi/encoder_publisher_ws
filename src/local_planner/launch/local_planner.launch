@@ -1,0 +1,5 @@
+<launch>
+	<rosparam command="load" file="$(find local_planner)/params/cfg.yaml"/>
+	<node name="local_planner_node" type="local_planner_node" pkg="local_planner" output="screen"/>
+	<!--node name="twist_pub_node" pkg="local_planner" type="twist_pub_node" output="screen"/-->
+</launch>
