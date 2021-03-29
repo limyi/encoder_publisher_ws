@@ -5,6 +5,7 @@
 #include <std_msgs/Float64.h>
 #include <math.h>
 #include <cmath>
+#include <panthera_locomotion/Status.h>
 
 class StateMachine
 {
@@ -12,6 +13,7 @@ private:
 	ros::Subscriber check;
 	ros::Subscriber bot_pose;
 	ros::Publisher twist_pub;
+	ros::ServiceClient lb_stat, rb_stat, lf_stat, rf_stat;
 	int curr_state=1, prev_state=2;
 
 	bool left_clear, right_clear, up_clear;
@@ -26,6 +28,7 @@ private:
 	float vx = 0.1;
 
 	int n = 0;
+	bool operation = false;
 
 public:
 	StateMachine(ros::NodeHandle *nh)
@@ -33,6 +36,36 @@ public:
 		bot_pose = nh->subscribe("/ndt_pose", 1000, &StateMachine::poseCheck, this);
 		check = nh->subscribe("check_cmap", 1000, &StateMachine::cmap_check, this);
 		twist_pub = nh->advertise<geometry_msgs::Twist>("panthera_cmd", 100);
+		lb_stat = nh->serviceClient<panthera_locomotion::Status>("lb_steer_status");
+		rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
+		lf_stat = nh->serviceClient<panthera_locomotion::Status>("lf_steer_status");
+		rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
+	}
+
+	void check_steer()
+	{
+		if (operation == true)
+		{
+			panthera_locomotion::Status lb_req,rb_req,lf_req,rf_req;
+			lb_req.request.reconfig = true;
+			rb_req.request.reconfig = true;
+			lf_req.request.reconfig = true;
+			rf_req.request.reconfig = true;
+			bool signal = false;
+			ros::Rate rate(2);
+			while (signal == false)
+			{
+				lb_stat.call(lb_req);
+				rb_stat.call(rb_req);
+				lf_stat.call(lf_req);
+				rf_stat.call(rf_req);
+				signal = (lb_req.response.status && lf_req.response.status && rb_req.response.status && rf_req.response.status);
+				std::cout << "Signal: " << signal << std::endl;
+				rate.sleep();
+			}
+		}
+		else{}
+
 	}
 
 	void poseCheck(const geometry_msgs::PoseStamped& msg)
@@ -185,7 +218,12 @@ public:
 		ts->linear.y = -90;
 		ts->linear.z = -90;
 		ts->angular.x = -90;
-		ts->linear.x = vx;
+		ts->angular.y = 0;
+
+		check_steer();
+
+		ts->angular.y = vx;
+		ts->angular.z = 0;
 		twist_pub.publish(*ts);
 	}
 
@@ -196,7 +234,11 @@ public:
 		ts->linear.y = 90;
 		ts->linear.z = 90;
 		ts->angular.x = 90;
-		ts->linear.x = vx;
+		ts->angular.y = 0;
+
+		check_steer();
+
+		ts->angular.y = vx;
 		twist_pub.publish(*ts);
 	}
 
@@ -207,16 +249,19 @@ public:
 		ts->linear.y = 0;
 		ts->linear.z = 0;
 		ts->angular.x = 0;
-		ts->linear.x = vx;
+		ts->angular.y = 0;
+
+		check_steer();
+
+		ts->angular.y = vx;
 		twist_pub.publish(*ts);
 	}
 
 	void stop()
 	{
 		auto* ts = &twist_msg;
-		ts->linear.x = 0;
+		ts->angular.y = 0;
 		twist_pub.publish(*ts);
-		ros::Duration(2).sleep();
 	}
 
 };
