@@ -17,13 +17,15 @@ private:
 	bool left_clear, right_clear, up_clear;
 
 	float step=0.5; // how far forward to move
-	double start_x, start_y, curr_x, curr_y;
+	double start_x=0, start_y=0, curr_x, curr_y;
 	bool finished_step;
 
 	geometry_msgs::Twist twist_msg;
 
 	// speed
 	float vx = 0.1;
+
+	int n = 0;
 
 public:
 	StateMachine(ros::NodeHandle *nh)
@@ -37,8 +39,15 @@ public:
 	{
 		curr_x = msg.pose.position.x;
 		curr_y = msg.pose.position.y;
+		if (n == 0)
+		{
+			start_x = curr_x;
+			start_y = curr_y;
+			n++;
+		}
 
 		double dist = sqrt(pow(curr_x-start_x,2) + pow(curr_y-start_y, 2));
+		std::cout << dist << " " << curr_state << std::endl;
 		if (dist < step)
 		{
 			finished_step = false;
@@ -47,6 +56,7 @@ public:
 		{
 			finished_step = true;
 		}
+		
 		sm(curr_x, curr_y);
 
 		switch(curr_state)
@@ -58,6 +68,7 @@ public:
 			case 3:
 				left();
 		}
+		
 	}
 
 	void cmap_check(const local_planner::CmapClear& msg)
@@ -68,107 +79,100 @@ public:
 	}
 
 	void sm(double x, double y)
-	{
-		switch(curr_state)
-		{	
-			// moving right
-			case 1:
-				switch(prev_state)
-				{	
-					// from moving up
-					case 2:
-						switch(right_clear)
-						{
-							case true:
-								break;
-							case false:
-								stop();
-								prev_state = curr_state;
-								curr_state = 2;
-								start_x = x;
-								start_y = y;
-						}
-					// from moving left
-					case 3:
-						switch(up_clear)
-						{
-							case true:
-								prev_state = curr_state;
-								curr_state = 2;
-								start_x = x;
-								start_y = y;
-							case false:
-								break;
-						}
-						
+	{	
+		// moving right
+		if (curr_state == 1)
+		{
+			if (prev_state == 2)
+			{
+				if (right_clear == 0)
+				{
+					stop();
+					start_x = x;
+					start_y = y;
+					curr_state = 2;
+					prev_state = 1;
 				}
-			//moving up
-			case 2:
-				switch(prev_state)
-				{	
-					// from moving right
-					case 1:
-						switch(up_clear)
-						{
-							case true:
-								if (finished_step == true)
-								{
-									prev_state = curr_state;
-									curr_state = 3;
-								}
-								else
-								{
-									break;
-								}
-							case false:
-								stop();
-								prev_state = curr_state;
-								curr_state = 3;
-						}
-					// from moving left
-					case 3:
-						switch(up_clear)
-						{
-							case true:
-								break;
-							case false:
-								stop();
-								prev_state = curr_state;
-								curr_state = 1;
-						}
-						
+			}
+			else if (prev_state == 3)
+			{
+				if (up_clear == 1)
+				{
+					stop();
+					start_x = x;
+					start_y = y;
+					curr_state = 2;
+					prev_state = 3;
 				}
-			// moving left
-			case 3:
-				switch(prev_state)
-				{	
-					// from moving up
-					case 2:
-						switch(left_clear)
-						{
-							case true:
-								break;
-							case false:
-								stop();
-								prev_state = curr_state;
-								curr_state = 2;
-								start_x = x;
-								start_y = y;
-						}
-					// from moving right
-					case 1:
-						switch(up_clear)
-						{
-							case true:
-								stop();
-								prev_state = curr_state;
-								curr_state = 2;
-								start_x = x;
-								start_y = y;
-							case false:
-								break;
-						}
+				else if (right_clear == 0)
+				{
+					stop();
 				}
+			}
+		}
+		// moving up
+		else if (curr_state == 2)
+		{
+			if (prev_state == 1)
+			{
+				if (finished_step == 1)
+				{
+					stop();
+					curr_state = 3;
+					prev_state = 2;
+				}
+				else if (up_clear == false)
+				{
+					stop();
+					curr_state = 3;
+					prev_state = 2;
+				}
+			}
+			else if (prev_state == 3)
+			{
+				if (finished_step == 1)
+				{
+					stop();
+					curr_state = 1;
+					prev_state = 2;
+				}
+				else if (up_clear == false)
+				{
+					stop();
+					curr_state = 1;
+					prev_state = 2;
+				}
+			}
+		}
+		// moving left
+		else if (curr_state == 3)
+		{
+			if (prev_state == 2)
+			{
+				if (left_clear == 0)
+				{
+					stop();
+					start_x = x;
+					start_y = y;
+					curr_state = 2;
+					prev_state = 3;
+				}
+			}
+			else if (prev_state == 1)
+			{
+				if (up_clear == 1)
+				{
+					stop();
+					start_x = x;
+					start_y = y;
+					curr_state = 2;
+					prev_state = 1;
+				}
+				else if (left_clear == 0)
+				{
+					stop();
+				}
+			}
 		}
 	}
 
@@ -221,6 +225,7 @@ int main(int argc, char** argv)
 {
 	ros::init(argc, argv, "twist_pub_node");
 	ros::NodeHandle nh;
+	StateMachine panthera_sm = StateMachine(&nh);
 	ros::spin();
 	return 0;
 }
