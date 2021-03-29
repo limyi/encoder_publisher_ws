@@ -1,0 +1,9 @@
+<launch>
+	<arg name="robot" value="true"/>
+	
+	<include file="$(find local_planner)/launch/local_planner.launch"/>
+	
+	<group if="$(arg robot)">
+		<include file="$(find panthera_locomotion)/launch/run2.launch"/>
+	</group>
+</launch>	
