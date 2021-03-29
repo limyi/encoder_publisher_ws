@@ -1,0 +1,8 @@
+prefix=/home/sutd/encoder_publisher_ws/install
+
+Name: local_planner
+Description: Description of local_planner
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: geometry_msgs nav_msgs roscpp std_msgs message_runtime

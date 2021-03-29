@@ -1,8 +1,0 @@
-prefix=/home/joel/encoder_publisher_ws/install
-
-Name: repub_cmd
-Description: Description of repub_cmd
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

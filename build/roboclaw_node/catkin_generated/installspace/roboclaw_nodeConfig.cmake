@@ -67,14 +67,14 @@ set(roboclaw_node_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(roboclaw_node_SOURCE_PREFIX /home/joel/encoder_publisher_ws/src/roboclaw_node)
-  set(roboclaw_node_DEVEL_PREFIX /home/joel/encoder_publisher_ws/devel)
+  set(roboclaw_node_SOURCE_PREFIX /home/sutd/encoder_publisher_ws/src/roboclaw_node)
+  set(roboclaw_node_DEVEL_PREFIX /home/sutd/encoder_publisher_ws/devel)
   set(roboclaw_node_INSTALL_PREFIX "")
   set(roboclaw_node_PREFIX ${roboclaw_node_DEVEL_PREFIX})
 else()
   set(roboclaw_node_SOURCE_PREFIX "")
   set(roboclaw_node_DEVEL_PREFIX "")
-  set(roboclaw_node_INSTALL_PREFIX /home/joel/encoder_publisher_ws/install)
+  set(roboclaw_node_INSTALL_PREFIX /home/sutd/encoder_publisher_ws/install)
   set(roboclaw_node_PREFIX ${roboclaw_node_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/joel/encoder_publisher_ws/install/lib;/home/joel/encoder_publisher_ws/devel/lib;/opt/ros/melodic/lib)
+    foreach(path /home/sutd/encoder_publisher_ws/install/lib;/home/sutd/global_planner_ws/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

@@ -1,4 +1,4 @@
-prefix=/home/joel/encoder_publisher_ws/install
+prefix=/home/sutd/encoder_publisher_ws/install
 
 Name: panthera_locomotion
 Description: Description of panthera_locomotion

@@ -1,4 +1,4 @@
-prefix=/home/joel/encoder_publisher_ws/devel
+prefix=/home/sutd/encoder_publisher_ws/devel
 
 Name: can_encoder_pub
 Description: Description of can_encoder_pub

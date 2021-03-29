@@ -165,7 +165,8 @@ class Robot
 						//left_clear = false;
 						l += 1;
 						if (l>=clear_tolerance)
-						{
+						{	
+							left_clear=false;
 							goto endleft;
 						}
 						//break;
@@ -183,7 +184,8 @@ class Robot
 					{
 						r+=1;
 						if (r>=clear_tolerance)
-						{
+						{	
+							right_clear=false;
 							goto endright;
 						}
 					}
@@ -200,7 +202,8 @@ class Robot
 					{
 						u+=1;
 						if (u>=clear_tolerance)
-						{
+						{	
+							up_clear=false;
 							goto endup;
 						}
 					}
@@ -208,19 +211,7 @@ class Robot
 			}
 			endup:
 			
-			//printf("checked\n");
-			if (l>=clear_tolerance)
-			{
-				left_clear=false;
-			}
-			if (r>=clear_tolerance)
-			{
-				right_clear=false;
-			}
-			if (u>=clear_tolerance)
-			{
-				up_clear=false;
-			}
+			std::cout << l << " " << r << " " << u << std::endl;
 			auto* bl = &bools;
 			bl->right = right_clear;
 			bl->left = left_clear;

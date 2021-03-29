@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
+  "/home/sutd/encoder_publisher_ws/devel/share/gennodejs/ros/panthera_locomotion/srv/Status.js"
   "CMakeFiles/panthera_locomotion_generate_messages_nodejs"
-  "/home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/panthera_locomotion/srv/Status.js"
 )
 
 # Per-language clean rules from dependency scanning.

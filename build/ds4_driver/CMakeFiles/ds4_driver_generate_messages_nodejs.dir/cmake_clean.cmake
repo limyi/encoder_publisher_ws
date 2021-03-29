@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
+  "/home/sutd/encoder_publisher_ws/devel/share/gennodejs/ros/ds4_driver/msg/Feedback.js"
+  "/home/sutd/encoder_publisher_ws/devel/share/gennodejs/ros/ds4_driver/msg/Report.js"
+  "/home/sutd/encoder_publisher_ws/devel/share/gennodejs/ros/ds4_driver/msg/Status.js"
+  "/home/sutd/encoder_publisher_ws/devel/share/gennodejs/ros/ds4_driver/msg/Trackpad.js"
   "CMakeFiles/ds4_driver_generate_messages_nodejs"
-  "/home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/ds4_driver/msg/Feedback.js"
-  "/home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/ds4_driver/msg/Status.js"
-  "/home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/ds4_driver/msg/Trackpad.js"
-  "/home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/ds4_driver/msg/Report.js"
 )
 
 # Per-language clean rules from dependency scanning.
