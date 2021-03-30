@@ -6,12 +6,14 @@
 #include <math.h>
 #include <cmath>
 #include <panthera_locomotion/Status.h>
+#include <geometry_msgs/PointStamped.h>
 
 class StateMachine
 {
 private:
 	ros::Subscriber check;
 	ros::Subscriber bot_pose;
+	ros::Subscriber goal;
 	ros::Publisher twist_pub;
 	ros::ServiceClient lb_stat, rb_stat, lf_stat, rf_stat;
 	int curr_state=1, prev_state=2;
@@ -30,16 +32,30 @@ private:
 	int n = 0;
 	bool operation = false;
 
+	// goal
+	bool reached_goal = true;
+	double goal_x, goal_y;
+	float goal_stop = 1;
+	bool goal_sent = false;
+
 public:
 	StateMachine(ros::NodeHandle *nh)
 	{	
 		bot_pose = nh->subscribe("/ndt_pose", 1000, &StateMachine::poseCheck, this);
 		check = nh->subscribe("check_cmap", 1000, &StateMachine::cmap_check, this);
+		goal = nh->subscribe("/clicked_point", 1000, &StateMachine::goal_location, this);
 		twist_pub = nh->advertise<geometry_msgs::Twist>("panthera_cmd", 100);
 		lb_stat = nh->serviceClient<panthera_locomotion::Status>("lb_steer_status");
 		rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
 		lf_stat = nh->serviceClient<panthera_locomotion::Status>("lf_steer_status");
 		rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
+	}
+
+	void goal_location(const geometry_msgs::PointStamped& msg)
+	{
+		goal_x = msg.point.x;
+		goal_y = msg.point.y;
+		goal_sent = true;
 	}
 
 	void check_steer()
@@ -78,30 +94,36 @@ public:
 			start_y = curr_y;
 			n++;
 		}
-
-		double dist = sqrt(pow(curr_x-start_x,2) + pow(curr_y-start_y, 2));
-		std::cout << dist << " " << curr_state << std::endl;
-		if (dist < step)
+		if (goal_check(curr_x,curr_y) == false && goal_sent == true)
 		{
-			finished_step = false;
+			double dist = sqrt(pow(curr_x-start_x,2) + pow(curr_y-start_y, 2));
+			std::cout << dist << " " << curr_state << std::endl;
+			if (dist < step)
+			{
+				finished_step = false;
+			}
+			else
+			{
+				finished_step = true;
+			}
+			
+			sm(curr_x, curr_y);
+
+			switch(curr_state)
+			{
+				case 1:
+					right();
+				case 2:
+					up();
+				case 3:
+					left();
+			}
 		}
 		else
-		{
-			finished_step = true;
+		{	
+			printf("No Goal\n");
+			stop();
 		}
-		
-		sm(curr_x, curr_y);
-
-		switch(curr_state)
-		{
-			case 1:
-				right();
-			case 2:
-				up();
-			case 3:
-				left();
-		}
-		
 	}
 
 	void cmap_check(const local_planner::CmapClear& msg)
@@ -209,6 +231,20 @@ public:
 		}
 	}
 
+	bool goal_check(double x, double y)
+	{
+		double dist = sqrt(pow(goal_x-x,2) + pow(goal_y-y, 2));
+		if (dist < goal_stop)
+		{
+			reached_goal = true;
+		}
+		else
+		{
+			reached_goal = false;
+		}
+		//std::cout << "reached goal: " << reached_goal << std::endl;
+		return reached_goal;
+	}
 
 
 	void right()
