@@ -2,11 +2,16 @@
 #include <local_planner/CmapClear.h>
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/Quaternion.h>
 #include <std_msgs/Float64.h>
 #include <math.h>
 #include <cmath>
 #include <panthera_locomotion/Status.h>
 #include <geometry_msgs/PointStamped.h>
+#include <tf/transform_datatypes.h>
+#include <tf/LinearMath/Matrix3x3.h>
+
+#define PI 3.14159265359
 
 class StateMachine
 {
@@ -14,11 +19,12 @@ private:
 	ros::Subscriber check;
 	ros::Subscriber bot_pose;
 	ros::Subscriber goal;
+	ros::Subscriber width_sub;
 	ros::Publisher twist_pub;
 	ros::ServiceClient lb_stat, rb_stat, lf_stat, rf_stat;
 	int curr_state=1, prev_state=2;
 
-	bool left_clear, right_clear, up_clear;
+	bool left_clear, right_clear, up_clear, radius_clear;
 
 	float step=0.5; // how far forward to move
 	double start_x=0, start_y=0, curr_x, curr_y;
@@ -28,6 +34,10 @@ private:
 
 	// speed
 	float vx = 0.1;
+	float wz = 0.5;
+
+	float width;
+	float length;
 
 	int n = 0;
 	bool operation = false;
@@ -35,29 +45,49 @@ private:
 	// goal
 	bool reached_goal = true;
 	double goal_x, goal_y;
-	float goal_stop = 1;
+	float goal_stop = 0.5;
 	bool goal_sent = false;
+	double goal_angle;
+
+	int rotation_not_clear = 0;
 
 public:
 	StateMachine(ros::NodeHandle *nh)
 	{	
 		bot_pose = nh->subscribe("/ndt_pose", 1000, &StateMachine::poseCheck, this);
 		check = nh->subscribe("check_cmap", 1000, &StateMachine::cmap_check, this);
-		goal = nh->subscribe("/clicked_point", 1000, &StateMachine::goal_location, this);
+		goal = nh->subscribe("/move_base_simple/goal", 1000, &StateMachine::goal_location, this);
+		width_sub = nh->subscribe("/can_encoder", 1000, &StateMachine::read_width, this);
 		twist_pub = nh->advertise<geometry_msgs::Twist>("panthera_cmd", 100);
 		lb_stat = nh->serviceClient<panthera_locomotion::Status>("lb_steer_status");
 		rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
 		lf_stat = nh->serviceClient<panthera_locomotion::Status>("lf_steer_status");
 		rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
+
+		length = nh->param("/robot_length", 1.5);
 	}
 
-	void goal_location(const geometry_msgs::PointStamped& msg)
+	// Wheel separation of robot
+	void read_width(const geometry_msgs::Twist& msg)
 	{
-		goal_x = msg.point.x;
-		goal_y = msg.point.y;
+		width = (msg.angular.y + msg.angular.z)/2;
+	}
+
+	// Subscribe goal location
+	void goal_location(const geometry_msgs::PoseStamped& msg)
+	{	
+		goal_x = msg.pose.position.x;
+		goal_y = msg.pose.position.y;
+		geometry_msgs::Quaternion goal_wz = msg.pose.orientation;
+		tf::Quaternion quat;
+		tf::quaternionMsgToTF(goal_wz, quat);
+		double roll, pitch, yaw;
+    	tf::Matrix3x3(quat).getRPY(roll, pitch, yaw);
+    	goal_angle = yaw;
 		goal_sent = true;
 	}
 
+	// Check if wheels have adjusted to correct angle
 	void check_steer()
 	{
 		if (operation == true)
@@ -83,11 +113,20 @@ public:
 		else{}
 
 	}
-
+	
+	// Robot pose subscriber
 	void poseCheck(const geometry_msgs::PoseStamped& msg)
 	{
 		curr_x = msg.pose.position.x;
 		curr_y = msg.pose.position.y;
+		geometry_msgs::Quaternion curr_q = msg.pose.orientation;
+		tf::Quaternion quat;
+		tf::quaternionMsgToTF(curr_q, quat);
+		double roll, pitch, yaw;
+    	tf::Matrix3x3(quat).getRPY(roll, pitch, yaw);
+    	double curr_wz = yaw;
+		
+		// init start_x and start_y to calculate forward distance travelled
 		if (n == 0)
 		{
 			start_x = curr_x;
@@ -121,18 +160,46 @@ public:
 		}
 		else
 		{	
-			printf("No Goal\n");
-			stop();
+			if (goal_orientation(curr_wz) == true)
+			{
+				stop();
+				curr_state = 1;
+				prev_state = 2;
+				goal_sent = false;
+			}
+			else
+			{	
+				stop();
+				if (rotation_not_clear <= 10)
+				{
+					std::cout << "rotation not clear" << std::endl;
+					rotation_not_clear++;
+					ros::Rate rate(1);
+					rate.sleep()
+				}
+				else
+				{
+					std::cout << "Unable to rotate error" << std::endl;
+					goal_sent = false;
+				}
+			}
 		}
 	}
 
+	// Check costmap if clear to move left/right/up/rotate
 	void cmap_check(const local_planner::CmapClear& msg)
 	{
 		right_clear = msg.right;
 		left_clear = msg.left;
 		up_clear = msg.up;
+		radius_clear = msg.radius;
 	}
 
+	/** State machine: 
+		- State 1: moving right
+		- State 2: moving up
+		- State 3: moving left
+	**/
 	void sm(double x, double y)
 	{	
 		// moving right
@@ -231,6 +298,7 @@ public:
 		}
 	}
 
+	// Check if robot has reached goal
 	bool goal_check(double x, double y)
 	{
 		double dist = sqrt(pow(goal_x-x,2) + pow(goal_y-y, 2));
@@ -246,6 +314,86 @@ public:
 		return reached_goal;
 	}
 
+	///////////////// Orientate robot to desired goal pose ///////////////////////////
+	bool goal_orientation(double wz)
+	{
+		if (std::abs(std::abs(wz) - std::abs(goal_angle)) > (5/180*PI))
+		{	
+			if (radius_clear == true)
+			{
+				if (wz >= 0)
+				{
+					if (goal_angle >= wz-PI && goal_angle <= wz)
+					{
+						rotate_right();
+					}
+					else
+					{
+						rotate_left();
+					}
+				}
+				else
+				{
+					if (goal_angle <= wz+PI && goal_angle >= wz)
+					{
+						rotate_left();
+					}
+					else
+					{
+						rotate_right();
+					}
+				}
+				return false;
+			}
+			else
+			{
+				stop();
+				return false;
+			}
+		}
+		else
+		{
+			stop();
+			return true;
+		}
+	}
+
+	////////////////// Calculate wheel angle ////////////////////////////
+	double rad_to_deg(double rad)
+	{
+		double deg = (rad/PI) * 180;
+
+		return deg;
+	}
+
+	struct Angles
+	{
+		double lb, rb, lf, rf;
+	};
+
+	auto adjust_wheels(double vx, double wz)
+	{	
+		double width = width;
+		Angles ang;
+		double radius = 0.0;
+
+		if(wz == 0){
+			radius = std::numeric_limits<double>::infinity();
+		}else{
+			radius = vx/wz;
+		}
+
+		double left = radius - width/2;
+		double right = radius + width/2;
+
+		ang.lf = rad_to_deg(atan(length*0.5/left));
+		ang.rf = rad_to_deg(atan(length*0.5/right));
+		ang.lb = -ang.lf;
+		ang.rb = -ang.rf;
+
+		return ang;
+	}
+	//////////////// Velocity Commands ///////////////////////////
 
 	void right()
 	{
@@ -297,6 +445,40 @@ public:
 	{
 		auto* ts = &twist_msg;
 		ts->angular.y = 0;
+		twist_pub.publish(*ts);
+	}
+
+	void rotate_right()
+	{
+		Angles a = adjust_wheels(0, -wz);
+		auto* ts = &twist_msg;
+		ts->linear.x = a.lb;
+		ts->linear.y = a.rb;
+		ts->linear.z = a.lf;
+		ts->angular.x = a.rf;
+		ts->angular.y = 0;
+		ts->angular.z = 0;
+
+		check_steer();
+
+		ts->angular.z = -wz;
+		twist_pub.publish(*ts);
+	}
+
+	void rotate_left()
+	{
+		Angles a = adjust_wheels(0, wz);
+		auto* ts = &twist_msg;
+		ts->linear.x = a.lb;
+		ts->linear.y = a.rb;
+		ts->linear.z = a.lf;
+		ts->angular.x = a.rf;
+		ts->angular.y = 0;
+		ts->angular.z = 0;
+
+		check_steer();
+
+		ts->angular.z = wz;
 		twist_pub.publish(*ts);
 	}
 
