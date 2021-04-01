@@ -5,4 +5,6 @@
           UP
           LEFT-VAL
           LEFT
+          RADIUS-VAL
+          RADIUS
 ))

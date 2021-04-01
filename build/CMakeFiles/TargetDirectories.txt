@@ -76,6 +76,7 @@
 /home/sutd/encoder_publisher_ws/build/local_planner/CMakeFiles/edit_cache.dir
 /home/sutd/encoder_publisher_ws/build/local_planner/CMakeFiles/test.dir
 /home/sutd/encoder_publisher_ws/build/local_planner/CMakeFiles/twist_pub_node.dir
+/home/sutd/encoder_publisher_ws/build/local_planner/CMakeFiles/costmap_clear_node.dir
 /home/sutd/encoder_publisher_ws/build/local_planner/CMakeFiles/local_planner_genpy.dir
 /home/sutd/encoder_publisher_ws/build/local_planner/CMakeFiles/local_planner_node.dir
 /home/sutd/encoder_publisher_ws/build/local_planner/CMakeFiles/local_planner_generate_messages_py.dir

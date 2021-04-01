@@ -21,6 +21,7 @@ class CmapClear {
       this.right = null;
       this.up = null;
       this.left = null;
+      this.radius = null;
     }
     else {
       if (initObj.hasOwnProperty('right')) {
@@ -41,6 +42,12 @@ class CmapClear {
       else {
         this.left = false;
       }
+      if (initObj.hasOwnProperty('radius')) {
+        this.radius = initObj.radius
+      }
+      else {
+        this.radius = false;
+      }
     }
   }
 
@@ -52,6 +59,8 @@ class CmapClear {
     bufferOffset = _serializer.bool(obj.up, buffer, bufferOffset);
     // Serialize message field [left]
     bufferOffset = _serializer.bool(obj.left, buffer, bufferOffset);
+    // Serialize message field [radius]
+    bufferOffset = _serializer.bool(obj.radius, buffer, bufferOffset);
     return bufferOffset;
   }
 
@@ -65,11 +74,13 @@ class CmapClear {
     data.up = _deserializer.bool(buffer, bufferOffset);
     // Deserialize message field [left]
     data.left = _deserializer.bool(buffer, bufferOffset);
+    // Deserialize message field [radius]
+    data.radius = _deserializer.bool(buffer, bufferOffset);
     return data;
   }
 
   static getMessageSize(object) {
-    return 3;
+    return 4;
   }
 
   static datatype() {
@@ -79,7 +90,7 @@ class CmapClear {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return 'd5d3676c50ca21d6bdbb6d3621aefaac';
+    return 'cbf4adf768e3f3ee806b11da1ab4d21f';
   }
 
   static messageDefinition() {
@@ -88,6 +99,7 @@ class CmapClear {
     bool right
     bool up
     bool left
+    bool radius
     
     `;
   }
@@ -117,6 +129,13 @@ class CmapClear {
     }
     else {
       resolved.left = false
+    }
+
+    if (msg.radius !== undefined) {
+      resolved.radius = msg.radius;
+    }
+    else {
+      resolved.radius = false
     }
 
     return resolved;

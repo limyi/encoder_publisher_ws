@@ -590,6 +590,19 @@ twist_pub_node/fast:
 .PHONY : twist_pub_node/fast
 
 #=============================================================================
+# Target rules for targets named costmap_clear_node
+
+# Build rule for target.
+costmap_clear_node: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 costmap_clear_node
+.PHONY : costmap_clear_node
+
+# fast build rule for target.
+costmap_clear_node/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/costmap_clear_node.dir/build.make local_planner/CMakeFiles/costmap_clear_node.dir/build
+.PHONY : costmap_clear_node/fast
+
+#=============================================================================
 # Target rules for targets named local_planner_genpy
 
 # Build rule for target.
@@ -1774,6 +1787,7 @@ help:
 	@echo "... tf_generate_messages_nodejs"
 	@echo "... tf_generate_messages_py"
 	@echo "... can_encoder_pub_node"
+	@echo "... costmap_clear_node"
 	@echo "... gmock"
 	@echo "... gmock_main"
 	@echo "... gtest"

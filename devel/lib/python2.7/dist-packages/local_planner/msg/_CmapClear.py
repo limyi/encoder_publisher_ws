@@ -8,15 +8,16 @@ import struct
 
 
 class CmapClear(genpy.Message):
-  _md5sum = "d5d3676c50ca21d6bdbb6d3621aefaac"
+  _md5sum = "cbf4adf768e3f3ee806b11da1ab4d21f"
   _type = "local_planner/CmapClear"
   _has_header = False  # flag to mark the presence of a Header object
   _full_text = """bool right
 bool up
 bool left
+bool radius
 """
-  __slots__ = ['right','up','left']
-  _slot_types = ['bool','bool','bool']
+  __slots__ = ['right','up','left','radius']
+  _slot_types = ['bool','bool','bool','bool']
 
   def __init__(self, *args, **kwds):
     """
@@ -26,7 +27,7 @@ bool left
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       right,up,left
+       right,up,left,radius
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -41,10 +42,13 @@ bool left
         self.up = False
       if self.left is None:
         self.left = False
+      if self.radius is None:
+        self.radius = False
     else:
       self.right = False
       self.up = False
       self.left = False
+      self.radius = False
 
   def _get_types(self):
     """
@@ -59,7 +63,7 @@ bool left
     """
     try:
       _x = self
-      buff.write(_get_struct_3B().pack(_x.right, _x.up, _x.left))
+      buff.write(_get_struct_4B().pack(_x.right, _x.up, _x.left, _x.radius))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -73,11 +77,12 @@ bool left
       end = 0
       _x = self
       start = end
-      end += 3
-      (_x.right, _x.up, _x.left,) = _get_struct_3B().unpack(str[start:end])
+      end += 4
+      (_x.right, _x.up, _x.left, _x.radius,) = _get_struct_4B().unpack(str[start:end])
       self.right = bool(self.right)
       self.up = bool(self.up)
       self.left = bool(self.left)
+      self.radius = bool(self.radius)
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e)  # most likely buffer underfill
@@ -91,7 +96,7 @@ bool left
     """
     try:
       _x = self
-      buff.write(_get_struct_3B().pack(_x.right, _x.up, _x.left))
+      buff.write(_get_struct_4B().pack(_x.right, _x.up, _x.left, _x.radius))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -106,11 +111,12 @@ bool left
       end = 0
       _x = self
       start = end
-      end += 3
-      (_x.right, _x.up, _x.left,) = _get_struct_3B().unpack(str[start:end])
+      end += 4
+      (_x.right, _x.up, _x.left, _x.radius,) = _get_struct_4B().unpack(str[start:end])
       self.right = bool(self.right)
       self.up = bool(self.up)
       self.left = bool(self.left)
+      self.radius = bool(self.radius)
       return self
     except struct.error as e:
       raise genpy.DeserializationError(e)  # most likely buffer underfill
@@ -119,9 +125,9 @@ _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
-_struct_3B = None
-def _get_struct_3B():
-    global _struct_3B
-    if _struct_3B is None:
-        _struct_3B = struct.Struct("<3B")
-    return _struct_3B
+_struct_4B = None
+def _get_struct_4B():
+    global _struct_4B
+    if _struct_4B is None:
+        _struct_4B = struct.Struct("<4B")
+    return _struct_4B

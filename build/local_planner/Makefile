@@ -202,6 +202,21 @@ twist_pub_node/fast:
 .PHONY : twist_pub_node/fast
 
 # Convenience name for target.
+local_planner/CMakeFiles/costmap_clear_node.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/costmap_clear_node.dir/rule
+.PHONY : local_planner/CMakeFiles/costmap_clear_node.dir/rule
+
+# Convenience name for target.
+costmap_clear_node: local_planner/CMakeFiles/costmap_clear_node.dir/rule
+
+.PHONY : costmap_clear_node
+
+# fast build rule for target.
+costmap_clear_node/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/costmap_clear_node.dir/build.make local_planner/CMakeFiles/costmap_clear_node.dir/build
+.PHONY : costmap_clear_node/fast
+
+# Convenience name for target.
 local_planner/CMakeFiles/local_planner_genpy.dir/rule:
 	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_genpy.dir/rule
 .PHONY : local_planner/CMakeFiles/local_planner_genpy.dir/rule
@@ -621,32 +636,59 @@ local_planner_generate_messages_cpp/fast:
 	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build
 .PHONY : local_planner_generate_messages_cpp/fast
 
-src/l_plan.o: src/l_plan.cpp.o
+src/costmap_clear.o: src/costmap_clear.cpp.o
 
-.PHONY : src/l_plan.o
+.PHONY : src/costmap_clear.o
 
 # target to build an object file
-src/l_plan.cpp.o:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_node.dir/build.make local_planner/CMakeFiles/local_planner_node.dir/src/l_plan.cpp.o
-.PHONY : src/l_plan.cpp.o
+src/costmap_clear.cpp.o:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/costmap_clear_node.dir/build.make local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.o
+.PHONY : src/costmap_clear.cpp.o
 
-src/l_plan.i: src/l_plan.cpp.i
+src/costmap_clear.i: src/costmap_clear.cpp.i
 
-.PHONY : src/l_plan.i
+.PHONY : src/costmap_clear.i
 
 # target to preprocess a source file
-src/l_plan.cpp.i:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_node.dir/build.make local_planner/CMakeFiles/local_planner_node.dir/src/l_plan.cpp.i
-.PHONY : src/l_plan.cpp.i
+src/costmap_clear.cpp.i:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/costmap_clear_node.dir/build.make local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.i
+.PHONY : src/costmap_clear.cpp.i
 
-src/l_plan.s: src/l_plan.cpp.s
+src/costmap_clear.s: src/costmap_clear.cpp.s
 
-.PHONY : src/l_plan.s
+.PHONY : src/costmap_clear.s
 
 # target to generate assembly for a file
-src/l_plan.cpp.s:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_node.dir/build.make local_planner/CMakeFiles/local_planner_node.dir/src/l_plan.cpp.s
-.PHONY : src/l_plan.cpp.s
+src/costmap_clear.cpp.s:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/costmap_clear_node.dir/build.make local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.s
+.PHONY : src/costmap_clear.cpp.s
+
+src/local_planner.o: src/local_planner.cpp.o
+
+.PHONY : src/local_planner.o
+
+# target to build an object file
+src/local_planner.cpp.o:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_node.dir/build.make local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o
+.PHONY : src/local_planner.cpp.o
+
+src/local_planner.i: src/local_planner.cpp.i
+
+.PHONY : src/local_planner.i
+
+# target to preprocess a source file
+src/local_planner.cpp.i:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_node.dir/build.make local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.i
+.PHONY : src/local_planner.cpp.i
+
+src/local_planner.s: src/local_planner.cpp.s
+
+.PHONY : src/local_planner.s
+
+# target to generate assembly for a file
+src/local_planner.cpp.s:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_node.dir/build.make local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.s
+.PHONY : src/local_planner.cpp.s
 
 src/twist_pub_node.o: src/twist_pub_node.cpp.o
 
@@ -715,11 +757,15 @@ help:
 	@echo "... nav_msgs_generate_messages_lisp"
 	@echo "... nav_msgs_generate_messages_nodejs"
 	@echo "... nav_msgs_generate_messages_py"
+	@echo "... costmap_clear_node"
 	@echo "... local_planner_node"
 	@echo "... twist_pub_node"
-	@echo "... src/l_plan.o"
-	@echo "... src/l_plan.i"
-	@echo "... src/l_plan.s"
+	@echo "... src/costmap_clear.o"
+	@echo "... src/costmap_clear.i"
+	@echo "... src/costmap_clear.s"
+	@echo "... src/local_planner.o"
+	@echo "... src/local_planner.i"
+	@echo "... src/local_planner.s"
 	@echo "... src/twist_pub_node.o"
 	@echo "... src/twist_pub_node.i"
 	@echo "... src/twist_pub_node.s"

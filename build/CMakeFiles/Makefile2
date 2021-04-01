@@ -265,6 +265,7 @@ key_command_pub/clean:
 
 # Recursive "all" directory target.
 local_planner/all: local_planner/CMakeFiles/twist_pub_node.dir/all
+local_planner/all: local_planner/CMakeFiles/costmap_clear_node.dir/all
 local_planner/all: local_planner/CMakeFiles/local_planner_node.dir/all
 local_planner/all: local_planner/CMakeFiles/local_planner_generate_messages.dir/all
 
@@ -277,6 +278,7 @@ local_planner/preinstall:
 
 # Recursive "clean" directory target.
 local_planner/clean: local_planner/CMakeFiles/twist_pub_node.dir/clean
+local_planner/clean: local_planner/CMakeFiles/costmap_clear_node.dir/clean
 local_planner/clean: local_planner/CMakeFiles/local_planner_genpy.dir/clean
 local_planner/clean: local_planner/CMakeFiles/local_planner_node.dir/clean
 local_planner/clean: local_planner/CMakeFiles/local_planner_generate_messages_py.dir/clean
@@ -518,7 +520,7 @@ CMakeFiles/doxygen.dir/clean:
 gtest/googlemock/CMakeFiles/gmock_main.dir/all:
 	$(MAKE) $(MAKESILENT) -f gtest/googlemock/CMakeFiles/gmock_main.dir/build.make gtest/googlemock/CMakeFiles/gmock_main.dir/depend
 	$(MAKE) $(MAKESILENT) -f gtest/googlemock/CMakeFiles/gmock_main.dir/build.make gtest/googlemock/CMakeFiles/gmock_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=28,29,30,31 "Built target gmock_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=30,31,32,33 "Built target gmock_main"
 .PHONY : gtest/googlemock/CMakeFiles/gmock_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -545,7 +547,7 @@ gtest/googlemock/CMakeFiles/gmock_main.dir/clean:
 gtest/googlemock/CMakeFiles/gmock.dir/all:
 	$(MAKE) $(MAKESILENT) -f gtest/googlemock/CMakeFiles/gmock.dir/build.make gtest/googlemock/CMakeFiles/gmock.dir/depend
 	$(MAKE) $(MAKESILENT) -f gtest/googlemock/CMakeFiles/gmock.dir/build.make gtest/googlemock/CMakeFiles/gmock.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=25,26,27 "Built target gmock"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=27,28,29 "Built target gmock"
 .PHONY : gtest/googlemock/CMakeFiles/gmock.dir/all
 
 # Build rule for subdir invocation for target.
@@ -572,7 +574,7 @@ gtest/googlemock/CMakeFiles/gmock.dir/clean:
 gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/all: gtest/googlemock/gtest/CMakeFiles/gtest.dir/all
 	$(MAKE) $(MAKESILENT) -f gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/depend
 	$(MAKE) $(MAKESILENT) -f gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=34,35 "Built target gtest_main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=36,37 "Built target gtest_main"
 .PHONY : gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/all
 
 # Build rule for subdir invocation for target.
@@ -599,7 +601,7 @@ gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/clean:
 gtest/googlemock/gtest/CMakeFiles/gtest.dir/all:
 	$(MAKE) $(MAKESILENT) -f gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make gtest/googlemock/gtest/CMakeFiles/gtest.dir/depend
 	$(MAKE) $(MAKESILENT) -f gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make gtest/googlemock/gtest/CMakeFiles/gtest.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=32,33 "Built target gtest"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=34,35 "Built target gtest"
 .PHONY : gtest/googlemock/gtest/CMakeFiles/gtest.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1251,7 +1253,7 @@ local_planner/CMakeFiles/twist_pub_node.dir/all: local_planner/CMakeFiles/grid_m
 local_planner/CMakeFiles/twist_pub_node.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/all
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/twist_pub_node.dir/build.make local_planner/CMakeFiles/twist_pub_node.dir/depend
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/twist_pub_node.dir/build.make local_planner/CMakeFiles/twist_pub_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=54,55 "Built target twist_pub_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=56,57 "Built target twist_pub_node"
 .PHONY : local_planner/CMakeFiles/twist_pub_node.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1270,6 +1272,72 @@ twist_pub_node: local_planner/CMakeFiles/twist_pub_node.dir/rule
 local_planner/CMakeFiles/twist_pub_node.dir/clean:
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/twist_pub_node.dir/build.make local_planner/CMakeFiles/twist_pub_node.dir/clean
 .PHONY : local_planner/CMakeFiles/twist_pub_node.dir/clean
+
+#=============================================================================
+# Target rules for target local_planner/CMakeFiles/costmap_clear_node.dir
+
+# All Build rule for target.
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/std_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/roscpp_generate_messages_py.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/roscpp_generate_messages_eus.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/roscpp_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/roscpp_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/std_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_py.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/costmap_clear_node.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/all
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/costmap_clear_node.dir/build.make local_planner/CMakeFiles/costmap_clear_node.dir/depend
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/costmap_clear_node.dir/build.make local_planner/CMakeFiles/costmap_clear_node.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=3,4 "Built target costmap_clear_node"
+.PHONY : local_planner/CMakeFiles/costmap_clear_node.dir/all
+
+# Build rule for subdir invocation for target.
+local_planner/CMakeFiles/costmap_clear_node.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sutd/encoder_publisher_ws/build/CMakeFiles 9
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/costmap_clear_node.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/sutd/encoder_publisher_ws/build/CMakeFiles 0
+.PHONY : local_planner/CMakeFiles/costmap_clear_node.dir/rule
+
+# Convenience name for target.
+costmap_clear_node: local_planner/CMakeFiles/costmap_clear_node.dir/rule
+
+.PHONY : costmap_clear_node
+
+# clean rule for target.
+local_planner/CMakeFiles/costmap_clear_node.dir/clean:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/costmap_clear_node.dir/build.make local_planner/CMakeFiles/costmap_clear_node.dir/clean
+.PHONY : local_planner/CMakeFiles/costmap_clear_node.dir/clean
 
 #=============================================================================
 # Target rules for target local_planner/CMakeFiles/local_planner_genpy.dir
@@ -1344,7 +1412,7 @@ local_planner/CMakeFiles/local_planner_node.dir/all: local_planner/CMakeFiles/gr
 local_planner/CMakeFiles/local_planner_node.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/all
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_node.dir/build.make local_planner/CMakeFiles/local_planner_node.dir/depend
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_node.dir/build.make local_planner/CMakeFiles/local_planner_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=43,44 "Built target local_planner_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=45,46 "Built target local_planner_node"
 .PHONY : local_planner/CMakeFiles/local_planner_node.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1374,7 +1442,7 @@ local_planner/CMakeFiles/local_planner_generate_messages_py.dir/all: local_plann
 local_planner/CMakeFiles/local_planner_generate_messages_py.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_py.dir/all
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_py.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_py.dir/depend
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_py.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=41,42 "Built target local_planner_generate_messages_py"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=43,44 "Built target local_planner_generate_messages_py"
 .PHONY : local_planner/CMakeFiles/local_planner_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1512,7 +1580,7 @@ local_planner/CMakeFiles/local_planner_generate_messages_lisp.dir/all: local_pla
 local_planner/CMakeFiles/local_planner_generate_messages_lisp.dir/all: local_planner/CMakeFiles/_local_planner_generate_messages_check_deps_CmapClear.dir/all
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_lisp.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_lisp.dir/depend
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_lisp.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=39 "Built target local_planner_generate_messages_lisp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=41 "Built target local_planner_generate_messages_lisp"
 .PHONY : local_planner/CMakeFiles/local_planner_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -1978,7 +2046,7 @@ local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/all: local_p
 local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/all: local_planner/CMakeFiles/_local_planner_generate_messages_check_deps_CmapClear.dir/all
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/depend
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=40 "Built target local_planner_generate_messages_nodejs"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=42 "Built target local_planner_generate_messages_nodejs"
 .PHONY : local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2008,7 +2076,7 @@ local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/all: local_plan
 local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/all: local_planner/CMakeFiles/_local_planner_generate_messages_check_deps_CmapClear.dir/all
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/depend
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=37,38 "Built target local_planner_generate_messages_eus"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=39,40 "Built target local_planner_generate_messages_eus"
 .PHONY : local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2065,7 +2133,7 @@ local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/all: local_plan
 local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_cpp.dir/all
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/depend
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=36 "Built target local_planner_generate_messages_cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=38 "Built target local_planner_generate_messages_cpp"
 .PHONY : local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2155,7 +2223,7 @@ ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/all: ds4_driver/CMake
 ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/all: ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Trackpad.dir/all
 	$(MAKE) $(MAKESILENT) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/depend
 	$(MAKE) $(MAKESILENT) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=3,4,5,6 "Built target ds4_driver_generate_messages_cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=5,6,7,8 "Built target ds4_driver_generate_messages_cpp"
 .PHONY : ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2322,7 +2390,7 @@ ds4_driver/CMakeFiles/ds4_driver_generate_messages_eus.dir/all: ds4_driver/CMake
 ds4_driver/CMakeFiles/ds4_driver_generate_messages_eus.dir/all: ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Trackpad.dir/all
 	$(MAKE) $(MAKESILENT) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_eus.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_eus.dir/depend
 	$(MAKE) $(MAKESILENT) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_eus.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=7,8,9,10,11 "Built target ds4_driver_generate_messages_eus"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=9,10,11,12,13 "Built target ds4_driver_generate_messages_eus"
 .PHONY : ds4_driver/CMakeFiles/ds4_driver_generate_messages_eus.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2354,7 +2422,7 @@ ds4_driver/CMakeFiles/ds4_driver_generate_messages_lisp.dir/all: ds4_driver/CMak
 ds4_driver/CMakeFiles/ds4_driver_generate_messages_lisp.dir/all: ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Trackpad.dir/all
 	$(MAKE) $(MAKESILENT) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_lisp.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_lisp.dir/depend
 	$(MAKE) $(MAKESILENT) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_lisp.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=12,13,14,15 "Built target ds4_driver_generate_messages_lisp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=14,15,16,17 "Built target ds4_driver_generate_messages_lisp"
 .PHONY : ds4_driver/CMakeFiles/ds4_driver_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2440,7 +2508,7 @@ ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/all: ds4_driver/CM
 ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/all: ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Trackpad.dir/all
 	$(MAKE) $(MAKESILENT) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/depend
 	$(MAKE) $(MAKESILENT) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=16,17,18,19 "Built target ds4_driver_generate_messages_nodejs"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=18,19,20,21 "Built target ds4_driver_generate_messages_nodejs"
 .PHONY : ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/all
 
 # Build rule for subdir invocation for target.
@@ -2634,7 +2702,7 @@ ds4_driver/CMakeFiles/ds4_driver_generate_messages_py.dir/all: ds4_driver/CMakeF
 ds4_driver/CMakeFiles/ds4_driver_generate_messages_py.dir/all: ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Trackpad.dir/all
 	$(MAKE) $(MAKESILENT) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_py.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_py.dir/depend
 	$(MAKE) $(MAKESILENT) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_py.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=20,21,22,23,24 "Built target ds4_driver_generate_messages_py"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=22,23,24,25,26 "Built target ds4_driver_generate_messages_py"
 .PHONY : ds4_driver/CMakeFiles/ds4_driver_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3096,7 +3164,7 @@ panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_eus.dir/all
 panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_eus.dir/all: panthera_locomotion/CMakeFiles/std_srvs_generate_messages_eus.dir/all
 	$(MAKE) $(MAKESILENT) -f panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_eus.dir/build.make panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_eus.dir/depend
 	$(MAKE) $(MAKESILENT) -f panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_eus.dir/build.make panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=46,47 "Built target panthera_locomotion_generate_messages_eus"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=48,49 "Built target panthera_locomotion_generate_messages_eus"
 .PHONY : panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_eus.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3153,7 +3221,7 @@ panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_lisp.dir/al
 panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_lisp.dir/all: panthera_locomotion/CMakeFiles/std_srvs_generate_messages_lisp.dir/all
 	$(MAKE) $(MAKESILENT) -f panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_lisp.dir/build.make panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_lisp.dir/depend
 	$(MAKE) $(MAKESILENT) -f panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_lisp.dir/build.make panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=48 "Built target panthera_locomotion_generate_messages_lisp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=50 "Built target panthera_locomotion_generate_messages_lisp"
 .PHONY : panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3183,7 +3251,7 @@ panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_nodejs.dir/
 panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_nodejs.dir/all: panthera_locomotion/CMakeFiles/_panthera_locomotion_generate_messages_check_deps_Status.dir/all
 	$(MAKE) $(MAKESILENT) -f panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_nodejs.dir/build.make panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_nodejs.dir/depend
 	$(MAKE) $(MAKESILENT) -f panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_nodejs.dir/build.make panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_nodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=49 "Built target panthera_locomotion_generate_messages_nodejs"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=51 "Built target panthera_locomotion_generate_messages_nodejs"
 .PHONY : panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_nodejs.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3267,7 +3335,7 @@ panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_cpp.dir/all
 panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_cpp.dir/all: panthera_locomotion/CMakeFiles/std_srvs_generate_messages_cpp.dir/all
 	$(MAKE) $(MAKESILENT) -f panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_cpp.dir/build.make panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_cpp.dir/depend
 	$(MAKE) $(MAKESILENT) -f panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_cpp.dir/build.make panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=45 "Built target panthera_locomotion_generate_messages_cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=47 "Built target panthera_locomotion_generate_messages_cpp"
 .PHONY : panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3544,7 +3612,7 @@ panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_py.dir/all:
 panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_py.dir/all: panthera_locomotion/CMakeFiles/std_srvs_generate_messages_py.dir/all
 	$(MAKE) $(MAKESILENT) -f panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_py.dir/build.make panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_py.dir/depend
 	$(MAKE) $(MAKESILENT) -f panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_py.dir/build.make panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=50,51 "Built target panthera_locomotion_generate_messages_py"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=52,53 "Built target panthera_locomotion_generate_messages_py"
 .PHONY : panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
@@ -3625,7 +3693,7 @@ panthera_locomotion/CMakeFiles/panthera_twist_node.dir/all: panthera_locomotion/
 panthera_locomotion/CMakeFiles/panthera_twist_node.dir/all: panthera_locomotion/CMakeFiles/std_srvs_generate_messages_cpp.dir/all
 	$(MAKE) $(MAKESILENT) -f panthera_locomotion/CMakeFiles/panthera_twist_node.dir/build.make panthera_locomotion/CMakeFiles/panthera_twist_node.dir/depend
 	$(MAKE) $(MAKESILENT) -f panthera_locomotion/CMakeFiles/panthera_twist_node.dir/build.make panthera_locomotion/CMakeFiles/panthera_twist_node.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=52,53 "Built target panthera_twist_node"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=54,55 "Built target panthera_twist_node"
 .PHONY : panthera_locomotion/CMakeFiles/panthera_twist_node.dir/all
 
 # Build rule for subdir invocation for target.

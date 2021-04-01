@@ -41,13 +41,16 @@ class Robot
 		// Footprint info
 		double length, width;
 		std::array<int,2> left_back, left_front, right_back, right_front;
+		float offset_x=-0.27, offset_y=0;
 
 		float safety_dist;
 		int buffer; // number of squares safety distance
 		int clear_tolerance;
+		float clear_radius;
 
 		// search area
 		int l1,l2,l3,l4,r1,r2,r3,r4,f1,f2,f3,f4;
+		std::vector<int> radial_area;
 
 		// Map info
 		int len_x, len_y;
@@ -68,6 +71,7 @@ class Robot
 			width = nh->param("/robot_width", 0.5);
 			safety_dist = nh->param("/safety_dist", 0.5);
 			clear_tolerance = nh->param("/clear_tolerance", 1);
+			clear_radius = nh->param("/clear_radius", 1.0);
 		}
 
 		void mapCallback(const nav_msgs::OccupancyGrid& msg)
@@ -82,8 +86,6 @@ class Robot
 			}
 			std::vector<signed char> data_pts = msg.data;
 			checkclear(data_pts);
-			
-
 		}
 
 		void searchArea()
@@ -105,6 +107,7 @@ class Robot
 			f2 = right_front[0] + buffer + (right_front[1] - buffer) * len_x;
 			f3 = left_front[0] + (left_front[1] + buffer) * len_x;
 			f4 = left_front[0] + buffer + (left_front[1] + buffer) * len_x;
+
 			/**
 			std::cout << l1 << ' ' << l2 << ' ' << l3 << ' ' << l4 << std::endl;
 			std::cout << r1 << ' ' << r2 << ' ' << r3 << ' ' << r4 << std::endl;
@@ -115,8 +118,8 @@ class Robot
 		void fpCoordinates()
 		{
 			float centre[2];
-			centre[0] = len_x/2;
-			centre[1] = len_y/2;
+			centre[0] = len_x/2 + offset_x;
+			centre[1] = len_y/2 + offset_y;
 
 			float horz_dist = width/2; // x axis robot width
 			float vert_dist = length/2; // y axis robot length
@@ -137,6 +140,8 @@ class Robot
 			right_front[0] = (int)ceil(centre[0] + vert_pix);
 			right_front[1] = (int)ceil(centre[1] - horz_pix);
 
+			set_radial_area(centre);
+
 			searchArea();
 
 			//printf("footprinted\n");
@@ -150,10 +155,37 @@ class Robot
 			**/
 		}
 
+		bool radius_clearing(int index, float centre[2])
+		{
+			int coor[2];
+			if (index <= len_x)
+			{
+				coor[0] = index;
+			}
+			else
+			{
+				coor[0] = (int)(index/len_y);
+				coor[1] = (int)(index/len_x);
+			}
+			double dist = sqrt(pow(coor[0]-centre[0],2) + pow(coor[1]-centre[1], 2));
+			return (dist > clear_radius);
+		}
+
+		void set_radial_area(float c[2])
+		{
+			for (int i=0; i <= len_x*len_y; i++)
+			{
+				if (radius_clearing(i, c) == false)
+				{
+					radial_area.push_back(i);
+				}
+			}
+		}
+
 		void checkclear(std::vector<signed char> cmap)
 		{	
 
-			bool left_clear=true, right_clear=true, up_clear=true;
+			bool left_clear=true, right_clear=true, up_clear=true, radius_clear=true;
 			// left clear
 			int l=0, r=0,u=0;
 			for (int i = l1; i <= l3; i+=len_x)
@@ -194,7 +226,7 @@ class Robot
 			endright:
 
 			// up clear
-			for (int i = f1; i <= f2; i+=len_x)
+			for (int i = f1; i <= f3; i+=len_x)
 			{
 				for (int j = i; j <= i + (f2-f1); j++)
 				{
@@ -210,20 +242,31 @@ class Robot
 				}
 			}
 			endup:
+
+			for (int i : radial_area)
+			{
+				if (cmap[i] > 0)
+				{
+					radius_clear = false;
+					goto endradius;
+				}
+			}
+			endradius:
 			
-			std::cout << l << " " << r << " " << u << std::endl;
+			//std::cout << l << " " << r << " " << u << std::endl;
 			auto* bl = &bools;
 			bl->right = right_clear;
 			bl->left = left_clear;
 			bl->up = up_clear;
+			bl->radius = radius_clear;
 			cmap_clear.publish(*bl);
-			std::cout << *bl << std::endl;
+			//std::cout << *bl << std::endl;
 		}
 };
 
 int main(int argc, char **argv)
 {
-	ros::init(argc, argv, "local_planner_node");
+	ros::init(argc, argv, "costmap_clear_node");
 	ros::NodeHandle nh;
 
 	Robot Panthera = Robot(&nh);

@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(local_planner_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/sutd/encoder_publisher_ws/devel/include " STREQUAL " ")
+if(NOT "/home/sutd/encoder_publisher_ws/devel/include;/home/sutd/encoder_publisher_ws/src/local_planner/include " STREQUAL " ")
   set(local_planner_INCLUDE_DIRS "")
-  set(_include_dirs "/home/sutd/encoder_publisher_ws/devel/include")
+  set(_include_dirs "/home/sutd/encoder_publisher_ws/devel/include;/home/sutd/encoder_publisher_ws/src/local_planner/include")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT " " STREQUAL " ")
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/sutd/encoder_publisher_ws/devel/lib;/home/sutd/global_planner_ws/devel/lib;/opt/ros/melodic/lib)
+    foreach(path /home/sutd/encoder_publisher_ws/devel/lib;/home/sutd/encoder_publisher_ws/devel/lib;/home/sutd/global_planner_ws/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

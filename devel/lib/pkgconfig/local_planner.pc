@@ -3,6 +3,6 @@ prefix=/home/sutd/encoder_publisher_ws/devel
 Name: local_planner
 Description: Description of local_planner
 Version: 0.0.0
-Cflags: -I/home/sutd/encoder_publisher_ws/devel/include
+Cflags: -I/home/sutd/encoder_publisher_ws/devel/include -I/home/sutd/encoder_publisher_ws/src/local_planner/include
 Libs: -L${prefix}/lib 
 Requires: geometry_msgs nav_msgs roscpp std_msgs message_runtime

@@ -2,3 +2,4 @@ robot_length: 0.86
 robot_width: 0.56
 safety_dist: 0.3
 clear_tolerance: 5
+clear_radius: 1.1

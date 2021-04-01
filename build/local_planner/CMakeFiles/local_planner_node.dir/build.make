@@ -76,27 +76,27 @@ include local_planner/CMakeFiles/local_planner_node.dir/progress.make
 # Include the compile flags for this target's objects.
 include local_planner/CMakeFiles/local_planner_node.dir/flags.make
 
-local_planner/CMakeFiles/local_planner_node.dir/src/l_plan.cpp.o: local_planner/CMakeFiles/local_planner_node.dir/flags.make
-local_planner/CMakeFiles/local_planner_node.dir/src/l_plan.cpp.o: /home/sutd/encoder_publisher_ws/src/local_planner/src/l_plan.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object local_planner/CMakeFiles/local_planner_node.dir/src/l_plan.cpp.o"
-	cd /home/sutd/encoder_publisher_ws/build/local_planner && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/local_planner_node.dir/src/l_plan.cpp.o -c /home/sutd/encoder_publisher_ws/src/local_planner/src/l_plan.cpp
+local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o: local_planner/CMakeFiles/local_planner_node.dir/flags.make
+local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o: /home/sutd/encoder_publisher_ws/src/local_planner/src/local_planner.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/sutd/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o"
+	cd /home/sutd/encoder_publisher_ws/build/local_planner && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o -c /home/sutd/encoder_publisher_ws/src/local_planner/src/local_planner.cpp
 
-local_planner/CMakeFiles/local_planner_node.dir/src/l_plan.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/local_planner_node.dir/src/l_plan.cpp.i"
-	cd /home/sutd/encoder_publisher_ws/build/local_planner && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sutd/encoder_publisher_ws/src/local_planner/src/l_plan.cpp > CMakeFiles/local_planner_node.dir/src/l_plan.cpp.i
+local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/local_planner_node.dir/src/local_planner.cpp.i"
+	cd /home/sutd/encoder_publisher_ws/build/local_planner && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/sutd/encoder_publisher_ws/src/local_planner/src/local_planner.cpp > CMakeFiles/local_planner_node.dir/src/local_planner.cpp.i
 
-local_planner/CMakeFiles/local_planner_node.dir/src/l_plan.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/local_planner_node.dir/src/l_plan.cpp.s"
-	cd /home/sutd/encoder_publisher_ws/build/local_planner && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sutd/encoder_publisher_ws/src/local_planner/src/l_plan.cpp -o CMakeFiles/local_planner_node.dir/src/l_plan.cpp.s
+local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/local_planner_node.dir/src/local_planner.cpp.s"
+	cd /home/sutd/encoder_publisher_ws/build/local_planner && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/sutd/encoder_publisher_ws/src/local_planner/src/local_planner.cpp -o CMakeFiles/local_planner_node.dir/src/local_planner.cpp.s
 
 # Object files for target local_planner_node
 local_planner_node_OBJECTS = \
-"CMakeFiles/local_planner_node.dir/src/l_plan.cpp.o"
+"CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o"
 
 # External object files for target local_planner_node
 local_planner_node_EXTERNAL_OBJECTS =
 
-/home/sutd/encoder_publisher_ws/devel/lib/local_planner/local_planner_node: local_planner/CMakeFiles/local_planner_node.dir/src/l_plan.cpp.o
+/home/sutd/encoder_publisher_ws/devel/lib/local_planner/local_planner_node: local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o
 /home/sutd/encoder_publisher_ws/devel/lib/local_planner/local_planner_node: local_planner/CMakeFiles/local_planner_node.dir/build.make
 /home/sutd/encoder_publisher_ws/devel/lib/local_planner/local_planner_node: /opt/ros/melodic/lib/libroscpp.so
 /home/sutd/encoder_publisher_ws/devel/lib/local_planner/local_planner_node: /usr/lib/x86_64-linux-gnu/libboost_filesystem.so

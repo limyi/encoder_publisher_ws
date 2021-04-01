@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/sutd/encoder_publisher_ws/src/local_planner/src/l_plan.cpp" "/home/sutd/encoder_publisher_ws/build/local_planner/CMakeFiles/local_planner_node.dir/src/l_plan.cpp.o"
+  "/home/sutd/encoder_publisher_ws/src/local_planner/src/local_planner.cpp" "/home/sutd/encoder_publisher_ws/build/local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -18,6 +18,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/sutd/encoder_publisher_ws/devel/include"
+  "/home/sutd/encoder_publisher_ws/src/local_planner/include"
   "/opt/ros/melodic/include"
   "/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
   )

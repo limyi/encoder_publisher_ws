@@ -10,6 +10,7 @@
 #include <geometry_msgs/PointStamped.h>
 #include <tf/transform_datatypes.h>
 #include <tf/LinearMath/Matrix3x3.h>
+#include <local_planner/twist_pub_node.h>
 
 #define PI 3.14159265359
 
@@ -175,7 +176,7 @@ public:
 					std::cout << "rotation not clear" << std::endl;
 					rotation_not_clear++;
 					ros::Rate rate(1);
-					rate.sleep()
+					rate.sleep();
 				}
 				else
 				{
@@ -358,41 +359,6 @@ public:
 		}
 	}
 
-	////////////////// Calculate wheel angle ////////////////////////////
-	double rad_to_deg(double rad)
-	{
-		double deg = (rad/PI) * 180;
-
-		return deg;
-	}
-
-	struct Angles
-	{
-		double lb, rb, lf, rf;
-	};
-
-	auto adjust_wheels(double vx, double wz)
-	{	
-		double width = width;
-		Angles ang;
-		double radius = 0.0;
-
-		if(wz == 0){
-			radius = std::numeric_limits<double>::infinity();
-		}else{
-			radius = vx/wz;
-		}
-
-		double left = radius - width/2;
-		double right = radius + width/2;
-
-		ang.lf = rad_to_deg(atan(length*0.5/left));
-		ang.rf = rad_to_deg(atan(length*0.5/right));
-		ang.lb = -ang.lf;
-		ang.rb = -ang.rf;
-
-		return ang;
-	}
 	//////////////// Velocity Commands ///////////////////////////
 
 	void right()
@@ -450,7 +416,7 @@ public:
 
 	void rotate_right()
 	{
-		Angles a = adjust_wheels(0, -wz);
+		Angles a = adjust_wheels(0, -wz, width, length);
 		auto* ts = &twist_msg;
 		ts->linear.x = a.lb;
 		ts->linear.y = a.rb;
@@ -467,7 +433,7 @@ public:
 
 	void rotate_left()
 	{
-		Angles a = adjust_wheels(0, wz);
+		Angles a = adjust_wheels(0, wz, width, length);
 		auto* ts = &twist_msg;
 		ts->linear.x = a.lb;
 		ts->linear.y = a.rb;
