@@ -13,6 +13,14 @@
 #include <local_planner/twist_pub_node.h>
 #include <autoware_msgs/LaneArray.h>
 
+/**
+Things to edit:
+1. Extract global path (done)
+2. Iterate through global path (done)
+3. Adjust robot pose at each step (done)
+4. Add limits into state machine 
+**/
+
 #define PI 3.14159265359
 
 class LocalPlanner
@@ -31,10 +39,10 @@ private:
 	int curr_state=1, prev_state=2;
 
 	// costmap clearance
-	bool left_clear, right_clear, up_clear, radius_clear;
+	bool left_clear, right_clear, up_clear, radius_clear, back_clear;
 
-	float step=0.5; // how far forward to move
-	double start_x=0, start_y=0, curr_x, curr_y;
+	float forward_limit, right_limit, left_limit; // how far forward to move
+	double start_x=0, start_y=0, curr_x, curr_y, curr_t;
 	bool finished_step;
 
 	geometry_msgs::Twist twist_msg;
@@ -42,6 +50,7 @@ private:
 	// speed
 	float vx = 0.1;
 	float wz = 0.5;
+	int rotating;
 
 	float width;
 	float length;
@@ -52,11 +61,16 @@ private:
 	// goal
 	bool reached_goal = true;
 	double goal_x, goal_y;
-	float goal_stop = 0.5;
+	float goal_stop;
 	bool goal_sent = false;
-	double goal_angle;
+	double pose_tolerance;
 
 	int rotation_not_clear = 0;
+
+	// trying to align
+	bool align_attempt = false;
+
+	double delta_theta;
 
 	// Global path
 	std::vector<geometry_msgs::PoseStamped> global_path;
@@ -77,15 +91,33 @@ public:
 		rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
 
 		length = nh->param("/robot_length", 1.5);
+		goal_stop = nh->param("/goal_stop", 0.5);
+		forward_limit = nh->param("/forward_limit", 0.5);
+		right_limit = nh->param("/right_limit", 6.0);
+		left_limit = nh->param("/left_limit", 6.0);
+		delta_theta = nh->param("/delta_theta", 10);
+		pose_tolerance = nh->param("/pose_tolerance", 5);
 	}
 
-	// get global path
+	// get global path (edit to add points if dtheta is more than certain angle)
 	void get_path(const autoware_msgs::LaneArray& msg)
 	{
-		for (int i=0; i<sizeof(msg.lanes[0].waypoints)/sizeof(msg.lanes[0].waypoints[0]); i+=2)
+		geometry_msgs::PoseStamped pt = msg.lanes[0].waypoints[0].pose;
+		global_path.push_back(pt);
+		int i = 1;
+		while (i<sizeof(msg.lanes[0].waypoints)/sizeof(msg.lanes[0].waypoints[0]))
 		{
-			global_path.push_back(msg.lanes[0].waypoints[i].pose);
+			if (std::abs(angle_diff(quat_to_rad(pt,"rad"), quat_to_rad(msg.lanes[0].waypoints[i].pose, "rad"), "deg")) >= delta_theta)
+			{
+				global_path.push_back(msg.lanes[0].waypoints[i].pose);
+				pt = msg.lanes[0].waypoints[i].pose;
+			}
+			i++;
 		}
+		if(std::find(global_path.begin(), global_path.end(), global_path[global_path.size()-1]) != global_path.end())
+		{
+		   global_path.push_back(global_path[global_path.size()-1]);
+		} 
 	}
 
 	// move to first wp
@@ -103,11 +135,6 @@ public:
 		goal_x = msg.pose.position.x;
 		goal_y = msg.pose.position.y;
 		geometry_msgs::Quaternion goal_wz = msg.pose.orientation;
-		tf::Quaternion quat;
-		tf::quaternionMsgToTF(goal_wz, quat);
-		double roll, pitch, yaw;
-    	tf::Matrix3x3(quat).getRPY(roll, pitch, yaw);
-    	goal_angle = yaw;
 		goal_sent = true;
 	}
 
@@ -143,58 +170,146 @@ public:
 	{
 		curr_x = msg.pose.position.x;
 		curr_y = msg.pose.position.y;
-		geometry_msgs::Quaternion curr_q = msg.pose.orientation;
-		tf::Quaternion quat;
-		tf::quaternionMsgToTF(curr_q, quat);
-		double roll, pitch, yaw;
-    	tf::Matrix3x3(quat).getRPY(roll, pitch, yaw);
-    	double curr_wz = yaw;
+		curr_t = quat_to_rad(msg);
 		
-		// init start_x and start_y to calculate forward distance travelled
+		// init start_x and start_y
 		if (n == 0)
 		{
 			start_x = curr_x;
 			start_y = curr_y;
 			n++;
 		}
-		if (goal_check(curr_x,curr_y) == false && goal_sent == true)
-		{
-			double dist = sqrt(pow(curr_x-start_x,2) + pow(curr_y-start_y, 2));
-			std::cout << dist << " " << curr_state << std::endl;
-			if (dist < step)
-			{
-				finished_step = false;
-			}
-			else
-			{
-				finished_step = true;
-			}
-			
-			sm(curr_x, curr_y);
 
-			switch(curr_state)
+		int aligned = align_pose(curr_t, global_path[0]);
+
+		if (goal_check(curr_x, curr_y, global_path[1]) == false && goal_sent == true)
+		{	
+			if (aligned == 1)
 			{
-				case 1:
-					right();
-				case 2:
-					up();
-				case 3:
-					left();
+				if (rotating != aligned)
+				{
+					rotate_left();
+					rotating = aligned;
+				}
+			}
+			else if (aligned == -1)
+			{
+				if (rotating != aligned)
+				{
+					rotate_right();
+					rotating = aligned;
+				}
+			}
+			else if (aligned == 0)
+			{
+				if (rotating != aligned)
+				{
+					stop();
+					rotating = aligned;
+				}
+				else
+				{
+					sm(curr_x, curr_y);
+
+					switch(curr_state)
+					{
+						case 1:
+							right();
+						case 2:
+							up();
+						case 3:
+							left();
+					}
+				}
+			}
+			else if (align_attempt == true && radius_clear == true)
+			{
+				if (aligned == 1)
+				{
+					rotate_left();
+					rotating = aligned;
+				}
+				else if (aligned == -1)
+				{
+					rotate_right();
+					rotating = aligned;
+				}
+				else
+				{
+					stop();
+					global_path.erase(global_path.begin());
+					align_attempt = false;
+				}
 			}
 		}
 		else
 		{	
-			if (goal_orientation(curr_wz) == true)
+			if (aligned == 0)
 			{
 				stop();
 				curr_state = 1;
 				prev_state = 2;
+				global_path.erase(global_path.begin());
+			}
+			else if (aligned == 1)
+			{
+				if (rotating != aligned)
+				{	
+					// rotate
+					if (radius_clear == 0)
+					{
+						rotate_left();
+						rotating = aligned;
+					}
+					else
+					{
+						if (curr_state == 1 && left_clear == true)
+						{
+							left();
+							align_attempt = true;
+						}
+						else if (curr_state == 3 && right_clear == true)
+						{
+							right();
+							align_attempt = true;
+						}
+						else if (curr_state == 2 && back_clear == true)
+						{
+							reverse();
+							align_attempt = true;
+						}
+						else
+						{
+							stop();
+							printf("Help I'm stuck\n");
+						}
+					}
+				}
+			}
+			else if (aligned == -1)
+			{
+				if (rotating != aligned)
+				{
+					rotate_right();
+					rotating = aligned;
+				}
+			}
+			else if (aligned == 0)
+			{
+				stop();
+				align_attempt = false;
+				global_path.erase(global_path.begin());
+			}
+
+			if (global_path.size() <= 1)
+			{
 				goal_sent = false;
 			}
+			/**
 			else
 			{	
 				stop();
-				if (rotation_not_clear <= 10)
+				if (rotation_not_clear <= 100)
 				{
 					std::cout << "rotation not clear" << std::endl;
 					rotation_not_clear++;
@@ -207,6 +322,7 @@ public:
 					goal_sent = false;
 				}
 			}
+			**/
 		}
 	}
 
@@ -216,7 +332,26 @@ public:
 		right_clear = msg.right;
 		left_clear = msg.left;
 		up_clear = msg.up;
+		back_clear = msg.back;
 		radius_clear = msg.radius;
+	}
+
+	// align robot when at start of goal and at end of each horizontal movement
+	int align_pose(double current, geometry_msgs::PoseStamped goal)
+	{	
+		double diff = angle_diff(current, quat_to_rad(goal, "rad"), "deg");
+		if (diff >= pose_tolerance)
+		{
+			return -1;
+		}
+		else if (diff <= -pose_tolerance)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	/** State machine: 
@@ -323,9 +458,9 @@ public:
 	}
 
 	// Check if robot has reached goal
-	bool goal_check(double x, double y)
+	bool goal_check(double x, double y, geometry_msgs::PoseStamped goal)
 	{
-		double dist = sqrt(pow(goal_x-x,2) + pow(goal_y-y, 2));
+		double dist = sqrt(pow(goal.pose.position.x - x, 2) + pow(goal.pose.position.y - y, 2));
 		if (dist < goal_stop)
 		{
 			reached_goal = true;
@@ -336,50 +471,6 @@ public:
 		}
 		//std::cout << "reached goal: " << reached_goal << std::endl;
 		return reached_goal;
-	}
-
-	///////////////// Orientate robot to desired goal pose ///////////////////////////
-	bool goal_orientation(double wz)
-	{
-		if (std::abs(std::abs(wz) - std::abs(goal_angle)) > (5/180*PI))
-		{	
-			if (radius_clear == true)
-			{
-				if (wz >= 0)
-				{
-					if (goal_angle >= wz-PI && goal_angle <= wz)
-					{
-						rotate_right();
-					}
-					else
-					{
-						rotate_left();
-					}
-				}
-				else
-				{
-					if (goal_angle <= wz+PI && goal_angle >= wz)
-					{
-						rotate_left();
-					}
-					else
-					{
-						rotate_right();
-					}
-				}
-				return false;
-			}
-			else
-			{
-				stop();
-				return false;
-			}
-		}
-		else
-		{
-			stop();
-			return true;
-		}
 	}
 
 	//////////////// Velocity Commands ///////////////////////////
@@ -427,6 +518,21 @@ public:
 		check_steer();
 
 		ts->angular.y = vx;
+		twist_pub.publish(*ts);
+	}
+
+	void reverse()
+	{
+		auto* ts = &twist_msg;
+		ts->linear.x = 0;
+		ts->linear.y = 0;
+		ts->linear.z = 0;
+		ts->angular.x = 0;
+		ts->angular.y = 0;
+
+		check_steer();
+
+		ts->angular.y = -vx;
 		twist_pub.publish(*ts);
 	}
 
