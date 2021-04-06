@@ -41,7 +41,7 @@ private:
 	// costmap clearance
 	bool left_clear, right_clear, up_clear, radius_clear, back_clear;
 
-	float forward_limit, right_limit, left_limit; // how far forward to move
+	float forward_limit, horizontal_limit, step; // how far forward to move
 	double start_x=0, start_y=0, curr_x, curr_y, curr_t;
 	bool finished_step;
 
@@ -93,8 +93,7 @@ public:
 		length = nh->param("/robot_length", 1.5);
 		goal_stop = nh->param("/goal_stop", 0.5);
 		forward_limit = nh->param("/forward_limit", 0.5);
-		right_limit = nh->param("/right_limit", 6.0);
-		left_limit = nh->param("/left_limit", 6.0);
+		horizontal_limit = nh->param("/horizontal_limit", 6.0);
 		delta_theta = nh->param("/delta_theta", 10);
 		pose_tolerance = nh->param("/pose_tolerance", 5);
 	}
@@ -184,6 +183,17 @@ public:
 
 		if (goal_check(curr_x, curr_y, global_path[1]) == false && goal_sent == true)
 		{	
+			double dist = sqrt(pow(curr_x-start_x,2) + pow(curr_y-start_y, 2));
+			std::cout << dist << " " << curr_state << std::endl;
+			if (dist < step)
+			{
+				finished_step = false;
+			}
+			else
+			{
+				finished_step = true;
+			}
+			
 			if (aligned == 1)
 			{
 				if (rotating != aligned)
@@ -358,7 +368,7 @@ public:
 		- State 1: moving right
 		- State 2: moving up
 		- State 3: moving left
-	**/
+	
 	void sm(double x, double y)
 	{	
 		// moving right
@@ -452,6 +462,103 @@ public:
 				else if (left_clear == 0)
 				{
 					stop();
+				}
+			}
+		}
+	}
+	**/
+	void sm(double x, double y)
+	{	
+		// moving right
+		if (curr_state == 1)
+		{
+			if (prev_state == 2)
+			{
+				if (right_clear == 0 || finished_step == true)
+				{
+					stop();
+					curr_state = 2;
+					prev_state = 1;
+					start_x = x;
+					start_y = y;
+					step = horizontal_limit;
+				}
+			}
+			else if (prev_state == 3)
+			{
+				if (up_clear == 1 || finished_step == true)
+				{
+					stop();
+					curr_state = 2;
+					prev_state = 3;
+					start_x = x;
+					start_y = y;
+					step = forward_limit;
+				}
+				else if (right_clear == 0)
+				{
+					stop(); // stuck
+				}
+			}
+		}
+		// moving up
+		else if (curr_state == 2)
+		{
+			if (prev_state == 1)
+			{
+				if (finished_step == 1 || up_clear == false)
+				{
+					stop();
+					curr_state = 3;
+					prev_state = 2;
+					start_x = x;
+					start_y = y;
+					step = horizontal_limit;
+				}
+			}
+			else if (prev_state == 3)
+			{
+				if (finished_step == 1 || up_clear == false)
+				{
+					stop();
+					curr_state = 1;
+					prev_state = 2;
+					start_x = x;
+					start_y = y;
+					step = horizontal_limit;
+				}
+			}
+
+		}
+		// moving left
+		else if (curr_state == 3)
+		{
+			if (prev_state == 2)
+			{
+				if (left_clear == 0 || finished_step == true)
+				{
+					stop();
+					curr_state = 2;
+					prev_state = 3;
+					start_x = x;
+					start_y = y;
+					step = forward_limit;
+				}
+			}
+			else if (prev_state == 1)
+			{
+				if (up_clear == 1)
+				{
+					stop();
+					curr_state = 2;
+					prev_state = 1;
+					start_x = x;
+					start_y = y;
+					step = forward_limit;
+				}
+				else if (left_clear == 0)
+				{
+					stop(); // stuck
 				}
 			}
 		}
