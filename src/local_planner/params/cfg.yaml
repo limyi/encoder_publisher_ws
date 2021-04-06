@@ -3,3 +3,11 @@ robot_width: 0.56
 safety_dist: 0.3
 clear_tolerance: 5
 clear_radius: 1.1
+goal_stop: 0.3
+
+# limits
+forward_limit: 0.5
+horizontal_limit: 6.0
+
+# goal path
+delta_theta: 10 # degrees

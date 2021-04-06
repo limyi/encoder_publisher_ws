@@ -21,6 +21,7 @@ class CmapClear {
       this.right = null;
       this.up = null;
       this.left = null;
+      this.back = null;
       this.radius = null;
     }
     else {
@@ -42,6 +43,12 @@ class CmapClear {
       else {
         this.left = false;
       }
+      if (initObj.hasOwnProperty('back')) {
+        this.back = initObj.back
+      }
+      else {
+        this.back = false;
+      }
       if (initObj.hasOwnProperty('radius')) {
         this.radius = initObj.radius
       }
@@ -59,6 +66,8 @@ class CmapClear {
     bufferOffset = _serializer.bool(obj.up, buffer, bufferOffset);
     // Serialize message field [left]
     bufferOffset = _serializer.bool(obj.left, buffer, bufferOffset);
+    // Serialize message field [back]
+    bufferOffset = _serializer.bool(obj.back, buffer, bufferOffset);
     // Serialize message field [radius]
     bufferOffset = _serializer.bool(obj.radius, buffer, bufferOffset);
     return bufferOffset;
@@ -74,13 +83,15 @@ class CmapClear {
     data.up = _deserializer.bool(buffer, bufferOffset);
     // Deserialize message field [left]
     data.left = _deserializer.bool(buffer, bufferOffset);
+    // Deserialize message field [back]
+    data.back = _deserializer.bool(buffer, bufferOffset);
     // Deserialize message field [radius]
     data.radius = _deserializer.bool(buffer, bufferOffset);
     return data;
   }
 
   static getMessageSize(object) {
-    return 4;
+    return 5;
   }
 
   static datatype() {
@@ -90,7 +101,7 @@ class CmapClear {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return 'cbf4adf768e3f3ee806b11da1ab4d21f';
+    return 'fcdcf2c8de4d9bb6062a42facde1b732';
   }
 
   static messageDefinition() {
@@ -99,6 +110,7 @@ class CmapClear {
     bool right
     bool up
     bool left
+    bool back
     bool radius
     
     `;
@@ -129,6 +141,13 @@ class CmapClear {
     }
     else {
       resolved.left = false
+    }
+
+    if (msg.back !== undefined) {
+      resolved.back = msg.back;
+    }
+    else {
+      resolved.back = false
     }
 
     if (msg.radius !== undefined) {

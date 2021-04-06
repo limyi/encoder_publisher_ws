@@ -27,12 +27,14 @@ struct CmapClear_
     : right(false)
     , up(false)
     , left(false)
+    , back(false)
     , radius(false)  {
     }
   CmapClear_(const ContainerAllocator& _alloc)
     : right(false)
     , up(false)
     , left(false)
+    , back(false)
     , radius(false)  {
   (void)_alloc;
     }
@@ -47,6 +49,9 @@ struct CmapClear_
 
    typedef uint8_t _left_type;
   _left_type left;
+
+   typedef uint8_t _back_type;
+  _back_type back;
 
    typedef uint8_t _radius_type;
   _radius_type radius;
@@ -83,6 +88,7 @@ bool operator==(const ::local_planner::CmapClear_<ContainerAllocator1> & lhs, co
   return lhs.right == rhs.right &&
     lhs.up == rhs.up &&
     lhs.left == rhs.left &&
+    lhs.back == rhs.back &&
     lhs.radius == rhs.radius;
 }
 
@@ -140,12 +146,12 @@ struct MD5Sum< ::local_planner::CmapClear_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "cbf4adf768e3f3ee806b11da1ab4d21f";
+    return "fcdcf2c8de4d9bb6062a42facde1b732";
   }
 
   static const char* value(const ::local_planner::CmapClear_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0xcbf4adf768e3f3eeULL;
-  static const uint64_t static_value2 = 0x806b11da1ab4d21fULL;
+  static const uint64_t static_value1 = 0xfcdcf2c8de4d9bb6ULL;
+  static const uint64_t static_value2 = 0x062a42facde1b732ULL;
 };
 
 template<class ContainerAllocator>
@@ -167,6 +173,7 @@ struct Definition< ::local_planner::CmapClear_<ContainerAllocator> >
     return "bool right\n"
 "bool up\n"
 "bool left\n"
+"bool back\n"
 "bool radius\n"
 ;
   }
@@ -189,6 +196,7 @@ namespace serialization
       stream.next(m.right);
       stream.next(m.up);
       stream.next(m.left);
+      stream.next(m.back);
       stream.next(m.radius);
     }
 
@@ -214,6 +222,8 @@ struct Printer< ::local_planner::CmapClear_<ContainerAllocator> >
     Printer<uint8_t>::stream(s, indent + "  ", v.up);
     s << indent << "left: ";
     Printer<uint8_t>::stream(s, indent + "  ", v.left);
+    s << indent << "back: ";
+    Printer<uint8_t>::stream(s, indent + "  ", v.back);
     s << indent << "radius: ";
     Printer<uint8_t>::stream(s, indent + "  ", v.radius);
   }

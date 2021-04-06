@@ -27,7 +27,7 @@ private:
 
 	bool left_clear, right_clear, up_clear, radius_clear;
 
-	float step=0.5; // how far forward to move
+	float forward_limit, horizontal_limit, step; // how far to move
 	double start_x=0, start_y=0, curr_x, curr_y;
 	bool finished_step;
 
@@ -66,6 +66,9 @@ public:
 		rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
 
 		length = nh->param("/robot_length", 1.5);
+		horizontal_limit = nh->param("/horizontal_limit", 3.0);
+		forward_limit = nh->param("/forward_limit", 3.0);
+
 	}
 
 	// Wheel separation of robot
@@ -208,28 +211,30 @@ public:
 		{
 			if (prev_state == 2)
 			{
-				if (right_clear == 0)
+				if (right_clear == 0 || finished_step == true)
 				{
 					stop();
-					start_x = x;
-					start_y = y;
 					curr_state = 2;
 					prev_state = 1;
+					start_x = x;
+					start_y = y;
+					step = horizontal_limit;
 				}
 			}
 			else if (prev_state == 3)
 			{
-				if (up_clear == 1)
+				if (up_clear == 1 || finished_step == true)
 				{
 					stop();
-					start_x = x;
-					start_y = y;
 					curr_state = 2;
 					prev_state = 3;
+					start_x = x;
+					start_y = y;
+					step = forward_limit;
 				}
 				else if (right_clear == 0)
 				{
-					stop();
+					stop(); // stuck
 				}
 			}
 		}
@@ -238,47 +243,43 @@ public:
 		{
 			if (prev_state == 1)
 			{
-				if (finished_step == 1)
+				if (finished_step == 1 || up_clear == false)
 				{
 					stop();
 					curr_state = 3;
 					prev_state = 2;
-				}
-				else if (up_clear == false)
-				{
-					stop();
-					curr_state = 3;
-					prev_state = 2;
+					start_x = x;
+					start_y = y;
+					step = horizontal_limit;
 				}
 			}
 			else if (prev_state == 3)
 			{
-				if (finished_step == 1)
+				if (finished_step == 1 || up_clear == false)
 				{
 					stop();
 					curr_state = 1;
 					prev_state = 2;
-				}
-				else if (up_clear == false)
-				{
-					stop();
-					curr_state = 1;
-					prev_state = 2;
+					start_x = x;
+					start_y = y;
+					step = horizontal_limit;
 				}
 			}
+
 		}
 		// moving left
 		else if (curr_state == 3)
 		{
 			if (prev_state == 2)
 			{
-				if (left_clear == 0)
+				if (left_clear == 0 || finished_step == true)
 				{
 					stop();
-					start_x = x;
-					start_y = y;
 					curr_state = 2;
 					prev_state = 3;
+					start_x = x;
+					start_y = y;
+					step = forward_limit;
 				}
 			}
 			else if (prev_state == 1)
@@ -286,14 +287,15 @@ public:
 				if (up_clear == 1)
 				{
 					stop();
-					start_x = x;
-					start_y = y;
 					curr_state = 2;
 					prev_state = 1;
+					start_x = x;
+					start_y = y;
+					step = forward_limit;
 				}
 				else if (left_clear == 0)
 				{
-					stop();
+					stop(); // stuck
 				}
 			}
 		}

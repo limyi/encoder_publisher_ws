@@ -22,6 +22,11 @@
     :initarg :left
     :type cl:boolean
     :initform cl:nil)
+   (back
+    :reader back
+    :initarg :back
+    :type cl:boolean
+    :initform cl:nil)
    (radius
     :reader radius
     :initarg :radius
@@ -52,6 +57,11 @@
   (roslisp-msg-protocol:msg-deprecation-warning "Using old-style slot reader local_planner-msg:left-val is deprecated.  Use local_planner-msg:left instead.")
   (left m))
 
+(cl:ensure-generic-function 'back-val :lambda-list '(m))
+(cl:defmethod back-val ((m <CmapClear>))
+  (roslisp-msg-protocol:msg-deprecation-warning "Using old-style slot reader local_planner-msg:back-val is deprecated.  Use local_planner-msg:back instead.")
+  (back m))
+
 (cl:ensure-generic-function 'radius-val :lambda-list '(m))
 (cl:defmethod radius-val ((m <CmapClear>))
   (roslisp-msg-protocol:msg-deprecation-warning "Using old-style slot reader local_planner-msg:radius-val is deprecated.  Use local_planner-msg:radius instead.")
@@ -61,6 +71,7 @@
   (cl:write-byte (cl:ldb (cl:byte 8 0) (cl:if (cl:slot-value msg 'right) 1 0)) ostream)
   (cl:write-byte (cl:ldb (cl:byte 8 0) (cl:if (cl:slot-value msg 'up) 1 0)) ostream)
   (cl:write-byte (cl:ldb (cl:byte 8 0) (cl:if (cl:slot-value msg 'left) 1 0)) ostream)
+  (cl:write-byte (cl:ldb (cl:byte 8 0) (cl:if (cl:slot-value msg 'back) 1 0)) ostream)
   (cl:write-byte (cl:ldb (cl:byte 8 0) (cl:if (cl:slot-value msg 'radius) 1 0)) ostream)
 )
 (cl:defmethod roslisp-msg-protocol:deserialize ((msg <CmapClear>) istream)
@@ -68,6 +79,7 @@
     (cl:setf (cl:slot-value msg 'right) (cl:not (cl:zerop (cl:read-byte istream))))
     (cl:setf (cl:slot-value msg 'up) (cl:not (cl:zerop (cl:read-byte istream))))
     (cl:setf (cl:slot-value msg 'left) (cl:not (cl:zerop (cl:read-byte istream))))
+    (cl:setf (cl:slot-value msg 'back) (cl:not (cl:zerop (cl:read-byte istream))))
     (cl:setf (cl:slot-value msg 'radius) (cl:not (cl:zerop (cl:read-byte istream))))
   msg
 )
@@ -79,18 +91,19 @@
   "local_planner/CmapClear")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql '<CmapClear>)))
   "Returns md5sum for a message object of type '<CmapClear>"
-  "cbf4adf768e3f3ee806b11da1ab4d21f")
+  "fcdcf2c8de4d9bb6062a42facde1b732")
 (cl:defmethod roslisp-msg-protocol:md5sum ((type (cl:eql 'CmapClear)))
   "Returns md5sum for a message object of type 'CmapClear"
-  "cbf4adf768e3f3ee806b11da1ab4d21f")
+  "fcdcf2c8de4d9bb6062a42facde1b732")
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql '<CmapClear>)))
   "Returns full string definition for message of type '<CmapClear>"
-  (cl:format cl:nil "bool right~%bool up~%bool left~%bool radius~%~%~%"))
+  (cl:format cl:nil "bool right~%bool up~%bool left~%bool back~%bool radius~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:message-definition ((type (cl:eql 'CmapClear)))
   "Returns full string definition for message of type 'CmapClear"
-  (cl:format cl:nil "bool right~%bool up~%bool left~%bool radius~%~%~%"))
+  (cl:format cl:nil "bool right~%bool up~%bool left~%bool back~%bool radius~%~%~%"))
 (cl:defmethod roslisp-msg-protocol:serialization-length ((msg <CmapClear>))
   (cl:+ 0
+     1
      1
      1
      1
@@ -102,5 +115,6 @@
     (cl:cons ':right (right msg))
     (cl:cons ':up (up msg))
     (cl:cons ':left (left msg))
+    (cl:cons ':back (back msg))
     (cl:cons ':radius (radius msg))
 ))

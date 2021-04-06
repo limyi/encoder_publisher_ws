@@ -17,17 +17,17 @@
 	- safety distance
 	- clear tolerance (# of occupied squares in search area)
 
-							f3
-	l3	+-------------------+---+ l4/f4
-		|   				|	|
-	l1	+---o---------------o---+ l2
+			b4				f4
+	l3	+---+---------------+---+ l4
+		|   b3				f3	|
+	l1	+---+---------------+---+ l2
 		|	|				|	|
 		|	|		x -->	|	|
 		|	|				|	|
-	r1	+---o---------------o---+ r2 
-		|					|	|
-	r3	+-------------------+---+ r4/f2
-						   f1   
+	r1	+---+---------------+---+ r2 
+		|	b2				f2	|
+	r3	+---+---------------+---+ r4
+			b1			   f1   
 **/
 
 class Robot
@@ -49,7 +49,7 @@ class Robot
 		float clear_radius;
 
 		// search area
-		int l1,l2,l3,l4,r1,r2,r3,r4,f1,f2,f3,f4;
+		int l1,l2,l3,l4,r1,r2,r3,r4,f1,f2,f3,f4,b1,b2,b3,b4;
 		std::vector<int> radial_area;
 
 		// Map info
@@ -103,10 +103,15 @@ class Robot
 			r4 = right_front[0] + buffer + (right_front[1] - buffer) * len_x;
 
 			// front area search [f1:f3] and [f2:f4]
-			f1 = right_front[0] + (right_front[1] - buffer) * len_x;
-			f2 = right_front[0] + buffer + (right_front[1] - buffer) * len_x;
-			f3 = left_front[0] + (left_front[1] + buffer) * len_x;
-			f4 = left_front[0] + buffer + (left_front[1] + buffer) * len_x;
+			f1 = f4 - buffer;
+			f2 = r2 - buffer;
+			f3 = l2 - buffer;
+			f4 = l4 - buffer;
+
+			b1 = r3 + buffer;
+			b2 = r1 + buffer;
+			b3 = l1 + buffer;
+			b4 = l3 + buffer;
 
 			/**
 			std::cout << l1 << ' ' << l2 << ' ' << l3 << ' ' << l4 << std::endl;
@@ -185,12 +190,87 @@ class Robot
 		void checkclear(std::vector<signed char> cmap)
 		{	
 
-			bool left_clear=true, right_clear=true, up_clear=true, radius_clear=true;
-			// left clear
-			int l=0, r=0,u=0;
+			bool left_clear=true, right_clear=true, up_clear=true, radius_clear=true, back_clear=true;
+			/////////////////////////////////////////////
+			int l=0, lf=0, f=0, rf=0, r=0, rb=0, b=0, lb=0, u=0;
+			// left front box
+			for (int i = f3; i <= f4; i+=len_x)
+			{
+				for (int j = i; j <= i + buffer; j++)
+				{
+					if (cmap[j] > 0)
+					{	
+						lf++;
+						if (lf>=clear_tolerance)
+						{
+							left_clear = false;
+							up_clear = false;
+							goto endleftfront;
+						}
+					}
+				}
+			}
+			endleftfront:
+
+			for (int i = f1; i <= f2; i+=len_x)
+			{
+				for (int j = i; j <= i + buffer; j++)
+				{
+					if (cmap[j] > 0)
+					{	
+						rf++;
+						if (rf>=clear_tolerance)
+						{
+							right_clear = false;
+							up_clear = false;
+							goto endrightfront;
+						}
+					}
+				}
+			}
+			endrightfront:
+
+			for (int i = r3; i <= r1; i+=len_x)
+			{
+				for (int j = i; j <= i + buffer; j++)
+				{
+					if (cmap[j] > 0)
+					{	
+						rb++;
+						if (rb>=clear_tolerance)
+						{
+							right_clear = false;
+							back_clear = false;
+							goto endrightback;
+						}
+					}
+				}
+			}
+			endrightback:
+
 			for (int i = l1; i <= l3; i+=len_x)
 			{
-				for (int j = i; j <= i + (l2 - l1); j++)
+				for (int j = i; j <= i + buffer; j++)
+				{
+					if (cmap[j] > 0)
+					{	
+						lb++;
+						if (lb>=clear_tolerance)
+						{
+							left_clear = false;
+							back_clear = false;
+							goto endrightback;
+						}
+					}
+				}
+			}
+			endleftback:
+			/////////////////////////////////////////////
+			// left clear
+			l = lf+lb;
+			for (int i = b3; i <= b4; i+=len_x)
+			{
+				for (int j = i; j <= i + (f3 - b3); j++)
 				{
 					if (cmap[j] > 0)
 					{
@@ -208,9 +288,10 @@ class Robot
 			endleft:
 
 			// right clear
-			for (int i = r3; i <= r1; i+=len_x)
+			r = rf + rb;
+			for (int i = b1; i <= b2; i+=len_x)
 			{
-				for (int j = i; j <= i + (r2 - r1); j++)
+				for (int j = i; j <= i + (f1 - b1); j++)
 				{
 					if (cmap[j] > 0)
 					{
@@ -226,9 +307,10 @@ class Robot
 			endright:
 
 			// up clear
-			for (int i = f1; i <= f3; i+=len_x)
+			u = rf + lf;
+			for (int i = f2; i <= f3; i+=len_x)
 			{
-				for (int j = i; j <= i + (f2-f1); j++)
+				for (int j = i; j <= i + (r2 - f2); j++)
 				{
 					if (cmap[j] > 0)
 					{
@@ -252,12 +334,15 @@ class Robot
 				}
 			}
 			endradius:
+
+
 			
 			//std::cout << l << " " << r << " " << u << std::endl;
 			auto* bl = &bools;
 			bl->right = right_clear;
 			bl->left = left_clear;
 			bl->up = up_clear;
+			bl->back = back_clear;
 			bl->radius = radius_clear;
 			cmap_clear.publish(*bl);
 			//std::cout << *bl << std::endl;

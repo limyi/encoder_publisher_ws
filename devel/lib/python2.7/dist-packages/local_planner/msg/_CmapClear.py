@@ -8,16 +8,17 @@ import struct
 
 
 class CmapClear(genpy.Message):
-  _md5sum = "cbf4adf768e3f3ee806b11da1ab4d21f"
+  _md5sum = "fcdcf2c8de4d9bb6062a42facde1b732"
   _type = "local_planner/CmapClear"
   _has_header = False  # flag to mark the presence of a Header object
   _full_text = """bool right
 bool up
 bool left
+bool back
 bool radius
 """
-  __slots__ = ['right','up','left','radius']
-  _slot_types = ['bool','bool','bool','bool']
+  __slots__ = ['right','up','left','back','radius']
+  _slot_types = ['bool','bool','bool','bool','bool']
 
   def __init__(self, *args, **kwds):
     """
@@ -27,7 +28,7 @@ bool radius
     changes.  You cannot mix in-order arguments and keyword arguments.
 
     The available fields are:
-       right,up,left,radius
+       right,up,left,back,radius
 
     :param args: complete set of field values, in .msg order
     :param kwds: use keyword arguments corresponding to message field names
@@ -42,12 +43,15 @@ bool radius
         self.up = False
       if self.left is None:
         self.left = False
+      if self.back is None:
+        self.back = False
       if self.radius is None:
         self.radius = False
     else:
       self.right = False
       self.up = False
       self.left = False
+      self.back = False
       self.radius = False
 
   def _get_types(self):
@@ -63,7 +67,7 @@ bool radius
     """
     try:
       _x = self
-      buff.write(_get_struct_4B().pack(_x.right, _x.up, _x.left, _x.radius))
+      buff.write(_get_struct_5B().pack(_x.right, _x.up, _x.left, _x.back, _x.radius))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -77,11 +81,12 @@ bool radius
       end = 0
       _x = self
       start = end
-      end += 4
-      (_x.right, _x.up, _x.left, _x.radius,) = _get_struct_4B().unpack(str[start:end])
+      end += 5
+      (_x.right, _x.up, _x.left, _x.back, _x.radius,) = _get_struct_5B().unpack(str[start:end])
       self.right = bool(self.right)
       self.up = bool(self.up)
       self.left = bool(self.left)
+      self.back = bool(self.back)
       self.radius = bool(self.radius)
       return self
     except struct.error as e:
@@ -96,7 +101,7 @@ bool radius
     """
     try:
       _x = self
-      buff.write(_get_struct_4B().pack(_x.right, _x.up, _x.left, _x.radius))
+      buff.write(_get_struct_5B().pack(_x.right, _x.up, _x.left, _x.back, _x.radius))
     except struct.error as se: self._check_types(struct.error("%s: '%s' when writing '%s'" % (type(se), str(se), str(locals().get('_x', self)))))
     except TypeError as te: self._check_types(ValueError("%s: '%s' when writing '%s'" % (type(te), str(te), str(locals().get('_x', self)))))
 
@@ -111,11 +116,12 @@ bool radius
       end = 0
       _x = self
       start = end
-      end += 4
-      (_x.right, _x.up, _x.left, _x.radius,) = _get_struct_4B().unpack(str[start:end])
+      end += 5
+      (_x.right, _x.up, _x.left, _x.back, _x.radius,) = _get_struct_5B().unpack(str[start:end])
       self.right = bool(self.right)
       self.up = bool(self.up)
       self.left = bool(self.left)
+      self.back = bool(self.back)
       self.radius = bool(self.radius)
       return self
     except struct.error as e:
@@ -125,9 +131,9 @@ _struct_I = genpy.struct_I
 def _get_struct_I():
     global _struct_I
     return _struct_I
-_struct_4B = None
-def _get_struct_4B():
-    global _struct_4B
-    if _struct_4B is None:
-        _struct_4B = struct.Struct("<4B")
-    return _struct_4B
+_struct_5B = None
+def _get_struct_5B():
+    global _struct_5B
+    if _struct_5B is None:
+        _struct_5B = struct.Struct("<5B")
+    return _struct_5B
