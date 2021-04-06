@@ -10,4 +10,4 @@ forward_limit: 0.5
 horizontal_limit: 6.0
 
 # goal path
-delta_theta: 10 # degrees
+delta_theta: 20 # degrees

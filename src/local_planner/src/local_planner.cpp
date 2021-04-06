@@ -12,6 +12,7 @@
 #include <tf/LinearMath/Matrix3x3.h>
 #include <local_planner/twist_pub_node.h>
 #include <autoware_msgs/LaneArray.h>
+#include <nav_msgs/Path.h>
 
 /**
 Things to edit:
@@ -31,12 +32,12 @@ private:
 	ros::Subscriber goal;
 	ros::Subscriber width_sub;
 	ros::Subscriber global_path_sub;
-	ros::Publisher twist_pub;
+	ros::Publisher twist_pub, path_pub;
 
 	ros::ServiceClient lb_stat, rb_stat, lf_stat, rf_stat;
 
 	// state machine
-	int curr_state=1, prev_state=2;
+	int curr_state=1, prev_state=2, dir=0;
 
 	// costmap clearance
 	bool left_clear, right_clear, up_clear, radius_clear, back_clear;
@@ -84,6 +85,7 @@ public:
 		width_sub = nh->subscribe("/can_encoder", 1000, &LocalPlanner::read_width, this);
 		global_path_sub = nh->subscribe("/lane_waypoints_array", 1000, &LocalPlanner::get_path, this);
 		twist_pub = nh->advertise<geometry_msgs::Twist>("panthera_cmd", 100);
+		path_pub = nh->advertise<nav_msgs::Path>("new_global_path", 100);
 
 		lb_stat = nh->serviceClient<panthera_locomotion::Status>("lb_steer_status");
 		rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
@@ -100,11 +102,12 @@ public:
 
 	// get global path (edit to add points if dtheta is more than certain angle)
 	void get_path(const autoware_msgs::LaneArray& msg)
-	{
+	{	
+		global_path.clear();
 		geometry_msgs::PoseStamped pt = msg.lanes[0].waypoints[0].pose;
 		global_path.push_back(pt);
 		int i = 1;
-		while (i<sizeof(msg.lanes[0].waypoints)/sizeof(msg.lanes[0].waypoints[0]))
+		while (i<msg.lanes[0].waypoints.size())
 		{
 			if (std::abs(angle_diff(quat_to_rad(pt,"rad"), quat_to_rad(msg.lanes[0].waypoints[i].pose, "rad"), "deg")) >= delta_theta)
 			{
@@ -116,7 +119,12 @@ public:
 		if(std::find(global_path.begin(), global_path.end(), global_path[global_path.size()-1]) != global_path.end())
 		{
 		   global_path.push_back(global_path[global_path.size()-1]);
-		} 
+		}
+		nav_msgs::Path path;
+		path.poses = global_path;
+		path.header.frame_id = "/map";
+		std::cout << global_path.size() << std::endl;
+		path_pub.publish(path);
 	}
 
 	// move to first wp
@@ -149,16 +157,26 @@ public:
 			rf_req.request.reconfig = true;
 			bool signal = false;
 			ros::Rate rate(2);
-			while (signal == false)
+			int count = 0;
+			while (signal == false || count<2 )
 			{
 				lb_stat.call(lb_req);
 				rb_stat.call(rb_req);
 				lf_stat.call(lf_req);
 				rf_stat.call(rf_req);
-				signal = (lb_req.response.status && lf_req.response.status && rb_req.response.status && rf_req.response.status);
+				signal = ((bool)lb_req.response.status && (bool)lf_req.response.status && (bool)rb_req.response.status && (bool)rf_req.response.status);
 				std::cout << "Signal: " << signal << std::endl;
 				rate.sleep();
+				if (signal==true)
+				{
+					count++;
+				}
+				else
+				{
+					count = 0;
+				}
 			}
+			printf("Clear!\n");
 		}
 		else{}
 
@@ -193,7 +211,7 @@ public:
 			{
 				finished_step = true;
 			}
-			
+
 			if (aligned == 1)
 			{
 				if (rotating != aligned)
@@ -220,7 +238,7 @@ public:
 				else
 				{
 					sm(curr_x, curr_y);
-
+					/*
 					switch(curr_state)
 					{
 						case 1:
@@ -230,6 +248,7 @@ public:
 						case 3:
 							left();
 					}
+					*/
 				}
 			}
 			else if (align_attempt == true && radius_clear == true)
@@ -247,6 +266,7 @@ public:
 				else
 				{
 					stop();
+					rotating = aligned;
 					global_path.erase(global_path.begin());
 					align_attempt = false;
 				}
@@ -308,6 +328,7 @@ public:
 			{
 				stop();
 				align_attempt = false;
+				rotating = aligned;
 				global_path.erase(global_path.begin());
 			}
 
@@ -471,17 +492,27 @@ public:
 	{	
 		// moving right
 		if (curr_state == 1)
-		{
+		{	
 			if (prev_state == 2)
 			{
 				if (right_clear == 0 || finished_step == true)
 				{
 					stop();
-					curr_state = 2;
-					prev_state = 1;
 					start_x = x;
 					start_y = y;
-					step = horizontal_limit;
+					step = forward_limit;
+					curr_state = 2;
+					prev_state = 1;
+					up();
+					dir = curr_state;
+				}
+				else
+				{
+					if (dir!=curr_state)
+					{
+						right();
+						dir = curr_state;
+					}
 				}
 			}
 			else if (prev_state == 3)
@@ -489,15 +520,16 @@ public:
 				if (up_clear == 1 || finished_step == true)
 				{
 					stop();
-					curr_state = 2;
-					prev_state = 3;
 					start_x = x;
 					start_y = y;
 					step = forward_limit;
+					curr_state = 2;
+					prev_state = 3;
+					dir = curr_state;
 				}
 				else if (right_clear == 0)
 				{
-					stop(); // stuck
+					stop();
 				}
 			}
 		}
@@ -515,6 +547,14 @@ public:
 					start_y = y;
 					step = horizontal_limit;
 				}
+				else if (up_clear == true)
+				{
+					if (dir!=curr_state)
+					{
+						up();
+						dir = curr_state;
+					}
+				}
 			}
 			else if (prev_state == 3)
 			{
@@ -527,8 +567,15 @@ public:
 					start_y = y;
 					step = horizontal_limit;
 				}
+				else if (up_clear == true)
+				{
+					if (dir!=curr_state)
+					{
+						up();
+						dir = curr_state;
+					}
+				}
 			}
-
 		}
 		// moving left
 		else if (curr_state == 3)
@@ -538,27 +585,43 @@ public:
 				if (left_clear == 0 || finished_step == true)
 				{
 					stop();
-					curr_state = 2;
-					prev_state = 3;
 					start_x = x;
 					start_y = y;
 					step = forward_limit;
+					curr_state = 2;
+					prev_state = 3;
+				}
+				else if (left_clear == true)
+				{
+					if (dir!=curr_state)
+					{
+						left();
+						dir = curr_state;
+					}
 				}
 			}
 			else if (prev_state == 1)
 			{
-				if (up_clear == 1)
+				if (up_clear == 1 || finished_step == true)
 				{
 					stop();
-					curr_state = 2;
-					prev_state = 1;
 					start_x = x;
 					start_y = y;
 					step = forward_limit;
+					curr_state = 2;
+					prev_state = 1;
 				}
 				else if (left_clear == 0)
 				{
-					stop(); // stuck
+					stop();
+				}
+				else if (left_clear == true)
+				{
+					if (dir!=curr_state)
+					{
+						left();
+						dir = curr_state;
+					}
 				}
 			}
 		}

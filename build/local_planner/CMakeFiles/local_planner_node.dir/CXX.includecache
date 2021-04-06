@@ -101,6 +101,8 @@ local_planner/twist_pub_node.h
 -
 autoware_msgs/LaneArray.h
 -
+nav_msgs/Path.h
+-
 
 /opt/ros/melodic/include/autoware_msgs/DTLane.h
 string
@@ -422,6 +424,26 @@ ros/message_operations.h
 std_msgs/Header.h
 -
 geometry_msgs/Vector3.h
+-
+
+/opt/ros/melodic/include/nav_msgs/Path.h
+string
+-
+vector
+-
+map
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+std_msgs/Header.h
+-
+geometry_msgs/PoseStamped.h
 -
 
 /opt/ros/melodic/include/ros/advertise_options.h

@@ -23,7 +23,7 @@ private:
 	ros::Subscriber width_sub;
 	ros::Publisher twist_pub;
 	ros::ServiceClient lb_stat, rb_stat, lf_stat, rf_stat;
-	int curr_state=1, prev_state=2;
+	int curr_state=1, prev_state=2, dir=0;
 
 	bool left_clear, right_clear, up_clear, radius_clear;
 
@@ -103,16 +103,26 @@ public:
 			rf_req.request.reconfig = true;
 			bool signal = false;
 			ros::Rate rate(2);
-			while (signal == false)
+			int count = 0;
+			while (signal == false || count<2 )
 			{
 				lb_stat.call(lb_req);
 				rb_stat.call(rb_req);
 				lf_stat.call(lf_req);
 				rf_stat.call(rf_req);
-				signal = (lb_req.response.status && lf_req.response.status && rb_req.response.status && rf_req.response.status);
+				signal = ((bool)lb_req.response.status && (bool)lf_req.response.status && (bool)rb_req.response.status && (bool)rf_req.response.status);
 				std::cout << "Signal: " << signal << std::endl;
 				rate.sleep();
+				if (signal==true)
+				{
+					count++;
+				}
+				else
+				{
+					count = 0;
+				}
 			}
+			printf("Clear!\n");
 		}
 		else{}
 
@@ -151,7 +161,7 @@ public:
 			}
 			
 			sm(curr_x, curr_y);
-
+			/*
 			switch(curr_state)
 			{
 				case 1:
@@ -161,6 +171,7 @@ public:
 				case 3:
 					left();
 			}
+			*/
 		}
 		else
 		{	
@@ -208,17 +219,27 @@ public:
 	{	
 		// moving right
 		if (curr_state == 1)
-		{
+		{	
 			if (prev_state == 2)
 			{
 				if (right_clear == 0 || finished_step == true)
 				{
 					stop();
-					curr_state = 2;
-					prev_state = 1;
 					start_x = x;
 					start_y = y;
-					step = horizontal_limit;
+					step = forward_limit;
+					curr_state = 2;
+					prev_state = 1;
+					up();
+					dir = curr_state;
+				}
+				else
+				{
+					if (dir!=curr_state)
+					{
+						right();
+						dir = curr_state;
+					}
 				}
 			}
 			else if (prev_state == 3)
@@ -226,15 +247,16 @@ public:
 				if (up_clear == 1 || finished_step == true)
 				{
 					stop();
-					curr_state = 2;
-					prev_state = 3;
 					start_x = x;
 					start_y = y;
 					step = forward_limit;
+					curr_state = 2;
+					prev_state = 3;
+					dir = curr_state;
 				}
 				else if (right_clear == 0)
 				{
-					stop(); // stuck
+					stop();
 				}
 			}
 		}
@@ -252,6 +274,14 @@ public:
 					start_y = y;
 					step = horizontal_limit;
 				}
+				else if (up_clear == true)
+				{
+					if (dir!=curr_state)
+					{
+						up();
+						dir = curr_state;
+					}
+				}
 			}
 			else if (prev_state == 3)
 			{
@@ -264,8 +294,15 @@ public:
 					start_y = y;
 					step = horizontal_limit;
 				}
+				else if (up_clear == true)
+				{
+					if (dir!=curr_state)
+					{
+						up();
+						dir = curr_state;
+					}
+				}
 			}
-
 		}
 		// moving left
 		else if (curr_state == 3)
@@ -275,32 +312,47 @@ public:
 				if (left_clear == 0 || finished_step == true)
 				{
 					stop();
-					curr_state = 2;
-					prev_state = 3;
 					start_x = x;
 					start_y = y;
 					step = forward_limit;
+					curr_state = 2;
+					prev_state = 3;
+				}
+				else if (left_clear == true)
+				{
+					if (dir!=curr_state)
+					{
+						left();
+						dir = curr_state;
+					}
 				}
 			}
 			else if (prev_state == 1)
 			{
-				if (up_clear == 1)
+				if (up_clear == 1 || finished_step == true)
 				{
 					stop();
-					curr_state = 2;
-					prev_state = 1;
 					start_x = x;
 					start_y = y;
 					step = forward_limit;
+					curr_state = 2;
+					prev_state = 1;
 				}
 				else if (left_clear == 0)
 				{
-					stop(); // stuck
+					stop();
+				}
+				else if (left_clear == true)
+				{
+					if (dir!=curr_state)
+					{
+						left();
+						dir = curr_state;
+					}
 				}
 			}
 		}
 	}
-
 	// Check if robot has reached goal
 	bool goal_check(double x, double y)
 	{

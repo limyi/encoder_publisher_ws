@@ -24,6 +24,7 @@ local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o: /opt/ro
 local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/TwistStamped.h
 local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/Vector3.h
 local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/Vector3Stamped.h
+local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o: /opt/ros/melodic/include/nav_msgs/Path.h
 local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o: /opt/ros/melodic/include/ros/advertise_options.h
 local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o: /opt/ros/melodic/include/ros/advertise_service_options.h
 local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o: /opt/ros/melodic/include/ros/assert.h
