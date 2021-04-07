@@ -67,6 +67,10 @@ double angle_diff(double x, double y, std::string unit="rad")
 		y = 2*PI + y;
 	}
 	double diff = x-y;
+	if (std::abs(diff) >= PI)
+	{
+		diff = 2*PI - std::abs(diff);
+	}
 	if (unit=="rad")
 	{
 		return diff;

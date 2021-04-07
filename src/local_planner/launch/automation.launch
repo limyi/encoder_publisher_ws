@@ -1,8 +1,11 @@
 <launch>
-	<arg name="robot" value="true"/>
-	
-	<include file="$(find local_planner)/launch/local_planner.launch"/>
-	
+	<arg name="robot" value="false"/>
+
+	<rosparam command="load" file="$(find local_planner)/params/cfg.yaml"/>
+
+	<node name="costmap_clear_node" type="costmap_clear_node" pkg="local_planner" output="screen"/>
+	<node name="local_planner_node" type="local_planner_node" pkg="local_planner" output="screen"/>
+
 	<group if="$(arg robot)">
 		<include file="$(find panthera_locomotion)/launch/run2.launch"/>
 	</group>

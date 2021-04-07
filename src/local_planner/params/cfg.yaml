@@ -11,3 +11,4 @@ horizontal_limit: 6.0
 
 # goal path
 delta_theta: 20 # degrees
+wp_interval: 10 # number of wp in between each goal

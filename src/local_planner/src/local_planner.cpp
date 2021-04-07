@@ -61,10 +61,11 @@ private:
 
 	// goal
 	bool reached_goal = true;
-	double goal_x, goal_y;
+	geometry_msgs::PoseStamped final_goal;
 	float goal_stop;
 	bool goal_sent = false;
 	double pose_tolerance;
+	int  wp_interval;
 
 	int rotation_not_clear = 0;
 
@@ -98,6 +99,7 @@ public:
 		horizontal_limit = nh->param("/horizontal_limit", 6.0);
 		delta_theta = nh->param("/delta_theta", 10);
 		pose_tolerance = nh->param("/pose_tolerance", 5);
+		wp_interval = nh->param("/wp_interval", 10);
 	}
 
 	// get global path (edit to add points if dtheta is more than certain angle)
@@ -106,24 +108,23 @@ public:
 		global_path.clear();
 		geometry_msgs::PoseStamped pt = msg.lanes[0].waypoints[0].pose;
 		global_path.push_back(pt);
-		int i = 1;
+		int i = 1, last_pt = 1;
 		while (i<msg.lanes[0].waypoints.size())
 		{
-			if (std::abs(angle_diff(quat_to_rad(pt,"rad"), quat_to_rad(msg.lanes[0].waypoints[i].pose, "rad"), "deg")) >= delta_theta)
-			{
+			if (std::abs(angle_diff(quat_to_rad(pt,"rad"), quat_to_rad(msg.lanes[0].waypoints[i].pose, "rad"), "deg")) >= delta_theta || i == msg.lanes[0].waypoints.size()-1 || i-last_pt >=wp_interval)
+			{	
+				//std::cout << std::abs(angle_diff(quat_to_rad(pt,"rad"), quat_to_rad(msg.lanes[0].waypoints[i].pose, "rad"), "deg")) << std::endl;
 				global_path.push_back(msg.lanes[0].waypoints[i].pose);
 				pt = msg.lanes[0].waypoints[i].pose;
+				last_pt = i;
+				//std::cout << std::abs(angle_diff(quat_to_rad(pt,"rad"), quat_to_rad(msg.lanes[0].waypoints[i].pose, "rad"), "deg")) << std::endl;
 			}
 			i++;
-		}
-		if(std::find(global_path.begin(), global_path.end(), global_path[global_path.size()-1]) != global_path.end())
-		{
-		   global_path.push_back(global_path[global_path.size()-1]);
 		}
 		nav_msgs::Path path;
 		path.poses = global_path;
 		path.header.frame_id = "/map";
-		std::cout << global_path.size() << std::endl;
+		//std::cout << global_path.size() << std::endl;
 		path_pub.publish(path);
 	}
 
@@ -139,9 +140,7 @@ public:
 	// Subscribe goal location
 	void goal_location(const geometry_msgs::PoseStamped& msg)
 	{	
-		goal_x = msg.pose.position.x;
-		goal_y = msg.pose.position.y;
-		geometry_msgs::Quaternion goal_wz = msg.pose.orientation;
+		final_goal = msg;
 		goal_sent = true;
 	}
 
