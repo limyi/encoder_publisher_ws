@@ -349,6 +349,8 @@ public:
 					{
 						std::cout << "Unable to rotate error" << std::endl;
 						goal_sent = false;
+						ros::Rate rate(1);
+						rate.sleep();
 					}
 				}
 				

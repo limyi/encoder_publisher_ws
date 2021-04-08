@@ -103,7 +103,7 @@ class Robot
 			r4 = right_front[0] + buffer + (right_front[1] - buffer) * len_x;
 
 			// front area search [f1:f3] and [f2:f4]
-			f1 = f4 - buffer;
+			f1 = r4 - buffer;
 			f2 = r2 - buffer;
 			f3 = l2 - buffer;
 			f4 = l4 - buffer;
@@ -113,11 +113,12 @@ class Robot
 			b3 = l1 + buffer;
 			b4 = l3 + buffer;
 
-			/**
-			std::cout << l1 << ' ' << l2 << ' ' << l3 << ' ' << l4 << std::endl;
-			std::cout << r1 << ' ' << r2 << ' ' << r3 << ' ' << r4 << std::endl;
-			std::cout << f1 << ' ' << f2 << ' ' << f3 << ' ' << f4 << std::endl;
-			**/
+			
+			std::cout << l3 << ' ' << b4 << ' ' << f4 << ' ' << l4 << std::endl;
+			std::cout << l1 << ' ' << b3 << ' ' << f3 << ' ' << l2 << std::endl;
+			std::cout << r1 << ' ' << b2 << ' ' << f2 << ' ' << r2 << std::endl;
+			std::cout << r3 << ' ' << b1 << ' ' << f1 << ' ' << r4 << std::endl;
+
 		}
 
 		void fpCoordinates()
@@ -193,7 +194,7 @@ class Robot
 			bool left_clear=true, right_clear=true, up_clear=true, radius_clear=true, back_clear=true;
 			/////////////////////////////////////////////
 			int l=0, lf=0, f=0, rf=0, r=0, rb=0, b=0, lb=0, u=0, o=0;
-			/**
+			
 			// left front box
 			for (int i = f3; i <= f4; i+=len_x)
 			{
@@ -266,7 +267,7 @@ class Robot
 				}
 			}
 			endleftback:
-			**/
+			
 			/////////////////////////////////////////////
 			// up clear
 			u = rf + lf;

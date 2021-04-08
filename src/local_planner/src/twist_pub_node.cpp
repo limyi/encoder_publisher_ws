@@ -193,6 +193,8 @@ public:
 				else
 				{
 					std::cout << "Unable to rotate error" << std::endl;
+					ros::Rate rate(1);
+					rate.sleep();
 					goal_sent = false;
 				}
 			}
