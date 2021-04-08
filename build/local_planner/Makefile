@@ -87,16 +87,6 @@ install/strip/fast: preinstall/fast
 	/home/sutd/.local/lib/python3.6/site-packages/cmake/data/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
 
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
-
 # Special rule for the target rebuild_cache
 rebuild_cache:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running CMake to regenerate build system..."
@@ -129,6 +119,16 @@ test:
 test/fast: test
 
 .PHONY : test/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
 
 # Special rule for the target install
 install: preinstall
@@ -262,51 +262,6 @@ local_planner_generate_messages_py/fast:
 .PHONY : local_planner_generate_messages_py/fast
 
 # Convenience name for target.
-local_planner/CMakeFiles/local_planner_gennodejs.dir/rule:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_gennodejs.dir/rule
-.PHONY : local_planner/CMakeFiles/local_planner_gennodejs.dir/rule
-
-# Convenience name for target.
-local_planner_gennodejs: local_planner/CMakeFiles/local_planner_gennodejs.dir/rule
-
-.PHONY : local_planner_gennodejs
-
-# fast build rule for target.
-local_planner_gennodejs/fast:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_gennodejs.dir/build.make local_planner/CMakeFiles/local_planner_gennodejs.dir/build
-.PHONY : local_planner_gennodejs/fast
-
-# Convenience name for target.
-local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule
-.PHONY : local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-nav_msgs_generate_messages_nodejs: local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : nav_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-nav_msgs_generate_messages_nodejs/fast:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/build.make local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/build
-.PHONY : nav_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-local_planner/CMakeFiles/local_planner_gencpp.dir/rule:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_gencpp.dir/rule
-.PHONY : local_planner/CMakeFiles/local_planner_gencpp.dir/rule
-
-# Convenience name for target.
-local_planner_gencpp: local_planner/CMakeFiles/local_planner_gencpp.dir/rule
-
-.PHONY : local_planner_gencpp
-
-# fast build rule for target.
-local_planner_gencpp/fast:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_gencpp.dir/build.make local_planner/CMakeFiles/local_planner_gencpp.dir/build
-.PHONY : local_planner_gencpp/fast
-
-# Convenience name for target.
 local_planner/CMakeFiles/local_planner_genlisp.dir/rule:
 	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_genlisp.dir/rule
 .PHONY : local_planner/CMakeFiles/local_planner_genlisp.dir/rule
@@ -337,6 +292,81 @@ local_planner_generate_messages_lisp/fast:
 .PHONY : local_planner_generate_messages_lisp/fast
 
 # Convenience name for target.
+local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/rule
+.PHONY : local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+local_planner_generate_messages_nodejs: local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/rule
+
+.PHONY : local_planner_generate_messages_nodejs
+
+# fast build rule for target.
+local_planner_generate_messages_nodejs/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/build
+.PHONY : local_planner_generate_messages_nodejs/fast
+
+# Convenience name for target.
+local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/rule
+.PHONY : local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+local_planner_generate_messages_eus: local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/rule
+
+.PHONY : local_planner_generate_messages_eus
+
+# fast build rule for target.
+local_planner_generate_messages_eus/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/build
+.PHONY : local_planner_generate_messages_eus/fast
+
+# Convenience name for target.
+local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/rule
+.PHONY : local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+local_planner_generate_messages_cpp: local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/rule
+
+.PHONY : local_planner_generate_messages_cpp
+
+# fast build rule for target.
+local_planner_generate_messages_cpp/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build
+.PHONY : local_planner_generate_messages_cpp/fast
+
+# Convenience name for target.
+local_planner/CMakeFiles/local_planner_gennodejs.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_gennodejs.dir/rule
+.PHONY : local_planner/CMakeFiles/local_planner_gennodejs.dir/rule
+
+# Convenience name for target.
+local_planner_gennodejs: local_planner/CMakeFiles/local_planner_gennodejs.dir/rule
+
+.PHONY : local_planner_gennodejs
+
+# fast build rule for target.
+local_planner_gennodejs/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_gennodejs.dir/build.make local_planner/CMakeFiles/local_planner_gennodejs.dir/build
+.PHONY : local_planner_gennodejs/fast
+
+# Convenience name for target.
+local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule
+.PHONY : local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+nav_msgs_generate_messages_nodejs: local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : nav_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+nav_msgs_generate_messages_nodejs/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/build.make local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/build
+.PHONY : nav_msgs_generate_messages_nodejs/fast
+
+# Convenience name for target.
 local_planner/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/rule:
 	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/rule
 .PHONY : local_planner/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/rule
@@ -350,6 +380,36 @@ actionlib_msgs_generate_messages_lisp: local_planner/CMakeFiles/actionlib_msgs_g
 actionlib_msgs_generate_messages_lisp/fast:
 	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build.make local_planner/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build
 .PHONY : actionlib_msgs_generate_messages_lisp/fast
+
+# Convenience name for target.
+local_planner/CMakeFiles/visualization_msgs_generate_messages_eus.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/visualization_msgs_generate_messages_eus.dir/rule
+.PHONY : local_planner/CMakeFiles/visualization_msgs_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+visualization_msgs_generate_messages_eus: local_planner/CMakeFiles/visualization_msgs_generate_messages_eus.dir/rule
+
+.PHONY : visualization_msgs_generate_messages_eus
+
+# fast build rule for target.
+visualization_msgs_generate_messages_eus/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/visualization_msgs_generate_messages_eus.dir/build.make local_planner/CMakeFiles/visualization_msgs_generate_messages_eus.dir/build
+.PHONY : visualization_msgs_generate_messages_eus/fast
+
+# Convenience name for target.
+local_planner/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/rule
+.PHONY : local_planner/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+visualization_msgs_generate_messages_nodejs: local_planner/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : visualization_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+visualization_msgs_generate_messages_nodejs/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/build.make local_planner/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/build
+.PHONY : visualization_msgs_generate_messages_nodejs/fast
 
 # Convenience name for target.
 local_planner/CMakeFiles/nav_msgs_generate_messages_lisp.dir/rule:
@@ -487,34 +547,19 @@ grid_map_msgs_generate_messages_cpp/fast:
 .PHONY : grid_map_msgs_generate_messages_cpp/fast
 
 # Convenience name for target.
-local_planner/CMakeFiles/local_planner_geneus.dir/rule:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_geneus.dir/rule
-.PHONY : local_planner/CMakeFiles/local_planner_geneus.dir/rule
+local_planner/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/rule
+.PHONY : local_planner/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/rule
 
 # Convenience name for target.
-local_planner_geneus: local_planner/CMakeFiles/local_planner_geneus.dir/rule
+visualization_msgs_generate_messages_lisp: local_planner/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/rule
 
-.PHONY : local_planner_geneus
+.PHONY : visualization_msgs_generate_messages_lisp
 
 # fast build rule for target.
-local_planner_geneus/fast:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_geneus.dir/build.make local_planner/CMakeFiles/local_planner_geneus.dir/build
-.PHONY : local_planner_geneus/fast
-
-# Convenience name for target.
-local_planner/CMakeFiles/local_planner_generate_messages.dir/rule:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_generate_messages.dir/rule
-.PHONY : local_planner/CMakeFiles/local_planner_generate_messages.dir/rule
-
-# Convenience name for target.
-local_planner_generate_messages: local_planner/CMakeFiles/local_planner_generate_messages.dir/rule
-
-.PHONY : local_planner_generate_messages
-
-# fast build rule for target.
-local_planner_generate_messages/fast:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages.dir/build
-.PHONY : local_planner_generate_messages/fast
+visualization_msgs_generate_messages_lisp/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/build.make local_planner/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/build
+.PHONY : visualization_msgs_generate_messages_lisp/fast
 
 # Convenience name for target.
 local_planner/CMakeFiles/grid_map_msgs_generate_messages_eus.dir/rule:
@@ -577,36 +622,6 @@ grid_map_msgs_generate_messages_nodejs/fast:
 .PHONY : grid_map_msgs_generate_messages_nodejs/fast
 
 # Convenience name for target.
-local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/rule:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/rule
-.PHONY : local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-local_planner_generate_messages_nodejs: local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/rule
-
-.PHONY : local_planner_generate_messages_nodejs
-
-# fast build rule for target.
-local_planner_generate_messages_nodejs/fast:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/build
-.PHONY : local_planner_generate_messages_nodejs/fast
-
-# Convenience name for target.
-local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/rule:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/rule
-.PHONY : local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-local_planner_generate_messages_eus: local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/rule
-
-.PHONY : local_planner_generate_messages_eus
-
-# fast build rule for target.
-local_planner_generate_messages_eus/fast:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/build
-.PHONY : local_planner_generate_messages_eus/fast
-
-# Convenience name for target.
 local_planner/CMakeFiles/grid_map_msgs_generate_messages_py.dir/rule:
 	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/grid_map_msgs_generate_messages_py.dir/rule
 .PHONY : local_planner/CMakeFiles/grid_map_msgs_generate_messages_py.dir/rule
@@ -622,19 +637,121 @@ grid_map_msgs_generate_messages_py/fast:
 .PHONY : grid_map_msgs_generate_messages_py/fast
 
 # Convenience name for target.
-local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/rule:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/rule
-.PHONY : local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/rule
+local_planner/CMakeFiles/local_planner_geneus.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_geneus.dir/rule
+.PHONY : local_planner/CMakeFiles/local_planner_geneus.dir/rule
 
 # Convenience name for target.
-local_planner_generate_messages_cpp: local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/rule
+local_planner_geneus: local_planner/CMakeFiles/local_planner_geneus.dir/rule
 
-.PHONY : local_planner_generate_messages_cpp
+.PHONY : local_planner_geneus
 
 # fast build rule for target.
-local_planner_generate_messages_cpp/fast:
-	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build
-.PHONY : local_planner_generate_messages_cpp/fast
+local_planner_geneus/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_geneus.dir/build.make local_planner/CMakeFiles/local_planner_geneus.dir/build
+.PHONY : local_planner_geneus/fast
+
+# Convenience name for target.
+local_planner/CMakeFiles/local_planner_generate_messages.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_generate_messages.dir/rule
+.PHONY : local_planner/CMakeFiles/local_planner_generate_messages.dir/rule
+
+# Convenience name for target.
+local_planner_generate_messages: local_planner/CMakeFiles/local_planner_generate_messages.dir/rule
+
+.PHONY : local_planner_generate_messages
+
+# fast build rule for target.
+local_planner_generate_messages/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages.dir/build
+.PHONY : local_planner_generate_messages/fast
+
+# Convenience name for target.
+local_planner/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/rule
+.PHONY : local_planner/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+visualization_msgs_generate_messages_cpp: local_planner/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/rule
+
+.PHONY : visualization_msgs_generate_messages_cpp
+
+# fast build rule for target.
+visualization_msgs_generate_messages_cpp/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/build.make local_planner/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/build
+.PHONY : visualization_msgs_generate_messages_cpp/fast
+
+# Convenience name for target.
+local_planner/CMakeFiles/area_covered_node.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/area_covered_node.dir/rule
+.PHONY : local_planner/CMakeFiles/area_covered_node.dir/rule
+
+# Convenience name for target.
+area_covered_node: local_planner/CMakeFiles/area_covered_node.dir/rule
+
+.PHONY : area_covered_node
+
+# fast build rule for target.
+area_covered_node/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/area_covered_node.dir/build.make local_planner/CMakeFiles/area_covered_node.dir/build
+.PHONY : area_covered_node/fast
+
+# Convenience name for target.
+local_planner/CMakeFiles/local_planner_gencpp.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/local_planner_gencpp.dir/rule
+.PHONY : local_planner/CMakeFiles/local_planner_gencpp.dir/rule
+
+# Convenience name for target.
+local_planner_gencpp: local_planner/CMakeFiles/local_planner_gencpp.dir/rule
+
+.PHONY : local_planner_gencpp
+
+# fast build rule for target.
+local_planner_gencpp/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_gencpp.dir/build.make local_planner/CMakeFiles/local_planner_gencpp.dir/build
+.PHONY : local_planner_gencpp/fast
+
+# Convenience name for target.
+local_planner/CMakeFiles/visualization_msgs_generate_messages_py.dir/rule:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/visualization_msgs_generate_messages_py.dir/rule
+.PHONY : local_planner/CMakeFiles/visualization_msgs_generate_messages_py.dir/rule
+
+# Convenience name for target.
+visualization_msgs_generate_messages_py: local_planner/CMakeFiles/visualization_msgs_generate_messages_py.dir/rule
+
+.PHONY : visualization_msgs_generate_messages_py
+
+# fast build rule for target.
+visualization_msgs_generate_messages_py/fast:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/visualization_msgs_generate_messages_py.dir/build.make local_planner/CMakeFiles/visualization_msgs_generate_messages_py.dir/build
+.PHONY : visualization_msgs_generate_messages_py/fast
+
+src/area_covered.o: src/area_covered.cpp.o
+
+.PHONY : src/area_covered.o
+
+# target to build an object file
+src/area_covered.cpp.o:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/area_covered_node.dir/build.make local_planner/CMakeFiles/area_covered_node.dir/src/area_covered.cpp.o
+.PHONY : src/area_covered.cpp.o
+
+src/area_covered.i: src/area_covered.cpp.i
+
+.PHONY : src/area_covered.i
+
+# target to preprocess a source file
+src/area_covered.cpp.i:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/area_covered_node.dir/build.make local_planner/CMakeFiles/area_covered_node.dir/src/area_covered.cpp.i
+.PHONY : src/area_covered.cpp.i
+
+src/area_covered.s: src/area_covered.cpp.s
+
+.PHONY : src/area_covered.s
+
+# target to generate assembly for a file
+src/area_covered.cpp.s:
+	cd /home/sutd/encoder_publisher_ws/build && $(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/area_covered_node.dir/build.make local_planner/CMakeFiles/area_covered_node.dir/src/area_covered.cpp.s
+.PHONY : src/area_covered.cpp.s
 
 src/costmap_clear.o: src/costmap_clear.cpp.o
 
@@ -757,9 +874,18 @@ help:
 	@echo "... nav_msgs_generate_messages_lisp"
 	@echo "... nav_msgs_generate_messages_nodejs"
 	@echo "... nav_msgs_generate_messages_py"
+	@echo "... visualization_msgs_generate_messages_cpp"
+	@echo "... visualization_msgs_generate_messages_eus"
+	@echo "... visualization_msgs_generate_messages_lisp"
+	@echo "... visualization_msgs_generate_messages_nodejs"
+	@echo "... visualization_msgs_generate_messages_py"
+	@echo "... area_covered_node"
 	@echo "... costmap_clear_node"
 	@echo "... local_planner_node"
 	@echo "... twist_pub_node"
+	@echo "... src/area_covered.o"
+	@echo "... src/area_covered.i"
+	@echo "... src/area_covered.s"
 	@echo "... src/costmap_clear.o"
 	@echo "... src/costmap_clear.i"
 	@echo "... src/costmap_clear.s"

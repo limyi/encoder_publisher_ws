@@ -642,45 +642,6 @@ local_planner_generate_messages_py/fast:
 .PHONY : local_planner_generate_messages_py/fast
 
 #=============================================================================
-# Target rules for targets named local_planner_gennodejs
-
-# Build rule for target.
-local_planner_gennodejs: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_gennodejs
-.PHONY : local_planner_gennodejs
-
-# fast build rule for target.
-local_planner_gennodejs/fast:
-	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_gennodejs.dir/build.make local_planner/CMakeFiles/local_planner_gennodejs.dir/build
-.PHONY : local_planner_gennodejs/fast
-
-#=============================================================================
-# Target rules for targets named nav_msgs_generate_messages_nodejs
-
-# Build rule for target.
-nav_msgs_generate_messages_nodejs: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 nav_msgs_generate_messages_nodejs
-.PHONY : nav_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-nav_msgs_generate_messages_nodejs/fast:
-	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/build.make local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/build
-.PHONY : nav_msgs_generate_messages_nodejs/fast
-
-#=============================================================================
-# Target rules for targets named local_planner_gencpp
-
-# Build rule for target.
-local_planner_gencpp: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_gencpp
-.PHONY : local_planner_gencpp
-
-# fast build rule for target.
-local_planner_gencpp/fast:
-	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_gencpp.dir/build.make local_planner/CMakeFiles/local_planner_gencpp.dir/build
-.PHONY : local_planner_gencpp/fast
-
-#=============================================================================
 # Target rules for targets named local_planner_genlisp
 
 # Build rule for target.
@@ -707,6 +668,71 @@ local_planner_generate_messages_lisp/fast:
 .PHONY : local_planner_generate_messages_lisp/fast
 
 #=============================================================================
+# Target rules for targets named local_planner_generate_messages_nodejs
+
+# Build rule for target.
+local_planner_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_generate_messages_nodejs
+.PHONY : local_planner_generate_messages_nodejs
+
+# fast build rule for target.
+local_planner_generate_messages_nodejs/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/build
+.PHONY : local_planner_generate_messages_nodejs/fast
+
+#=============================================================================
+# Target rules for targets named local_planner_generate_messages_eus
+
+# Build rule for target.
+local_planner_generate_messages_eus: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_generate_messages_eus
+.PHONY : local_planner_generate_messages_eus
+
+# fast build rule for target.
+local_planner_generate_messages_eus/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/build
+.PHONY : local_planner_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named local_planner_generate_messages_cpp
+
+# Build rule for target.
+local_planner_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_generate_messages_cpp
+.PHONY : local_planner_generate_messages_cpp
+
+# fast build rule for target.
+local_planner_generate_messages_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build
+.PHONY : local_planner_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named local_planner_gennodejs
+
+# Build rule for target.
+local_planner_gennodejs: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_gennodejs
+.PHONY : local_planner_gennodejs
+
+# fast build rule for target.
+local_planner_gennodejs/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_gennodejs.dir/build.make local_planner/CMakeFiles/local_planner_gennodejs.dir/build
+.PHONY : local_planner_gennodejs/fast
+
+#=============================================================================
+# Target rules for targets named nav_msgs_generate_messages_nodejs
+
+# Build rule for target.
+nav_msgs_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 nav_msgs_generate_messages_nodejs
+.PHONY : nav_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+nav_msgs_generate_messages_nodejs/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/build.make local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/build
+.PHONY : nav_msgs_generate_messages_nodejs/fast
+
+#=============================================================================
 # Target rules for targets named actionlib_msgs_generate_messages_lisp
 
 # Build rule for target.
@@ -718,6 +744,32 @@ actionlib_msgs_generate_messages_lisp: cmake_check_build_system
 actionlib_msgs_generate_messages_lisp/fast:
 	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build.make local_planner/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/build
 .PHONY : actionlib_msgs_generate_messages_lisp/fast
+
+#=============================================================================
+# Target rules for targets named visualization_msgs_generate_messages_eus
+
+# Build rule for target.
+visualization_msgs_generate_messages_eus: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 visualization_msgs_generate_messages_eus
+.PHONY : visualization_msgs_generate_messages_eus
+
+# fast build rule for target.
+visualization_msgs_generate_messages_eus/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/visualization_msgs_generate_messages_eus.dir/build.make local_planner/CMakeFiles/visualization_msgs_generate_messages_eus.dir/build
+.PHONY : visualization_msgs_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named visualization_msgs_generate_messages_nodejs
+
+# Build rule for target.
+visualization_msgs_generate_messages_nodejs: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 visualization_msgs_generate_messages_nodejs
+.PHONY : visualization_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+visualization_msgs_generate_messages_nodejs/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/build.make local_planner/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/build
+.PHONY : visualization_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
 # Target rules for targets named nav_msgs_generate_messages_lisp
@@ -837,30 +889,17 @@ grid_map_msgs_generate_messages_cpp/fast:
 .PHONY : grid_map_msgs_generate_messages_cpp/fast
 
 #=============================================================================
-# Target rules for targets named local_planner_geneus
+# Target rules for targets named visualization_msgs_generate_messages_lisp
 
 # Build rule for target.
-local_planner_geneus: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_geneus
-.PHONY : local_planner_geneus
+visualization_msgs_generate_messages_lisp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 visualization_msgs_generate_messages_lisp
+.PHONY : visualization_msgs_generate_messages_lisp
 
 # fast build rule for target.
-local_planner_geneus/fast:
-	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_geneus.dir/build.make local_planner/CMakeFiles/local_planner_geneus.dir/build
-.PHONY : local_planner_geneus/fast
-
-#=============================================================================
-# Target rules for targets named local_planner_generate_messages
-
-# Build rule for target.
-local_planner_generate_messages: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_generate_messages
-.PHONY : local_planner_generate_messages
-
-# fast build rule for target.
-local_planner_generate_messages/fast:
-	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages.dir/build
-.PHONY : local_planner_generate_messages/fast
+visualization_msgs_generate_messages_lisp/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/build.make local_planner/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/build
+.PHONY : visualization_msgs_generate_messages_lisp/fast
 
 #=============================================================================
 # Target rules for targets named grid_map_msgs_generate_messages_eus
@@ -915,32 +954,6 @@ grid_map_msgs_generate_messages_nodejs/fast:
 .PHONY : grid_map_msgs_generate_messages_nodejs/fast
 
 #=============================================================================
-# Target rules for targets named local_planner_generate_messages_nodejs
-
-# Build rule for target.
-local_planner_generate_messages_nodejs: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_generate_messages_nodejs
-.PHONY : local_planner_generate_messages_nodejs
-
-# fast build rule for target.
-local_planner_generate_messages_nodejs/fast:
-	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/build
-.PHONY : local_planner_generate_messages_nodejs/fast
-
-#=============================================================================
-# Target rules for targets named local_planner_generate_messages_eus
-
-# Build rule for target.
-local_planner_generate_messages_eus: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_generate_messages_eus
-.PHONY : local_planner_generate_messages_eus
-
-# fast build rule for target.
-local_planner_generate_messages_eus/fast:
-	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/build
-.PHONY : local_planner_generate_messages_eus/fast
-
-#=============================================================================
 # Target rules for targets named grid_map_msgs_generate_messages_py
 
 # Build rule for target.
@@ -954,17 +967,82 @@ grid_map_msgs_generate_messages_py/fast:
 .PHONY : grid_map_msgs_generate_messages_py/fast
 
 #=============================================================================
-# Target rules for targets named local_planner_generate_messages_cpp
+# Target rules for targets named local_planner_geneus
 
 # Build rule for target.
-local_planner_generate_messages_cpp: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_generate_messages_cpp
-.PHONY : local_planner_generate_messages_cpp
+local_planner_geneus: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_geneus
+.PHONY : local_planner_geneus
 
 # fast build rule for target.
-local_planner_generate_messages_cpp/fast:
-	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/build
-.PHONY : local_planner_generate_messages_cpp/fast
+local_planner_geneus/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_geneus.dir/build.make local_planner/CMakeFiles/local_planner_geneus.dir/build
+.PHONY : local_planner_geneus/fast
+
+#=============================================================================
+# Target rules for targets named local_planner_generate_messages
+
+# Build rule for target.
+local_planner_generate_messages: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_generate_messages
+.PHONY : local_planner_generate_messages
+
+# fast build rule for target.
+local_planner_generate_messages/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_generate_messages.dir/build.make local_planner/CMakeFiles/local_planner_generate_messages.dir/build
+.PHONY : local_planner_generate_messages/fast
+
+#=============================================================================
+# Target rules for targets named visualization_msgs_generate_messages_cpp
+
+# Build rule for target.
+visualization_msgs_generate_messages_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 visualization_msgs_generate_messages_cpp
+.PHONY : visualization_msgs_generate_messages_cpp
+
+# fast build rule for target.
+visualization_msgs_generate_messages_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/build.make local_planner/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/build
+.PHONY : visualization_msgs_generate_messages_cpp/fast
+
+#=============================================================================
+# Target rules for targets named area_covered_node
+
+# Build rule for target.
+area_covered_node: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 area_covered_node
+.PHONY : area_covered_node
+
+# fast build rule for target.
+area_covered_node/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/area_covered_node.dir/build.make local_planner/CMakeFiles/area_covered_node.dir/build
+.PHONY : area_covered_node/fast
+
+#=============================================================================
+# Target rules for targets named local_planner_gencpp
+
+# Build rule for target.
+local_planner_gencpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 local_planner_gencpp
+.PHONY : local_planner_gencpp
+
+# fast build rule for target.
+local_planner_gencpp/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/local_planner_gencpp.dir/build.make local_planner/CMakeFiles/local_planner_gencpp.dir/build
+.PHONY : local_planner_gencpp/fast
+
+#=============================================================================
+# Target rules for targets named visualization_msgs_generate_messages_py
+
+# Build rule for target.
+visualization_msgs_generate_messages_py: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 visualization_msgs_generate_messages_py
+.PHONY : visualization_msgs_generate_messages_py
+
+# fast build rule for target.
+visualization_msgs_generate_messages_py/fast:
+	$(MAKE) $(MAKESILENT) -f local_planner/CMakeFiles/visualization_msgs_generate_messages_py.dir/build.make local_planner/CMakeFiles/visualization_msgs_generate_messages_py.dir/build
+.PHONY : visualization_msgs_generate_messages_py/fast
 
 #=============================================================================
 # Target rules for targets named _ds4_driver_generate_messages_check_deps_Feedback
@@ -1786,6 +1864,12 @@ help:
 	@echo "... tf_generate_messages_lisp"
 	@echo "... tf_generate_messages_nodejs"
 	@echo "... tf_generate_messages_py"
+	@echo "... visualization_msgs_generate_messages_cpp"
+	@echo "... visualization_msgs_generate_messages_eus"
+	@echo "... visualization_msgs_generate_messages_lisp"
+	@echo "... visualization_msgs_generate_messages_nodejs"
+	@echo "... visualization_msgs_generate_messages_py"
+	@echo "... area_covered_node"
 	@echo "... can_encoder_pub_node"
 	@echo "... costmap_clear_node"
 	@echo "... gmock"
