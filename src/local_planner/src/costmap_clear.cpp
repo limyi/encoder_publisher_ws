@@ -67,8 +67,8 @@ class Robot
 			CmdVelPub = nh->advertise<geometry_msgs::Twist>("panthera_cmd",100);
 			cmap_clear = nh->advertise<local_planner::CmapClear>("check_cmap",100);
 
-			length = nh->param("/robot_length", 1.0);
-			width = nh->param("/robot_width", 0.5);
+			length = nh->param("/robot_length", 2.2);
+			width = nh->param("/robot_width", 1.0);
 			safety_dist = nh->param("/safety_dist", 0.5);
 			clear_tolerance = nh->param("/clear_tolerance", 1);
 			clear_radius = nh->param("/clear_radius", 1.0);
@@ -192,7 +192,8 @@ class Robot
 
 			bool left_clear=true, right_clear=true, up_clear=true, radius_clear=true, back_clear=true;
 			/////////////////////////////////////////////
-			int l=0, lf=0, f=0, rf=0, r=0, rb=0, b=0, lb=0, u=0;
+			int l=0, lf=0, f=0, rf=0, r=0, rb=0, b=0, lb=0, u=0, o=0;
+			/**
 			// left front box
 			for (int i = f3; i <= f4; i+=len_x)
 			{
@@ -205,7 +206,7 @@ class Robot
 						{
 							left_clear = false;
 							up_clear = false;
-							goto endleftfront;
+							goto endleft;
 						}
 					}
 				}
@@ -223,7 +224,7 @@ class Robot
 						{
 							right_clear = false;
 							up_clear = false;
-							goto endrightfront;
+							goto endright;
 						}
 					}
 				}
@@ -265,7 +266,27 @@ class Robot
 				}
 			}
 			endleftback:
+			**/
 			/////////////////////////////////////////////
+			// up clear
+			u = rf + lf;
+			for (int i = f2; i <= f3; i+=len_x)
+			{
+				for (int j = i; j <= i + (r2 - f2); j++)
+				{
+					if (cmap[j] > 0)
+					{
+						u+=1;
+						if (u>=clear_tolerance)
+						{	
+							up_clear=false;
+							goto endup;
+						}
+					}
+				}
+			}
+			endup:
+
 			// left clear
 			l = lf+lb;
 			for (int i = b3; i <= b4; i+=len_x)
@@ -306,31 +327,36 @@ class Robot
 			}
 			endright:
 
-			// up clear
-			u = rf + lf;
-			for (int i = f2; i <= f3; i+=len_x)
+			// back clear
+			b = lb + rb;
+			for ( int i = r1; i <= l1; i+=len_x)
 			{
-				for (int j = i; j <= i + (r2 - f2); j++)
+				for (int j = i; j <= i + (b2 - r1); j++)
 				{
-					if (cmap[j] > 0)
+					if (cmap[i] > 0)
 					{
-						u+=1;
-						if (u>=clear_tolerance)
-						{	
-							up_clear=false;
-							goto endup;
+						b++;
+						if (b>=clear_tolerance)
+						{
+							back_clear = false;
+							goto endback;
 						}
 					}
 				}
 			}
-			endup:
+			endback:
 
+			// radius clear
 			for (int i : radial_area)
 			{
 				if (cmap[i] > 0)
-				{
-					radius_clear = false;
-					goto endradius;
+				{	
+					o++;
+					if (o>=clear_tolerance)
+					{
+						radius_clear = false;
+						goto endradius;
+					}
 				}
 			}
 			endradius:

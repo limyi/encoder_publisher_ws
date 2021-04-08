@@ -1,2 +1,2 @@
 can_encoder_pub:ds4_driver:key_command_pub:local_planner:panthera_locomotion:roboclaw_node
--DCATKIN_DEVEL_PREFIX=/home/sutd/encoder_publisher_ws/devel -DCMAKE_INSTALL_PREFIX=/home/sutd/encoder_publisher_ws/install -G Unix Makefiles
+-DCATKIN_DEVEL_PREFIX=/home/joel/encoder_publisher_ws/devel -DCMAKE_INSTALL_PREFIX=/home/joel/encoder_publisher_ws/install -G Unix Makefiles

@@ -50,14 +50,14 @@ private:
 
 	// speed
 	float vx = 0.1;
-	float wz = 0.5;
+	float wz = 0.1;
 	int rotating;
 
 	float width;
 	float length;
 
 	int n = 0;
-	bool operation = false;
+	bool operation = true;
 
 	// goal
 	bool reached_goal = true;
@@ -92,7 +92,12 @@ public:
 		rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
 		lf_stat = nh->serviceClient<panthera_locomotion::Status>("lf_steer_status");
 		rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
-
+		
+		lb_stat.waitForExistence();
+		rb_stat.waitForExistence();
+		lf_stat.waitForExistence();
+		rf_stat.waitForExistence();
+		
 		length = nh->param("/robot_length", 1.5);
 		goal_stop = nh->param("/goal_stop", 0.5);
 		forward_limit = nh->param("/forward_limit", 0.5);
@@ -187,172 +192,167 @@ public:
 		curr_x = msg.pose.position.x;
 		curr_y = msg.pose.position.y;
 		curr_t = quat_to_rad(msg);
-		
+		printf("check1\n");
 		// init start_x and start_y
 		if (n == 0)
 		{
 			start_x = curr_x;
 			start_y = curr_y;
+			step=3.0;
 			n++;
 		}
-
-		int aligned = align_pose(curr_t, global_path[0]);
-
-		if (goal_check(curr_x, curr_y, global_path[1]) == false && goal_sent == true)
+		int aligned;
+		if (global_path.size() == 0){}
+		else
 		{	
-			double dist = sqrt(pow(curr_x-start_x,2) + pow(curr_y-start_y, 2));
-			std::cout << dist << " " << curr_state << std::endl;
-			if (dist < step)
-			{
-				finished_step = false;
-			}
-			else
-			{
-				finished_step = true;
-			}
-
-			if (aligned == 1)
-			{
-				if (rotating != aligned)
+			aligned = align_pose(curr_t, global_path[0]);
+			printf("check2\n");
+			if (goal_check(curr_x, curr_y, global_path[1]) == false && goal_sent == true)
+			{	
+				double dist = sqrt(pow(curr_x-start_x,2) + pow(curr_y-start_y, 2));
+				std::cout << dist << " | " << step << std::endl;
+				if (dist < step)
 				{
-					rotate_left();
-					rotating = aligned;
-				}
-			}
-			else if (aligned == -1)
-			{
-				if (rotating != aligned)
-				{
-					rotate_right();
-					rotating = aligned;
-				}
-			}
-			else if (aligned == 0)
-			{
-				if (rotating != aligned)
-				{
-					stop();
-					rotating = aligned;
+					finished_step = false;
 				}
 				else
 				{
-					sm(curr_x, curr_y);
-					/*
-					switch(curr_state)
-					{
-						case 1:
-							right();
-						case 2:
-							up();
-						case 3:
-							left();
-					}
-					*/
+					finished_step = true;
 				}
-			}
-			else if (align_attempt == true && radius_clear == true)
-			{
+
 				if (aligned == 1)
 				{
-					rotate_left();
-					rotating = aligned;
+					if (rotating != aligned)
+					{
+						rotate_right();
+						rotating = aligned;
+					}
 				}
 				else if (aligned == -1)
 				{
-					rotate_right();
-					rotating = aligned;
+					if (rotating != aligned)
+					{
+						rotate_left();
+						rotating = aligned;
+					}
 				}
-				else
+				else if (aligned == 0)
 				{
-					stop();
-					rotating = aligned;
-					global_path.erase(global_path.begin());
-					align_attempt = false;
+					if (rotating != aligned)
+					{
+						stop();
+						rotating = aligned;
+					}
+					else
+					{
+						sm(curr_x, curr_y);
+
+					}
 				}
-			}
-		}
-		else
-		{	
-			if (aligned == 0)
-			{
-				stop();
-				curr_state = 1;
-				prev_state = 2;
-				global_path.erase(global_path.begin());
-			}
-			else if (aligned == 1)
-			{
-				if (rotating != aligned)
-				{	
-					// rotate
-					if (radius_clear == 0)
+				else if (align_attempt == true && radius_clear == true)
+				{
+					if (aligned == 1)
+					{
+						rotate_right();
+						rotating = aligned;
+					}
+					else if (aligned == -1)
 					{
 						rotate_left();
 						rotating = aligned;
 					}
 					else
 					{
-						if (curr_state == 1 && left_clear == true)
-						{
-							left();
-							align_attempt = true;
-						}
-						else if (curr_state == 3 && right_clear == true)
-						{
-							right();
-							align_attempt = true;
-						}
-						else if (curr_state == 2 && back_clear == true)
-						{
-							reverse();
-							align_attempt = true;
-						}
-						else
-						{
-							stop();
-							printf("Help I'm stuck\n");
-						}
+						stop();
+						rotating = aligned;
+						global_path.erase(global_path.begin());
+						align_attempt = false;
 					}
 				}
 			}
-			else if (aligned == -1)
-			{
-				if (rotating != aligned)
-				{
-					rotate_right();
-					rotating = aligned;
-				}
-			}
-			else if (aligned == 0)
-			{
-				stop();
-				align_attempt = false;
-				rotating = aligned;
-				global_path.erase(global_path.begin());
-			}
-
-			if (global_path.size() <= 1)
-			{
-				goal_sent = false;
-			}
-			/**
 			else
 			{	
-				stop();
-				if (rotation_not_clear <= 100)
+				if (aligned == 0)
 				{
-					std::cout << "rotation not clear" << std::endl;
-					rotation_not_clear++;
-					ros::Rate rate(1);
-					rate.sleep();
+					stop();
+					curr_state = 1;
+					prev_state = 2;
+					global_path.erase(global_path.begin());
 				}
-				else
+				else if (aligned == 1)
 				{
-					std::cout << "Unable to rotate error" << std::endl;
+					if (rotating != aligned)
+					{	
+						// rotate
+						if (radius_clear == 0)
+						{
+							rotate_right();
+							rotating = aligned;
+						}
+						else
+						{
+							if (curr_state == 1 && left_clear == true)
+							{
+								left();
+								align_attempt = true;
+							}
+							else if (curr_state == 3 && right_clear == true)
+							{
+								right();
+								align_attempt = true;
+							}
+							else if (curr_state == 2 && back_clear == true)
+							{
+								reverse();
+								align_attempt = true;
+							}
+							else
+							{
+								stop();
+								printf("Help I'm stuck\n");
+							}
+						}
+					}
+				}
+				else if (aligned == -1)
+				{
+					if (rotating != aligned)
+					{
+						rotate_left();
+						rotating = aligned;
+					}
+				}
+				else if (aligned == 0)
+				{
+					stop();
+					align_attempt = false;
+					rotating = aligned;
+					global_path.erase(global_path.begin());
+				}
+
+				if (global_path.size() <= 1)
+				{
 					goal_sent = false;
 				}
+				
+				else
+				{	
+					stop();
+					if (rotation_not_clear <= 100)
+					{
+						std::cout << "rotation not clear" << std::endl;
+						rotation_not_clear++;
+						ros::Rate rate(1);
+						rate.sleep();
+					}
+					else
+					{
+						std::cout << "Unable to rotate error" << std::endl;
+						goal_sent = false;
+					}
+				}
+				
 			}
-			**/
 		}
 	}
 
@@ -384,109 +384,6 @@ public:
 		}
 	}
 
-	/** State machine: 
-		- State 1: moving right
-		- State 2: moving up
-		- State 3: moving left
-	
-	void sm(double x, double y)
-	{	
-		// moving right
-		if (curr_state == 1)
-		{
-			if (prev_state == 2)
-			{
-				if (right_clear == 0)
-				{
-					stop();
-					start_x = x;
-					start_y = y;
-					curr_state = 2;
-					prev_state = 1;
-				}
-			}
-			else if (prev_state == 3)
-			{
-				if (up_clear == 1)
-				{
-					stop();
-					start_x = x;
-					start_y = y;
-					curr_state = 2;
-					prev_state = 3;
-				}
-				else if (right_clear == 0)
-				{
-					stop();
-				}
-			}
-		}
-		// moving up
-		else if (curr_state == 2)
-		{
-			if (prev_state == 1)
-			{
-				if (finished_step == 1)
-				{
-					stop();
-					curr_state = 3;
-					prev_state = 2;
-				}
-				else if (up_clear == false)
-				{
-					stop();
-					curr_state = 3;
-					prev_state = 2;
-				}
-			}
-			else if (prev_state == 3)
-			{
-				if (finished_step == 1)
-				{
-					stop();
-					curr_state = 1;
-					prev_state = 2;
-				}
-				else if (up_clear == false)
-				{
-					stop();
-					curr_state = 1;
-					prev_state = 2;
-				}
-			}
-		}
-		// moving left
-		else if (curr_state == 3)
-		{
-			if (prev_state == 2)
-			{
-				if (left_clear == 0)
-				{
-					stop();
-					start_x = x;
-					start_y = y;
-					curr_state = 2;
-					prev_state = 3;
-				}
-			}
-			else if (prev_state == 1)
-			{
-				if (up_clear == 1)
-				{
-					stop();
-					start_x = x;
-					start_y = y;
-					curr_state = 2;
-					prev_state = 1;
-				}
-				else if (left_clear == 0)
-				{
-					stop();
-				}
-			}
-		}
-	}
-	**/
 	void sm(double x, double y)
 	{	
 		// moving right
@@ -652,6 +549,7 @@ public:
 		ts->linear.z = -90;
 		ts->angular.x = -90;
 		ts->angular.y = 0;
+		twist_pub.publish(*ts);
 
 		check_steer();
 
@@ -668,6 +566,7 @@ public:
 		ts->linear.z = 90;
 		ts->angular.x = 90;
 		ts->angular.y = 0;
+		twist_pub.publish(*ts);
 
 		check_steer();
 
@@ -683,6 +582,7 @@ public:
 		ts->linear.z = 0;
 		ts->angular.x = 0;
 		ts->angular.y = 0;
+		twist_pub.publish(*ts);
 
 		check_steer();
 
@@ -698,6 +598,7 @@ public:
 		ts->linear.z = 0;
 		ts->angular.x = 0;
 		ts->angular.y = 0;
+		twist_pub.publish(*ts);
 
 		check_steer();
 
@@ -722,6 +623,7 @@ public:
 		ts->angular.x = a.rf;
 		ts->angular.y = 0;
 		ts->angular.z = 0;
+		twist_pub.publish(*ts);
 
 		check_steer();
 
@@ -739,6 +641,7 @@ public:
 		ts->angular.x = a.rf;
 		ts->angular.y = 0;
 		ts->angular.z = 0;
+		twist_pub.publish(*ts);
 
 		check_steer();
 

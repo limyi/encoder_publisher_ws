@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/sutd/encoder_publisher_ws/devel/lib/local_planner/costmap_clear_node"
-  "/home/sutd/encoder_publisher_ws/devel/lib/local_planner/costmap_clear_node.pdb"
   "CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.o"
+  "/home/joel/encoder_publisher_ws/devel/lib/local_planner/costmap_clear_node.pdb"
+  "/home/joel/encoder_publisher_ws/devel/lib/local_planner/costmap_clear_node"
 )
 
 # Per-language clean rules from dependency scanning.

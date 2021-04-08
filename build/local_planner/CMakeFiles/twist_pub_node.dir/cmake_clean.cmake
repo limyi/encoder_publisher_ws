@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/sutd/encoder_publisher_ws/devel/lib/local_planner/twist_pub_node"
-  "/home/sutd/encoder_publisher_ws/devel/lib/local_planner/twist_pub_node.pdb"
   "CMakeFiles/twist_pub_node.dir/src/twist_pub_node.cpp.o"
+  "/home/joel/encoder_publisher_ws/devel/lib/local_planner/twist_pub_node.pdb"
+  "/home/joel/encoder_publisher_ws/devel/lib/local_planner/twist_pub_node"
 )
 
 # Per-language clean rules from dependency scanning.

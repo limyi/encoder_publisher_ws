@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/sutd/encoder_publisher_ws/devel/share/roseus/ros/local_planner/manifest.l"
-  "/home/sutd/encoder_publisher_ws/devel/share/roseus/ros/local_planner/msg/CmapClear.l"
   "CMakeFiles/local_planner_generate_messages_eus"
+  "/home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/msg/CmapClear.l"
+  "/home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/manifest.l"
 )
 
 # Per-language clean rules from dependency scanning.

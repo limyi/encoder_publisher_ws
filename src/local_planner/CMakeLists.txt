@@ -15,6 +15,7 @@ find_package(catkin REQUIRED COMPONENTS
   grid_map_msgs
   visualization_msgs
   message_generation
+  autoware_msgs
 )
 
 ## System dependencies are found with CMake's conventions
@@ -107,7 +108,7 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
- INCLUDE_DIRS include
+ INCLUDE_DIRS #include https://github.com/jcch96/encoder_publisher_ws.git
 #  LIBRARIES global_planner
  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp std_msgs message_runtime
 #  DEPENDS system_lib
@@ -140,7 +141,7 @@ include_directories(
 add_executable(costmap_clear_node src/costmap_clear.cpp)
 add_executable(twist_pub_node src/twist_pub_node.cpp)
 add_executable(${PROJECT_NAME}_node src/local_planner.cpp)
-add_executable(area_covered_node src/area_covered.cpp)
+#add_executable(area_covered_node src/area_covered.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -153,7 +154,7 @@ add_executable(area_covered_node src/area_covered.cpp)
 add_dependencies(costmap_clear_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(twist_pub_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(area_covered_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(area_covered_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(
@@ -171,10 +172,10 @@ target_link_libraries(
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries(
-  area_covered_node
-  ${catkin_LIBRARIES}
-)
+#target_link_libraries(
+#  area_covered_node
+#  ${catkin_LIBRARIES}
+#)
 
 #############
 ## Install ##

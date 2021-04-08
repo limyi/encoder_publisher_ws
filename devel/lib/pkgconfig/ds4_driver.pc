@@ -1,8 +1,8 @@
-prefix=/home/sutd/encoder_publisher_ws/devel
+prefix=/home/joel/encoder_publisher_ws/devel
 
 Name: ds4_driver
 Description: Description of ds4_driver
 Version: 0.2.1
-Cflags: -I/home/sutd/encoder_publisher_ws/devel/include
+Cflags: -I/home/joel/encoder_publisher_ws/devel/include
 Libs: -L${prefix}/lib 
 Requires: 

@@ -1,8 +1,8 @@
-# Install script for directory: /home/sutd/encoder_publisher_ws/src/local_planner
+# Install script for directory: /home/joel/encoder_publisher_ws/src/local_planner
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/sutd/encoder_publisher_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/joel/encoder_publisher_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -37,59 +37,54 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
-# Set default install directory permissions.
-if(NOT DEFINED CMAKE_OBJDUMP)
-  set(CMAKE_OBJDUMP "/usr/bin/objdump")
+if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/local_planner/msg" TYPE FILE FILES "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/local_planner/msg" TYPE FILE FILES "/home/sutd/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/local_planner/cmake" TYPE FILE FILES "/home/joel/encoder_publisher_ws/build/local_planner/catkin_generated/installspace/local_planner-msg-paths.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/local_planner/cmake" TYPE FILE FILES "/home/sutd/encoder_publisher_ws/build/local_planner/catkin_generated/installspace/local_planner-msg-paths.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/joel/encoder_publisher_ws/devel/include/local_planner")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/sutd/encoder_publisher_ws/devel/include/local_planner")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/sutd/encoder_publisher_ws/devel/share/roseus/ros/local_planner")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/sutd/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/sutd/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner")
+  execute_process(COMMAND "/usr/bin/python2" -m compileall "/home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  execute_process(COMMAND "/usr/bin/python2" -m compileall "/home/sutd/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages" TYPE DIRECTORY FILES "/home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python2.7/dist-packages" TYPE DIRECTORY FILES "/home/sutd/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/joel/encoder_publisher_ws/build/local_planner/catkin_generated/installspace/local_planner.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/sutd/encoder_publisher_ws/build/local_planner/catkin_generated/installspace/local_planner.pc")
-endif()
-
-if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/local_planner/cmake" TYPE FILE FILES "/home/sutd/encoder_publisher_ws/build/local_planner/catkin_generated/installspace/local_planner-msg-extras.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/local_planner/cmake" TYPE FILE FILES "/home/joel/encoder_publisher_ws/build/local_planner/catkin_generated/installspace/local_planner-msg-extras.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/local_planner/cmake" TYPE FILE FILES
-    "/home/sutd/encoder_publisher_ws/build/local_planner/catkin_generated/installspace/local_plannerConfig.cmake"
-    "/home/sutd/encoder_publisher_ws/build/local_planner/catkin_generated/installspace/local_plannerConfig-version.cmake"
+    "/home/joel/encoder_publisher_ws/build/local_planner/catkin_generated/installspace/local_plannerConfig.cmake"
+    "/home/joel/encoder_publisher_ws/build/local_planner/catkin_generated/installspace/local_plannerConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/local_planner" TYPE FILE FILES "/home/sutd/encoder_publisher_ws/src/local_planner/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/local_planner" TYPE FILE FILES "/home/joel/encoder_publisher_ws/src/local_planner/package.xml")
 endif()
 

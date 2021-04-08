@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/sutd/encoder_publisher_ws/devel/lib/python2.7/dist-packages/panthera_locomotion/srv/_Status.py"
-  "/home/sutd/encoder_publisher_ws/devel/lib/python2.7/dist-packages/panthera_locomotion/srv/__init__.py"
   "CMakeFiles/panthera_locomotion_generate_messages_py"
+  "/home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/panthera_locomotion/srv/_Status.py"
+  "/home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/panthera_locomotion/srv/__init__.py"
 )
 
 # Per-language clean rules from dependency scanning.

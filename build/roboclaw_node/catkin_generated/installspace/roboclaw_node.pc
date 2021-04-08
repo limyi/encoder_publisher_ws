@@ -1,4 +1,4 @@
-prefix=/home/sutd/encoder_publisher_ws/install
+prefix=/home/joel/encoder_publisher_ws/install
 
 Name: roboclaw_node
 Description: Description of roboclaw_node

@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/sutd/encoder_publisher_ws/devel/lib/local_planner/local_planner_node"
-  "/home/sutd/encoder_publisher_ws/devel/lib/local_planner/local_planner_node.pdb"
   "CMakeFiles/local_planner_node.dir/src/local_planner.cpp.o"
+  "/home/joel/encoder_publisher_ws/devel/lib/local_planner/local_planner_node.pdb"
+  "/home/joel/encoder_publisher_ws/devel/lib/local_planner/local_planner_node"
 )
 
 # Per-language clean rules from dependency scanning.

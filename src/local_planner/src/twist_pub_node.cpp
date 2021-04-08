@@ -35,13 +35,13 @@ private:
 
 	// speed
 	float vx = 0.1;
-	float wz = 0.5;
+	float wz = 0.1;
 
 	float width;
 	float length;
 
 	int n = 0;
-	bool operation = false;
+	bool operation = true;
 
 	// goal
 	bool reached_goal = true;
@@ -60,11 +60,17 @@ public:
 		goal = nh->subscribe("/move_base_simple/goal", 1000, &StateMachine::goal_location, this);
 		width_sub = nh->subscribe("/can_encoder", 1000, &StateMachine::read_width, this);
 		twist_pub = nh->advertise<geometry_msgs::Twist>("panthera_cmd", 100);
+
 		lb_stat = nh->serviceClient<panthera_locomotion::Status>("lb_steer_status");
 		rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
 		lf_stat = nh->serviceClient<panthera_locomotion::Status>("lf_steer_status");
 		rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
-
+		/**
+		lb_stat.waitForExistence();
+		rb_stat.waitForExistence();
+		lf_stat.waitForExistence();
+		rf_stat.waitForExistence();
+		**/
 		length = nh->param("/robot_length", 1.5);
 		horizontal_limit = nh->param("/horizontal_limit", 3.0);
 		forward_limit = nh->param("/forward_limit", 3.0);
@@ -145,12 +151,14 @@ public:
 		{
 			start_x = curr_x;
 			start_y = curr_y;
+			step = forward_limit;
 			n++;
 		}
 		if (goal_check(curr_x,curr_y) == false && goal_sent == true)
 		{
 			double dist = sqrt(pow(curr_x-start_x,2) + pow(curr_y-start_y, 2));
-			std::cout << dist << " " << curr_state << std::endl;
+			std::cout << dist << " | " << step << std::endl;
+
 			if (dist < step)
 			{
 				finished_step = false;
@@ -161,17 +169,7 @@ public:
 			}
 			
 			sm(curr_x, curr_y);
-			/*
-			switch(curr_state)
-			{
-				case 1:
-					right();
-				case 2:
-					up();
-				case 3:
-					left();
-			}
-			*/
+			
 		}
 		else
 		{	
@@ -265,7 +263,7 @@ public:
 		{
 			if (prev_state == 1)
 			{
-				if (finished_step == 1 || up_clear == false)
+				if (finished_step == true || up_clear == false)
 				{
 					stop();
 					curr_state = 3;
@@ -274,7 +272,7 @@ public:
 					start_y = y;
 					step = horizontal_limit;
 				}
-				else if (up_clear == true)
+				else if (up_clear == true && finished_step == false)
 				{
 					if (dir!=curr_state)
 					{
@@ -285,7 +283,7 @@ public:
 			}
 			else if (prev_state == 3)
 			{
-				if (finished_step == 1 || up_clear == false)
+				if (finished_step == true || up_clear == false)
 				{
 					stop();
 					curr_state = 1;
@@ -294,7 +292,7 @@ public:
 					start_y = y;
 					step = horizontal_limit;
 				}
-				else if (up_clear == true)
+				else if (up_clear == true && finished_step == false)
 				{
 					if (dir!=curr_state)
 					{
@@ -318,7 +316,7 @@ public:
 					curr_state = 2;
 					prev_state = 3;
 				}
-				else if (left_clear == true)
+				else if (left_clear == true && finished_step == false)
 				{
 					if (dir!=curr_state)
 					{
@@ -342,7 +340,7 @@ public:
 				{
 					stop();
 				}
-				else if (left_clear == true)
+				else if (left_clear == true && finished_step == false)
 				{
 					if (dir!=curr_state)
 					{
@@ -413,7 +411,7 @@ public:
 		}
 	}
 
-	//////////////// Velocity Commands ///////////////////////////
+//////////////// Velocity Commands ///////////////////////////
 
 	void right()
 	{
@@ -423,6 +421,7 @@ public:
 		ts->linear.z = -90;
 		ts->angular.x = -90;
 		ts->angular.y = 0;
+		twist_pub.publish(*ts);
 
 		check_steer();
 
@@ -439,6 +438,7 @@ public:
 		ts->linear.z = 90;
 		ts->angular.x = 90;
 		ts->angular.y = 0;
+		twist_pub.publish(*ts);
 
 		check_steer();
 
@@ -454,6 +454,7 @@ public:
 		ts->linear.z = 0;
 		ts->angular.x = 0;
 		ts->angular.y = 0;
+		twist_pub.publish(*ts);
 
 		check_steer();
 
@@ -478,6 +479,7 @@ public:
 		ts->angular.x = a.rf;
 		ts->angular.y = 0;
 		ts->angular.z = 0;
+		twist_pub.publish(*ts);
 
 		check_steer();
 
@@ -495,6 +497,7 @@ public:
 		ts->angular.x = a.rf;
 		ts->angular.y = 0;
 		ts->angular.z = 0;
+		twist_pub.publish(*ts);
 
 		check_steer();
 

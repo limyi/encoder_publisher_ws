@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sutd/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg/CmapClear.lisp"
   "CMakeFiles/local_planner_generate_messages_lisp"
+  "/home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg/CmapClear.lisp"
 )
 
 # Per-language clean rules from dependency scanning.

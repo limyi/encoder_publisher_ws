@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/sutd/encoder_publisher_ws/devel/share/common-lisp/ros/panthera_locomotion/srv/Status.lisp"
   "CMakeFiles/panthera_locomotion_generate_messages_lisp"
+  "/home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/panthera_locomotion/srv/Status.lisp"
 )
 
 # Per-language clean rules from dependency scanning.
