@@ -10,6 +10,8 @@
 #include <geometry_msgs/Pose.h>
 #include <tf/tf.h>
 #include <local_planner/CmapClear.h>
+#include <geometry_msgs/PolygonStamped.h>
+#include <geometry_msgs/Point32.h>
 
 /** PARAMS:
 	- length of robot
@@ -37,24 +39,26 @@ class Robot
 		ros::Subscriber RobotPose;
 		ros::Publisher CmdVelPub;
 		ros::Publisher cmap_clear;
+		ros::Publisher robot_footprint;
 
 		// Footprint info
 		double length, width;
 		std::array<int,2> left_back, left_front, right_back, right_front;
-		float offset_x=-0.27, offset_y=0;
+		float offset_x=0, offset_y=0;
+		geometry_msgs::PolygonStamped fp;
 
 		float safety_dist;
 		int buffer; // number of squares safety distance
 		int clear_tolerance;
-		float clear_radius;
+		double clear_radius;
 
 		// search area
 		int l1,l2,l3,l4,r1,r2,r3,r4,f1,f2,f3,f4,b1,b2,b3,b4;
 		std::vector<int> radial_area;
 
 		// Map info
-		int len_x, len_y;
-		double res;
+		int len_x=10, len_y=10;
+		double res=0.05;
 		local_planner::CmapClear bools;
 
 		// run once
@@ -66,12 +70,15 @@ class Robot
 			CostMap = nh->subscribe("/semantics/costmap_generator/occupancy_grid", 1000, &Robot::mapCallback, this);
 			CmdVelPub = nh->advertise<geometry_msgs::Twist>("panthera_cmd",100);
 			cmap_clear = nh->advertise<local_planner::CmapClear>("check_cmap",100);
+			robot_footprint = nh->advertise<geometry_msgs::PolygonStamped>("/robot_footprint", 100);
 
 			length = nh->param("/robot_length", 2.2);
 			width = nh->param("/robot_width", 1.0);
 			safety_dist = nh->param("/safety_dist", 0.5);
 			clear_tolerance = nh->param("/clear_tolerance", 1);
 			clear_radius = nh->param("/clear_radius", 1.0);
+			offset_x = nh->param("/offset_x", 0);
+			offset_y = nh->param("/offset_y", 0);
 		}
 
 		void mapCallback(const nav_msgs::OccupancyGrid& msg)
@@ -86,6 +93,7 @@ class Robot
 			}
 			std::vector<signed char> data_pts = msg.data;
 			checkclear(data_pts);
+			robot_footprint.publish(fp);	
 		}
 
 		void searchArea()
@@ -113,12 +121,12 @@ class Robot
 			b3 = l1 + buffer;
 			b4 = l3 + buffer;
 
-			
+			/**
 			std::cout << l3 << ' ' << b4 << ' ' << f4 << ' ' << l4 << std::endl;
 			std::cout << l1 << ' ' << b3 << ' ' << f3 << ' ' << l2 << std::endl;
 			std::cout << r1 << ' ' << b2 << ' ' << f2 << ' ' << r2 << std::endl;
 			std::cout << r3 << ' ' << b1 << ' ' << f1 << ' ' << r4 << std::endl;
-
+			**/
 		}
 
 		void fpCoordinates()
@@ -150,6 +158,24 @@ class Robot
 
 			searchArea();
 
+			geometry_msgs::Point32 p1,p2,p3,p4;
+			p1.y = -width/2;
+			p1.x = -length/2;
+
+			p2.y = -width/2;
+			p2.x = length/2;
+
+			p3.y = width/2;
+			p3.x = length/2;
+
+			p4.y = width/2;
+			p4.x = -length/2;
+
+			std::vector<geometry_msgs::Point32> footprint{p1, p2, p3, p4};
+			fp.polygon.points = footprint;
+			fp.header.frame_id = "footprint";
+			//std::cout << fp.polygon.points[0] << std::endl;
+			robot_footprint.publish(fp);
 			//printf("footprinted\n");
 			/**
 			std::cout << buffer << std::endl;
@@ -159,14 +185,18 @@ class Robot
 			std::cout << left_front[0] << " " << left_front[1] << std::endl;
 			std::cout << right_front[0] << " " << right_front[1] << std::endl;
 			**/
+
 		}
 
 		bool radius_clearing(int index, float centre[2])
 		{
 			int coor[2];
+			clear_radius = 1.1/0.05;
+			//std::cout << "clear radius: " << clear_radius << std::endl;
 			if (index <= len_x)
 			{
 				coor[0] = index;
+				coor[1] = 0;
 			}
 			else
 			{
@@ -273,7 +303,7 @@ class Robot
 			u = rf + lf;
 			for (int i = f2; i <= f3; i+=len_x)
 			{
-				for (int j = i; j <= i + (r2 - f2); j++)
+				for (int j = i; j <= i + buffer; j++)
 				{
 					if (cmap[j] > 0)
 					{
@@ -348,6 +378,7 @@ class Robot
 			endback:
 
 			// radius clear
+			/**
 			for (int i : radial_area)
 			{
 				if (cmap[i] > 0)
@@ -359,6 +390,11 @@ class Robot
 						goto endradius;
 					}
 				}
+			}**/
+			o = lb+l+lf+u+rf+r+rb+b;
+			if (o >= clear_tolerance)
+			{
+				radius_clear = false;
 			}
 			endradius:
 

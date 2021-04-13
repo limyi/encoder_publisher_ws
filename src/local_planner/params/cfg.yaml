@@ -3,12 +3,17 @@ robot_width: 1.0
 safety_dist: 0.3
 clear_tolerance: 5
 clear_radius: 1.1
-goal_stop: 0.3
 
 # limits
-forward_limit: 0.5
-horizontal_limit: 6.0
+forward_limit: 1.0
+horizontal_limit: 1.0
 
 # goal path
 delta_theta: 20 # degrees
 wp_interval: 10 # number of wp in between each goal
+pose_tolerance: 7 # adjust if pose deviates more than this
+goal_stop: 0.4 # reached goal if within this distance from goal
+
+# lidar offset
+offset_x: 0.3
+offset_y: 0

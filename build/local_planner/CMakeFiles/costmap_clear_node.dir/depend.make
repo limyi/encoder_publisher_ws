@@ -4,7 +4,10 @@
 local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.o: /home/joel/encoder_publisher_ws/devel/include/local_planner/CmapClear.h
 local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.o: /home/joel/encoder_publisher_ws/src/local_planner/src/costmap_clear.cpp
 local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.o: /opt/ros/melodic/include/geometry_msgs/Point.h
+local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.o: /opt/ros/melodic/include/geometry_msgs/Point32.h
 local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.o: /opt/ros/melodic/include/geometry_msgs/PointStamped.h
+local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.o: /opt/ros/melodic/include/geometry_msgs/Polygon.h
+local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.o: /opt/ros/melodic/include/geometry_msgs/PolygonStamped.h
 local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.o: /opt/ros/melodic/include/geometry_msgs/Pose.h
 local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.o: /opt/ros/melodic/include/geometry_msgs/PoseStamped.h
 local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.o: /opt/ros/melodic/include/geometry_msgs/Quaternion.h

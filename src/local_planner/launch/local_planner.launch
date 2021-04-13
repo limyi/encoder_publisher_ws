@@ -1,5 +1,6 @@
 <launch>
 	<rosparam command="load" file="$(find local_planner)/params/cfg.yaml"/>
+	<node pkg="tf" type="static_transform_publisher" name="footprint_broadcaster" args="0 0 0 0 0 0 1 base_link footprint 100" />
 	<node name="costmap_clear_node" type="costmap_clear_node" pkg="local_planner" output="screen"/>
 	<node name="twist_pub_node" pkg="local_planner" type="twist_pub_node" output="screen"/>
 </launch>

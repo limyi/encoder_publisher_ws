@@ -65,12 +65,12 @@ public:
 		rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
 		lf_stat = nh->serviceClient<panthera_locomotion::Status>("lf_steer_status");
 		rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
-		/**
+		
 		lb_stat.waitForExistence();
 		rb_stat.waitForExistence();
 		lf_stat.waitForExistence();
 		rf_stat.waitForExistence();
-		**/
+			
 		length = nh->param("/robot_length", 1.5);
 		horizontal_limit = nh->param("/horizontal_limit", 3.0);
 		forward_limit = nh->param("/forward_limit", 3.0);

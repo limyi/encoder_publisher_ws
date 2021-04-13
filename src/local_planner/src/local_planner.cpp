@@ -14,14 +14,6 @@
 #include <autoware_msgs/LaneArray.h>
 #include <nav_msgs/Path.h>
 
-/**
-Things to edit:
-1. Extract global path (done)
-2. Iterate through global path (done)
-3. Adjust robot pose at each step (done)
-4. Add limits into state machine 
-**/
-
 #define PI 3.14159265359
 
 class LocalPlanner
@@ -50,8 +42,8 @@ private:
 
 	// speed
 	float vx = 0.1;
-	float wz = 0.1;
-	int rotating;
+	float wz = 0.03;
+	int rotating; // check if robot is already rotating
 
 	float width;
 	float length;
@@ -63,11 +55,8 @@ private:
 	bool reached_goal = true;
 	geometry_msgs::PoseStamped final_goal;
 	float goal_stop;
-	bool goal_sent = false;
 	double pose_tolerance;
 	int  wp_interval;
-
-	int rotation_not_clear = 0;
 
 	// trying to align
 	bool align_attempt = false;
@@ -87,7 +76,7 @@ public:
 		global_path_sub = nh->subscribe("/lane_waypoints_array", 1000, &LocalPlanner::get_path, this);
 		twist_pub = nh->advertise<geometry_msgs::Twist>("panthera_cmd", 100);
 		path_pub = nh->advertise<nav_msgs::Path>("new_global_path", 100);
-
+		
 		lb_stat = nh->serviceClient<panthera_locomotion::Status>("lb_steer_status");
 		rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
 		lf_stat = nh->serviceClient<panthera_locomotion::Status>("lf_steer_status");
@@ -118,35 +107,36 @@ public:
 		{
 			if (std::abs(angle_diff(quat_to_rad(pt,"rad"), quat_to_rad(msg.lanes[0].waypoints[i].pose, "rad"), "deg")) >= delta_theta || i == msg.lanes[0].waypoints.size()-1 || i-last_pt >=wp_interval)
 			{	
-				//std::cout << std::abs(angle_diff(quat_to_rad(pt,"rad"), quat_to_rad(msg.lanes[0].waypoints[i].pose, "rad"), "deg")) << std::endl;
 				global_path.push_back(msg.lanes[0].waypoints[i].pose);
 				pt = msg.lanes[0].waypoints[i].pose;
 				last_pt = i;
-				//std::cout << std::abs(angle_diff(quat_to_rad(pt,"rad"), quat_to_rad(msg.lanes[0].waypoints[i].pose, "rad"), "deg")) << std::endl;
 			}
 			i++;
 		}
 		nav_msgs::Path path;
 		path.poses = global_path;
 		path.header.frame_id = "/map";
-		//std::cout << global_path.size() << std::endl;
+		std::cout << "Path of size " << global_path.size() << " received."<< std::endl;
 		path_pub.publish(path);
 	}
 
-	// move to first wp
-
-
 	// Wheel separation of robot
 	void read_width(const geometry_msgs::Twist& msg)
-	{
-		width = (msg.angular.y + msg.angular.z)/2;
+	{	
+		if (operation == true)
+		{
+			width = (msg.angular.y + msg.angular.z)/2;
+		}
+		else
+		{
+			width = 0.7;
+		}
 	}
 
 	// Subscribe goal location
 	void goal_location(const geometry_msgs::PoseStamped& msg)
 	{	
 		final_goal = msg;
-		goal_sent = true;
 	}
 
 	// Check if wheels have adjusted to correct angle
@@ -160,7 +150,7 @@ public:
 			lf_req.request.reconfig = true;
 			rf_req.request.reconfig = true;
 			bool signal = false;
-			ros::Rate rate(2);
+			ros::Rate rate(1);
 			int count = 0;
 			while (signal == false || count<2 )
 			{
@@ -169,7 +159,7 @@ public:
 				lf_stat.call(lf_req);
 				rf_stat.call(rf_req);
 				signal = ((bool)lb_req.response.status && (bool)lf_req.response.status && (bool)rb_req.response.status && (bool)rf_req.response.status);
-				std::cout << "Signal: " << signal << std::endl;
+				//std::cout << "Signal: " << signal << std::endl;
 				rate.sleep();
 				if (signal==true)
 				{
@@ -183,7 +173,6 @@ public:
 			printf("Clear!\n");
 		}
 		else{}
-
 	}
 	
 	// Robot pose subscriber
@@ -192,170 +181,158 @@ public:
 		curr_x = msg.pose.position.x;
 		curr_y = msg.pose.position.y;
 		curr_t = quat_to_rad(msg);
-		printf("check1\n");
+
 		// init start_x and start_y
 		if (n == 0)
 		{
 			start_x = curr_x;
 			start_y = curr_y;
-			step=3.0;
+			step=forward_limit;
 			n++;
 		}
 		int aligned;
-		if (global_path.size() == 0){}
-		else
+		if (global_path.size() != 0)
 		{	
-			aligned = align_pose(curr_t, global_path[0]);
-			printf("check2\n");
-			if (goal_check(curr_x, curr_y, global_path[1]) == false && goal_sent == true)
-			{	
-				double dist = sqrt(pow(curr_x-start_x,2) + pow(curr_y-start_y, 2));
-				std::cout << dist << " | " << step << std::endl;
-				if (dist < step)
+			int rotate_dir = align_pose(curr_t, global_path[0]);
+			if (goal_check(curr_x, curr_y, global_path[1]) == true)
+			{
+				global_path.erase(global_path.begin());
+			}
+			else
+			{
+				if (rotate_dir != 0)
 				{
-					finished_step = false;
+					if (rotate_dir == 1)
+					{
+						if (rotate_dir != rotating)
+						{
+							rotate_right();
+							rotating = rotate_dir;
+						}
+					}
+					else if (rotate_dir == -1)
+					{
+						if (rotate_dir != rotating)
+						{
+							rotate_left();
+							rotating = rotate_dir;
+						}
+					}
 				}
 				else
 				{
-					finished_step = true;
-				}
-
-				if (aligned == 1)
-				{
-					if (rotating != aligned)
-					{
-						rotate_right();
-						rotating = aligned;
-					}
-				}
-				else if (aligned == -1)
-				{
-					if (rotating != aligned)
-					{
-						rotate_left();
-						rotating = aligned;
-					}
-				}
-				else if (aligned == 0)
-				{
-					if (rotating != aligned)
+					if (rotating != 0)
 					{
 						stop();
-						rotating = aligned;
+						rotating = 0;
+						dir = 0;
 					}
 					else
 					{
 						sm(curr_x, curr_y);
-
 					}
 				}
-				else if (align_attempt == true && radius_clear == true)
+			}
+		}
+		/**
+		if (global_path.size() != 0)
+		{	
+			int rotate_dir;
+			if (goal_check(curr_x, curr_y, global_path[1]) == true)
+			{	
+				printf("Reached wp!\n");
+				// check if aligned to goal
+				rotate_dir = align_pose(curr_t, global_path[1]);
+				std::cout << "Rotate Dir: " << rotate_dir << std::endl;
+				if (rotate_dir == 0)
+				{	
+					stop();
+					global_path.erase(global_path.begin());
+
+				}
+				else
 				{
-					if (aligned == 1)
+					if (radius_clear != 1)
 					{
-						rotate_right();
-						rotating = aligned;
-					}
-					else if (aligned == -1)
-					{
-						rotate_left();
-						rotating = aligned;
+						sm(curr_x, curr_y); // continue state machine until can rotate
 					}
 					else
 					{
-						stop();
-						rotating = aligned;
-						global_path.erase(global_path.begin());
-						align_attempt = false;
+						if (rotate_dir == 1)
+						{
+							if (rotate_dir != rotating)
+							{
+								rotate_right();
+								rotating = rotate_dir;
+							}
+						}
+						else if (rotate_dir == -1)
+						{
+							if (rotate_dir != rotating)
+							{
+								rotate_left();
+								rotating = rotate_dir;
+							}
+						}
 					}
 				}
 			}
 			else
 			{	
-				if (aligned == 0)
+				// check if aligned to current pose
+				rotate_dir = align_pose(curr_t, global_path[0]);
+				if (rotate_dir != 0)
 				{
-					stop();
-					curr_state = 1;
-					prev_state = 2;
-					global_path.erase(global_path.begin());
-				}
-				else if (aligned == 1)
-				{
-					if (rotating != aligned)
+					if (radius_clear != 1)
 					{	
-						// rotate
-						if (radius_clear == 0)
+						if (rotate_dir != rotating)
 						{
-							rotate_right();
-							rotating = aligned;
+							stop();
+							rotating = rotate_dir;
 						}
 						else
-						{
-							if (curr_state == 1 && left_clear == true)
-							{
-								left();
-								align_attempt = true;
-							}
-							else if (curr_state == 3 && right_clear == true)
-							{
-								right();
-								align_attempt = true;
-							}
-							else if (curr_state == 2 && back_clear == true)
-							{
-								reverse();
-								align_attempt = true;
-							}
-							else
-							{
-								stop();
-								printf("Help I'm stuck\n");
-							}
+						{	
+							sm(curr_x, curr_y); // continue state machine until can rotate
 						}
-					}
-				}
-				else if (aligned == -1)
-				{
-					if (rotating != aligned)
-					{
-						rotate_left();
-						rotating = aligned;
-					}
-				}
-				else if (aligned == 0)
-				{
-					stop();
-					align_attempt = false;
-					rotating = aligned;
-					global_path.erase(global_path.begin());
-				}
-
-				if (global_path.size() <= 1)
-				{
-					goal_sent = false;
-				}
-				
-				else
-				{	
-					stop();
-					if (rotation_not_clear <= 100)
-					{
-						std::cout << "rotation not clear" << std::endl;
-						rotation_not_clear++;
-						ros::Rate rate(1);
-						rate.sleep();
+						//printf("state machine running\n");
 					}
 					else
 					{
-						std::cout << "Unable to rotate error" << std::endl;
-						goal_sent = false;
-						ros::Rate rate(1);
-						rate.sleep();
+						if (rotate_dir == 1)
+						{
+							if (rotate_dir != rotating)
+							{
+								rotate_right();
+								printf("Rotate Right\n");
+								rotating = rotate_dir;
+							}
+						}
+						else if (rotate_dir == -1)
+						{
+							if (rotate_dir != rotating)
+							{
+								rotate_left();
+								printf("Rotate Left\n");
+								rotating = rotate_dir;
+							}
+						}
 					}
 				}
-				
+				else
+				{	
+					if (rotate_dir != rotating)
+					{
+						stop();
+						rotating = rotate_dir;
+					}
+					else
+					{
+						sm(curr_x, curr_y);
+					}
+					//printf("state machine running\n");
+				}
 			}
-		}
+		}**/	
 	}
 
 	// Check costmap if clear to move left/right/up/rotate
@@ -371,14 +348,16 @@ public:
 	// align robot when at start of goal and at end of each horizontal movement
 	int align_pose(double current, geometry_msgs::PoseStamped goal)
 	{	
+		//double diff = (current - quat_to_rad(goal, "rad"))/PI*180;
 		double diff = angle_diff(current, quat_to_rad(goal, "rad"), "deg");
-		if (diff >= pose_tolerance)
-		{
-			return -1;
-		}
-		else if (diff <= -pose_tolerance)
+		std::cout << "Angle diff: " << diff << std::endl;
+		if (std::round(diff) >= pose_tolerance)
 		{
 			return 1;
+		}
+		else if (std::round(diff) <= -pose_tolerance)
+		{
+			return -1;
 		}
 		else
 		{
@@ -388,13 +367,27 @@ public:
 
 	void sm(double x, double y)
 	{	
+		double dist = sqrt(pow(x-start_x,2) + pow(y-start_y, 2));
+		std::cout << dist << " | " << step << std::endl;
+		// check if robot has reached forward/horizontal limit
+		if (dist <= step)
+		{
+			finished_step = false;
+		}
+		else
+		{
+			finished_step = true;
+		}
+		std::cout << (finished_step == true) << std::endl;
+		std::cout << curr_state << " " << prev_state << std::endl;
 		// moving right
 		if (curr_state == 1)
 		{	
 			if (prev_state == 2)
 			{
 				if (right_clear == 0 || finished_step == true)
-				{
+				{	
+					//printf("checking\n");
 					stop();
 					start_x = x;
 					start_y = y;
@@ -403,12 +396,16 @@ public:
 					prev_state = 1;
 					up();
 					dir = curr_state;
+					//printf("check1\n");
 				}
 				else
-				{
+				{	
+					//printf("check3\n");
 					if (dir!=curr_state)
-					{
+					{	
+						//printf("check4\n");
 						right();
+						//printf("check2\n");
 						dir = curr_state;
 					}
 				}
@@ -433,10 +430,12 @@ public:
 		}
 		// moving up
 		else if (curr_state == 2)
-		{
+		{	
+			std::cout << "State 2" << std::endl;
+			std::cout << (finished_step == 1) << " " << (up_clear == false) << std::endl;
 			if (prev_state == 1)
 			{
-				if (finished_step == 1 || up_clear == false)
+				if (finished_step == 1)// || up_clear == false)
 				{
 					stop();
 					curr_state = 3;
@@ -542,9 +541,9 @@ public:
 	}
 
 	//////////////// Velocity Commands ///////////////////////////
-
+	
 	void right()
-	{
+	{	
 		auto* ts = &twist_msg;
 		ts->linear.x = -90;
 		ts->linear.y = -90;
@@ -609,9 +608,20 @@ public:
 	}
 
 	void stop()
-	{
+	{	
+		printf("stopping\n");
 		auto* ts = &twist_msg;
+		ts->linear.x = 0;
+		ts->linear.y = 0;
+		ts->linear.z = 0;
+		ts->angular.x = 0;
 		ts->angular.y = 0;
+		ts->angular.z = 0;
+		twist_pub.publish(*ts);
+
+		check_steer();
+		ts->angular.y = 0;
+		ts->angular.z = 0;
 		twist_pub.publish(*ts);
 	}
 
@@ -650,7 +660,6 @@ public:
 		ts->angular.z = wz;
 		twist_pub.publish(*ts);
 	}
-
 };
 
 int main(int argc, char** argv)
