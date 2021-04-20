@@ -688,6 +688,19 @@ local_planner_generate_messages_cpp/fast:
 .PHONY : local_planner_generate_messages_cpp/fast
 
 #=============================================================================
+# Target rules for targets named _local_planner_generate_messages_check_deps_Sonar
+
+# Build rule for target.
+_local_planner_generate_messages_check_deps_Sonar: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 _local_planner_generate_messages_check_deps_Sonar
+.PHONY : _local_planner_generate_messages_check_deps_Sonar
+
+# fast build rule for target.
+_local_planner_generate_messages_check_deps_Sonar/fast:
+	$(MAKE) -f local_planner/CMakeFiles/_local_planner_generate_messages_check_deps_Sonar.dir/build.make local_planner/CMakeFiles/_local_planner_generate_messages_check_deps_Sonar.dir/build
+.PHONY : _local_planner_generate_messages_check_deps_Sonar/fast
+
+#=============================================================================
 # Target rules for targets named local_planner_generate_messages
 
 # Build rule for target.
@@ -1141,6 +1154,19 @@ jsk_recognition_msgs_generate_messages_eus: cmake_check_build_system
 jsk_recognition_msgs_generate_messages_eus/fast:
 	$(MAKE) -f local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir/build.make local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir/build
 .PHONY : jsk_recognition_msgs_generate_messages_eus/fast
+
+#=============================================================================
+# Target rules for targets named sonar_costmap
+
+# Build rule for target.
+sonar_costmap: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sonar_costmap
+.PHONY : sonar_costmap
+
+# fast build rule for target.
+sonar_costmap/fast:
+	$(MAKE) -f local_planner/CMakeFiles/sonar_costmap.dir/build.make local_planner/CMakeFiles/sonar_costmap.dir/build
+.PHONY : sonar_costmap/fast
 
 #=============================================================================
 # Target rules for targets named jsk_footstep_msgs_generate_messages_py
@@ -2027,6 +2053,7 @@ help:
 	@echo "... local_planner_geneus"
 	@echo "... local_planner_generate_messages_eus"
 	@echo "... local_planner_generate_messages_cpp"
+	@echo "... _local_planner_generate_messages_check_deps_Sonar"
 	@echo "... local_planner_generate_messages"
 	@echo "... twist_pub_node"
 	@echo "... jsk_footstep_msgs_generate_messages_nodejs"
@@ -2062,6 +2089,7 @@ help:
 	@echo "... grid_map_msgs_generate_messages_nodejs"
 	@echo "... actionlib_msgs_generate_messages_cpp"
 	@echo "... jsk_recognition_msgs_generate_messages_eus"
+	@echo "... sonar_costmap"
 	@echo "... jsk_footstep_msgs_generate_messages_py"
 	@echo "... visualization_msgs_generate_messages_lisp"
 	@echo "... visualization_msgs_generate_messages_nodejs"

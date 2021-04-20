@@ -54,6 +54,7 @@ CMAKE_BINARY_DIR = /home/joel/encoder_publisher_ws/build
 include local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/progress.make
 
 local_planner/CMakeFiles/local_planner_generate_messages_nodejs: /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner/msg/CmapClear.js
+local_planner/CMakeFiles/local_planner_generate_messages_nodejs: /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner/msg/Sonar.js
 
 
 /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner/msg/CmapClear.js: /opt/ros/melodic/lib/gennodejs/gen_nodejs.py
@@ -61,8 +62,14 @@ local_planner/CMakeFiles/local_planner_generate_messages_nodejs: /home/joel/enco
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Javascript code from local_planner/CmapClear.msg"
 	cd /home/joel/encoder_publisher_ws/build/local_planner && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg -Ilocal_planner:/home/joel/encoder_publisher_ws/src/local_planner/msg -Igeometry_msgs:/opt/ros/melodic/share/geometry_msgs/cmake/../msg -Inav_msgs:/opt/ros/melodic/share/nav_msgs/cmake/../msg -Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg -Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg -p local_planner -o /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner/msg
 
+/home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner/msg/Sonar.js: /opt/ros/melodic/lib/gennodejs/gen_nodejs.py
+/home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner/msg/Sonar.js: /home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating Javascript code from local_planner/Sonar.msg"
+	cd /home/joel/encoder_publisher_ws/build/local_planner && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg -Ilocal_planner:/home/joel/encoder_publisher_ws/src/local_planner/msg -Igeometry_msgs:/opt/ros/melodic/share/geometry_msgs/cmake/../msg -Inav_msgs:/opt/ros/melodic/share/nav_msgs/cmake/../msg -Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg -Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg -p local_planner -o /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner/msg
+
 local_planner_generate_messages_nodejs: local_planner/CMakeFiles/local_planner_generate_messages_nodejs
 local_planner_generate_messages_nodejs: /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner/msg/CmapClear.js
+local_planner_generate_messages_nodejs: /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner/msg/Sonar.js
 local_planner_generate_messages_nodejs: local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/build.make
 
 .PHONY : local_planner_generate_messages_nodejs

@@ -54,6 +54,7 @@ CMAKE_BINARY_DIR = /home/joel/encoder_publisher_ws/build
 include local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/progress.make
 
 local_planner/CMakeFiles/local_planner_generate_messages_eus: /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/msg/CmapClear.l
+local_planner/CMakeFiles/local_planner_generate_messages_eus: /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/msg/Sonar.l
 local_planner/CMakeFiles/local_planner_generate_messages_eus: /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/manifest.l
 
 
@@ -62,12 +63,18 @@ local_planner/CMakeFiles/local_planner_generate_messages_eus: /home/joel/encoder
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating EusLisp code from local_planner/CmapClear.msg"
 	cd /home/joel/encoder_publisher_ws/build/local_planner && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg -Ilocal_planner:/home/joel/encoder_publisher_ws/src/local_planner/msg -Igeometry_msgs:/opt/ros/melodic/share/geometry_msgs/cmake/../msg -Inav_msgs:/opt/ros/melodic/share/nav_msgs/cmake/../msg -Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg -Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg -p local_planner -o /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/msg
 
+/home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/msg/Sonar.l: /opt/ros/melodic/lib/geneus/gen_eus.py
+/home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/msg/Sonar.l: /home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating EusLisp code from local_planner/Sonar.msg"
+	cd /home/joel/encoder_publisher_ws/build/local_planner && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg -Ilocal_planner:/home/joel/encoder_publisher_ws/src/local_planner/msg -Igeometry_msgs:/opt/ros/melodic/share/geometry_msgs/cmake/../msg -Inav_msgs:/opt/ros/melodic/share/nav_msgs/cmake/../msg -Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg -Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg -p local_planner -o /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/msg
+
 /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/manifest.l: /opt/ros/melodic/lib/geneus/gen_eus.py
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating EusLisp manifest code for local_planner"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating EusLisp manifest code for local_planner"
 	cd /home/joel/encoder_publisher_ws/build/local_planner && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/geneus/cmake/../../../lib/geneus/gen_eus.py -m -o /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner local_planner geometry_msgs nav_msgs std_msgs
 
 local_planner_generate_messages_eus: local_planner/CMakeFiles/local_planner_generate_messages_eus
 local_planner_generate_messages_eus: /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/msg/CmapClear.l
+local_planner_generate_messages_eus: /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/msg/Sonar.l
 local_planner_generate_messages_eus: /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/manifest.l
 local_planner_generate_messages_eus: local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/build.make
 

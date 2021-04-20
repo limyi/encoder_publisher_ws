@@ -54,6 +54,7 @@ CMAKE_BINARY_DIR = /home/joel/encoder_publisher_ws/build
 include local_planner/CMakeFiles/local_planner_generate_messages_lisp.dir/progress.make
 
 local_planner/CMakeFiles/local_planner_generate_messages_lisp: /home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg/CmapClear.lisp
+local_planner/CMakeFiles/local_planner_generate_messages_lisp: /home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg/Sonar.lisp
 
 
 /home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg/CmapClear.lisp: /opt/ros/melodic/lib/genlisp/gen_lisp.py
@@ -61,8 +62,14 @@ local_planner/CMakeFiles/local_planner_generate_messages_lisp: /home/joel/encode
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Lisp code from local_planner/CmapClear.msg"
 	cd /home/joel/encoder_publisher_ws/build/local_planner && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg -Ilocal_planner:/home/joel/encoder_publisher_ws/src/local_planner/msg -Igeometry_msgs:/opt/ros/melodic/share/geometry_msgs/cmake/../msg -Inav_msgs:/opt/ros/melodic/share/nav_msgs/cmake/../msg -Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg -Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg -p local_planner -o /home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg
 
+/home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg/Sonar.lisp: /opt/ros/melodic/lib/genlisp/gen_lisp.py
+/home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg/Sonar.lisp: /home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating Lisp code from local_planner/Sonar.msg"
+	cd /home/joel/encoder_publisher_ws/build/local_planner && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/genlisp/cmake/../../../lib/genlisp/gen_lisp.py /home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg -Ilocal_planner:/home/joel/encoder_publisher_ws/src/local_planner/msg -Igeometry_msgs:/opt/ros/melodic/share/geometry_msgs/cmake/../msg -Inav_msgs:/opt/ros/melodic/share/nav_msgs/cmake/../msg -Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg -Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg -p local_planner -o /home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg
+
 local_planner_generate_messages_lisp: local_planner/CMakeFiles/local_planner_generate_messages_lisp
 local_planner_generate_messages_lisp: /home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg/CmapClear.lisp
+local_planner_generate_messages_lisp: /home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg/Sonar.lisp
 local_planner_generate_messages_lisp: local_planner/CMakeFiles/local_planner_generate_messages_lisp.dir/build.make
 
 .PHONY : local_planner_generate_messages_lisp

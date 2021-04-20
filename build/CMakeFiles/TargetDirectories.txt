@@ -82,6 +82,7 @@
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/local_planner_geneus.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/local_planner_generate_messages_eus.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir
+/home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/_local_planner_generate_messages_check_deps_Sonar.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/local_planner_generate_messages.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/twist_pub_node.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_nodejs.dir
@@ -120,6 +121,7 @@
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/grid_map_msgs_generate_messages_nodejs.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir
+/home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/sonar_costmap.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_py.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/visualization_msgs_generate_messages_lisp.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir

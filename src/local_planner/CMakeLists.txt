@@ -55,7 +55,7 @@ find_package(catkin REQUIRED COMPONENTS
 add_message_files(
   FILES
   CmapClear.msg
-#   Message1.msg
+  Sonar.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -141,6 +141,7 @@ include_directories(
 add_executable(costmap_clear_node src/costmap_clear.cpp)
 add_executable(twist_pub_node src/twist_pub_node.cpp)
 add_executable(${PROJECT_NAME}_node src/local_planner.cpp)
+add_executable(sonar_costmap src/sonar_costmap.cpp)
 #add_executable(area_covered_node src/area_covered.cpp)
 
 ## Rename C++ executable without prefix
@@ -154,6 +155,7 @@ add_executable(${PROJECT_NAME}_node src/local_planner.cpp)
 add_dependencies(costmap_clear_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(twist_pub_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(sonar_costmap ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 #add_dependencies(area_covered_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
@@ -169,6 +171,11 @@ target_link_libraries(
 
 target_link_libraries(
   local_planner_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(
+  sonar_costmap
   ${catkin_LIBRARIES}
 )
 

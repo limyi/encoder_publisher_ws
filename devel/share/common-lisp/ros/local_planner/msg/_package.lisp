@@ -3,5 +3,7 @@
   (:export
    "<CMAPCLEAR>"
    "CMAPCLEAR"
+   "<SONAR>"
+   "SONAR"
   ))
 

@@ -38,7 +38,10 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/local_planner/msg" TYPE FILE FILES "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/local_planner/msg" TYPE FILE FILES
+    "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg"
+    "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg"
+    )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)

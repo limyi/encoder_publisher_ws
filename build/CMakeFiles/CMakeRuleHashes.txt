@@ -4,6 +4,7 @@ b87e14f23ab70690d075105e7bea5f24 /home/joel/encoder_publisher_ws/devel/include/d
 d8cd2198982f596bfdcc7386f3dc1bee /home/joel/encoder_publisher_ws/devel/include/ds4_driver/Status.h
 c9e1041638a655a06f0ec633735fa1f9 /home/joel/encoder_publisher_ws/devel/include/ds4_driver/Trackpad.h
 0afc7d473d98e4664073eedbe71ecd38 /home/joel/encoder_publisher_ws/devel/include/local_planner/CmapClear.h
+49b0d848ba9383ff14e7617391e4742f /home/joel/encoder_publisher_ws/devel/include/local_planner/Sonar.h
 9e3919da495d7d51aad26ab90303b871 /home/joel/encoder_publisher_ws/devel/include/panthera_locomotion/Status.h
 f5ad76257ca32df3f4d1f7c0b9711d28 /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/ds4_driver/msg/_Feedback.py
 066d1cd762383f735dd5acba6dc67fb6 /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/ds4_driver/msg/_Report.py
@@ -11,6 +12,7 @@ ae2057b858f850f8e9e8b93ac2071cf0 /home/joel/encoder_publisher_ws/devel/lib/pytho
 1a002dd9b3eb166dcbfd145551ceaa35 /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/ds4_driver/msg/_Trackpad.py
 7f5f3c311fd291408bf0cb21d02bf90c /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/ds4_driver/msg/__init__.py
 f566634116c548bb92e87ee2168bdbf1 /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/_CmapClear.py
+db2f9ef87a9d4d0c99512a859deac029 /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/_Sonar.py
 3bd447488148abf1a63cdd88bcd0ad8d /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/__init__.py
 4c1d772646770421e4a4264eb8c30854 /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/panthera_locomotion/srv/_Status.py
 487b634aa27379b6a86c7be77caa6b5c /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/panthera_locomotion/srv/__init__.py
@@ -19,12 +21,14 @@ e0cac2c1fc3e3729e30f4b26b4c025e7 /home/joel/encoder_publisher_ws/devel/share/com
 8a1756cf969a1c30ab8db09b9d65bcf2 /home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/ds4_driver/msg/Status.lisp
 23c231cf4f61527ef17fe4808cce430e /home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/ds4_driver/msg/Trackpad.lisp
 3ac447083c13162225bae042c1154104 /home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg/CmapClear.lisp
+78a23b31d9a758e6dbb50b12a760b65d /home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/local_planner/msg/Sonar.lisp
 88763727d107a0e58527fbfe2454a59c /home/joel/encoder_publisher_ws/devel/share/common-lisp/ros/panthera_locomotion/srv/Status.lisp
 54c1d8b23e89cbb3d2cfd7c65e13de73 /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/ds4_driver/msg/Feedback.js
 17902624f03acff1ef04d3b62e3475ad /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/ds4_driver/msg/Report.js
 d16b0c89a4b89ffefe9bc23c413b4930 /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/ds4_driver/msg/Status.js
 48c42c27b6cb63fd708c36c4e541e979 /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/ds4_driver/msg/Trackpad.js
 a132adc6df2f5e7b0b39725a48283d5f /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner/msg/CmapClear.js
+a6f563f0b47fe5a51d6915b1250c2d12 /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/local_planner/msg/Sonar.js
 0bb33b34fd6bd24ed8a0d80b23bec0f5 /home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/panthera_locomotion/srv/Status.js
 492f74da0903184816135b82955e60b8 /home/joel/encoder_publisher_ws/devel/share/roseus/ros/ds4_driver/manifest.l
 ba4cde8120e8bc0340113cff7d045e2b /home/joel/encoder_publisher_ws/devel/share/roseus/ros/ds4_driver/msg/Feedback.l
@@ -33,6 +37,7 @@ ba4cde8120e8bc0340113cff7d045e2b /home/joel/encoder_publisher_ws/devel/share/ros
 1b86308eb96a7d3f0aebd550ab613341 /home/joel/encoder_publisher_ws/devel/share/roseus/ros/ds4_driver/msg/Trackpad.l
 be90a3af2019abe86259c6a3451f1269 /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/manifest.l
 3f574c369a9c86b2f70e716d74a7a449 /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/msg/CmapClear.l
+44ceffa926630624b242e948f541c1bf /home/joel/encoder_publisher_ws/devel/share/roseus/ros/local_planner/msg/Sonar.l
 fcc9c600965ce057d7f086f8949e135b /home/joel/encoder_publisher_ws/devel/share/roseus/ros/panthera_locomotion/manifest.l
 d631fa361e5b77d8be7de400e40f6b06 /home/joel/encoder_publisher_ws/devel/share/roseus/ros/panthera_locomotion/srv/Status.l
 e1402537312b5b99ef5f45638bdb2f36 CMakeFiles/clean_test_results
@@ -46,6 +51,7 @@ e2ff58d266146bd44b019ab3278f7cb0 ds4_driver/CMakeFiles/_ds4_driver_generate_mess
 1ac4c52ea7fd60d4a306fa8be716892b ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs
 1ac4c52ea7fd60d4a306fa8be716892b ds4_driver/CMakeFiles/ds4_driver_generate_messages_py
 85ae8584db31717cfa3543b4b196cd50 local_planner/CMakeFiles/_local_planner_generate_messages_check_deps_CmapClear
+a2d21eed74b547dcc2787171a05ddf1a local_planner/CMakeFiles/_local_planner_generate_messages_check_deps_Sonar
 6980ba18b623f33fb9a2376a6dec9807 local_planner/CMakeFiles/local_planner_generate_messages_cpp
 6980ba18b623f33fb9a2376a6dec9807 local_planner/CMakeFiles/local_planner_generate_messages_eus
 6980ba18b623f33fb9a2376a6dec9807 local_planner/CMakeFiles/local_planner_generate_messages_lisp

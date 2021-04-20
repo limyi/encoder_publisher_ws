@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.cmake.em
 
-message(STATUS "local_planner: 1 messages, 0 services")
+message(STATUS "local_planner: 2 messages, 0 services")
 
 set(MSG_I_FLAGS "-Ilocal_planner:/home/joel/encoder_publisher_ws/src/local_planner/msg;-Igeometry_msgs:/opt/ros/melodic/share/geometry_msgs/cmake/../msg;-Inav_msgs:/opt/ros/melodic/share/nav_msgs/cmake/../msg;-Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg;-Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg")
 
@@ -22,6 +22,11 @@ add_custom_target(_local_planner_generate_messages_check_deps_${_filename}
   COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "local_planner" "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg" ""
 )
 
+get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg" NAME_WE)
+add_custom_target(_local_planner_generate_messages_check_deps_${_filename}
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "local_planner" "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg" ""
+)
+
 #
 #  langs = gencpp;geneus;genlisp;gennodejs;genpy
 #
@@ -30,6 +35,12 @@ add_custom_target(_local_planner_generate_messages_check_deps_${_filename}
 ### Generating Messages
 _generate_msg_cpp(local_planner
   "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/local_planner
+)
+_generate_msg_cpp(local_planner
+  "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/local_planner
@@ -51,6 +62,8 @@ add_dependencies(local_planner_generate_messages local_planner_generate_messages
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg" NAME_WE)
 add_dependencies(local_planner_generate_messages_cpp _local_planner_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg" NAME_WE)
+add_dependencies(local_planner_generate_messages_cpp _local_planner_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
 add_custom_target(local_planner_gencpp)
@@ -63,6 +76,12 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS local_planner_generate_messages_cpp
 ### Generating Messages
 _generate_msg_eus(local_planner
   "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/local_planner
+)
+_generate_msg_eus(local_planner
+  "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/local_planner
@@ -84,6 +103,8 @@ add_dependencies(local_planner_generate_messages local_planner_generate_messages
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg" NAME_WE)
 add_dependencies(local_planner_generate_messages_eus _local_planner_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg" NAME_WE)
+add_dependencies(local_planner_generate_messages_eus _local_planner_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
 add_custom_target(local_planner_geneus)
@@ -96,6 +117,12 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS local_planner_generate_messages_eus
 ### Generating Messages
 _generate_msg_lisp(local_planner
   "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/local_planner
+)
+_generate_msg_lisp(local_planner
+  "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/local_planner
@@ -117,6 +144,8 @@ add_dependencies(local_planner_generate_messages local_planner_generate_messages
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg" NAME_WE)
 add_dependencies(local_planner_generate_messages_lisp _local_planner_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg" NAME_WE)
+add_dependencies(local_planner_generate_messages_lisp _local_planner_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
 add_custom_target(local_planner_genlisp)
@@ -129,6 +158,12 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS local_planner_generate_messages_lis
 ### Generating Messages
 _generate_msg_nodejs(local_planner
   "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/local_planner
+)
+_generate_msg_nodejs(local_planner
+  "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/local_planner
@@ -150,6 +185,8 @@ add_dependencies(local_planner_generate_messages local_planner_generate_messages
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg" NAME_WE)
 add_dependencies(local_planner_generate_messages_nodejs _local_planner_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg" NAME_WE)
+add_dependencies(local_planner_generate_messages_nodejs _local_planner_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
 add_custom_target(local_planner_gennodejs)
@@ -162,6 +199,12 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS local_planner_generate_messages_nod
 ### Generating Messages
 _generate_msg_py(local_planner
   "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/local_planner
+)
+_generate_msg_py(local_planner
+  "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/local_planner
@@ -182,6 +225,8 @@ add_dependencies(local_planner_generate_messages local_planner_generate_messages
 
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg" NAME_WE)
+add_dependencies(local_planner_generate_messages_py _local_planner_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg" NAME_WE)
 add_dependencies(local_planner_generate_messages_py _local_planner_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility

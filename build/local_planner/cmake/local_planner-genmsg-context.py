@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
-messages_str = "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg"
+messages_str = "/home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg;/home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg"
 services_str = ""
 pkg_name = "local_planner"
 dependencies_str = "geometry_msgs;nav_msgs;std_msgs"

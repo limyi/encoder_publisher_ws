@@ -54,6 +54,7 @@ CMAKE_BINARY_DIR = /home/joel/encoder_publisher_ws/build
 include local_planner/CMakeFiles/local_planner_generate_messages_py.dir/progress.make
 
 local_planner/CMakeFiles/local_planner_generate_messages_py: /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/_CmapClear.py
+local_planner/CMakeFiles/local_planner_generate_messages_py: /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/_Sonar.py
 local_planner/CMakeFiles/local_planner_generate_messages_py: /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/__init__.py
 
 
@@ -62,13 +63,20 @@ local_planner/CMakeFiles/local_planner_generate_messages_py: /home/joel/encoder_
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Python from MSG local_planner/CmapClear"
 	cd /home/joel/encoder_publisher_ws/build/local_planner && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/joel/encoder_publisher_ws/src/local_planner/msg/CmapClear.msg -Ilocal_planner:/home/joel/encoder_publisher_ws/src/local_planner/msg -Igeometry_msgs:/opt/ros/melodic/share/geometry_msgs/cmake/../msg -Inav_msgs:/opt/ros/melodic/share/nav_msgs/cmake/../msg -Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg -Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg -p local_planner -o /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg
 
+/home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/_Sonar.py: /opt/ros/melodic/lib/genpy/genmsg_py.py
+/home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/_Sonar.py: /home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating Python from MSG local_planner/Sonar"
+	cd /home/joel/encoder_publisher_ws/build/local_planner && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/joel/encoder_publisher_ws/src/local_planner/msg/Sonar.msg -Ilocal_planner:/home/joel/encoder_publisher_ws/src/local_planner/msg -Igeometry_msgs:/opt/ros/melodic/share/geometry_msgs/cmake/../msg -Inav_msgs:/opt/ros/melodic/share/nav_msgs/cmake/../msg -Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg -Iactionlib_msgs:/opt/ros/melodic/share/actionlib_msgs/cmake/../msg -p local_planner -o /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg
+
 /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/__init__.py: /opt/ros/melodic/lib/genpy/genmsg_py.py
 /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/__init__.py: /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/_CmapClear.py
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating Python msg __init__.py for local_planner"
+/home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/__init__.py: /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/_Sonar.py
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating Python msg __init__.py for local_planner"
 	cd /home/joel/encoder_publisher_ws/build/local_planner && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/melodic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py -o /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg --initpy
 
 local_planner_generate_messages_py: local_planner/CMakeFiles/local_planner_generate_messages_py
 local_planner_generate_messages_py: /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/_CmapClear.py
+local_planner_generate_messages_py: /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/_Sonar.py
 local_planner_generate_messages_py: /home/joel/encoder_publisher_ws/devel/lib/python2.7/dist-packages/local_planner/msg/__init__.py
 local_planner_generate_messages_py: local_planner/CMakeFiles/local_planner_generate_messages_py.dir/build.make
 

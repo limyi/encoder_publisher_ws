@@ -17,3 +17,6 @@ goal_stop: 0.4 # reached goal if within this distance from goal
 # lidar offset
 offset_x: 0.3
 offset_y: 0
+
+# ultrasonic sensor
+side_spacing: 0.3
