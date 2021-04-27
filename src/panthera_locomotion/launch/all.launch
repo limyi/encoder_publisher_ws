@@ -1,0 +1,6 @@
+<launch>
+	<node name="can_encoder" type="can_encoder_pub_node" pkg="can_encoder" output="screen"/>
+	<include file="$(find panthera_locomotion)/launch/steer2.launch"/>
+	<include file="$(find panthera_locomotion)/launch/trans2.launch"/>
+	<include file="$(find panthera_locomotion)/launch/ds4controller.launch"/>
+</launch>

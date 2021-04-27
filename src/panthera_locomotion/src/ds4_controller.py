@@ -13,6 +13,8 @@ class Ds4Controller():
 		self.mode = 1 # Mode 0:= reconfiguration, Mode 1:= movement steering
 		rospy.Subscriber('/status', st, self.ds4_sub)
 		rospy.Subscriber('/can_encoder', Twist, self.encoder_pos)
+		# cv human distance
+		rospy.Subscriber('/human_loc', Point32, self.human_dist)
 
 		self.pub = rospy.Publisher('/panthera_cmd', Twist, queue_size=1)
 		self.recon = rospy.Publisher('/reconfig', Twist, queue_size=1)
@@ -78,6 +80,12 @@ class Ds4Controller():
 		self.input_list = []
 
 		self.pub_once = 0
+
+		# human distance
+		self.human = float('inf')
+
+	def human_dist(self, data):
+		self.human = data.z
 
 	def encoder_pos(self,data):
 		self.width = (data.angular.y + data.angular.z)/2

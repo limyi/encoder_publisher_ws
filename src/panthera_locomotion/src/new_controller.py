@@ -23,6 +23,12 @@ class Ds4Controller():
 		rospy.Subscriber('/status', st, self.ds4_sub)
 		rospy.Subscriber('/can_encoder', Twist, self.encoder_pos)
 
+		### VISION ###
+		rospy.Subscriber('/human_loc', Point32, self.human_loc)
+		self.human_dist = float('inf')
+		self.vision = Button(0,1)
+		##############
+
 		self.pub = rospy.Publisher('/panthera_cmd', Twist, queue_size=1)
 		self.recon = rospy.Publisher('/reconfig', Twist, queue_size=1)
 		self.vibrate = rospy.Publisher('/set_feedback', Feedback, queue_size=1)
@@ -32,7 +38,7 @@ class Ds4Controller():
 		self.actuators = rospy.Publisher('/actuators_topic', Twist, queue_size=1)
 		self.vacuum = rospy.Publisher('/vacuum_topic', Twist, queue_size=1)
 		###
-		
+
 		rospy.wait_for_service('/lb_steer_status')
 		rospy.wait_for_service('/lf_steer_status')
 		rospy.wait_for_service('/rb_steer_status')
@@ -42,7 +48,7 @@ class Ds4Controller():
 		self.lf_status = rospy.ServiceProxy('lf_steer_status', Status)
 		self.rb_status = rospy.ServiceProxy('rb_steer_status', Status)
 		self.rf_status = rospy.ServiceProxy('rf_steer_status', Status)
-		
+
 		rospy.wait_for_service('/lb_reconfig_status')
 		rospy.wait_for_service('/lf_reconfig_status')
 		rospy.wait_for_service('/rb_reconfig_status')
@@ -92,6 +98,9 @@ class Ds4Controller():
 		self.vb.rumble_duration = 0.5
 		self.vb.rumble_small = 0.5
 
+	def human_loc(self, data):
+		self.human_dist = data.z
+
 	def custom_twist(self, val1, val2):
 		ts = Twist()
 		ts.linear.x = val1
@@ -122,6 +131,10 @@ class Ds4Controller():
 		self.rot_right = data.button_dpad_right
 		self.rot_left = data.button_dpad_left
 
+		## VISION ##
+		self.vision.value = data.button_dpad_up
+		self.vision.change_state()
+		############
 		self.holo_right = data.button_r1
 		self.holo_left = data.button_l1
 
@@ -227,6 +240,12 @@ class Ds4Controller():
 		self.change_wz()
 		s = self.angular_z * self.wz
 
+		###### VISION CHECK ######
+		if vision.data == 1:
+			if human_dist <= 1.0:
+				f = 0
+		##########################
+
 		### control max wz wrt to vx ###
 		if s >= 0:
 			s = min(abs(s), abs(f/(self.width+0.2/2)))
@@ -241,7 +260,7 @@ class Ds4Controller():
 		else:
 			pass
 
-		# determin and publish wheel angles and speed
+		# determine and publish wheel angles and speed
 		h_r = self.holo_right * 90
 		h_l = -self.holo_left * 90
 		recon_r = self.rec_r * 90
@@ -316,6 +335,7 @@ class Ds4Controller():
 		print("[l1] + [up]: Holonomic Left")
 		print("[r2] + [up]/[down]: Right Contract/Expand")
 		print("[l2] + [down]/[up]: Left Contract/Expand" + '\n')
+		print("[up] VISION mode: " + str(self.vision.data) + '\n')
 
 		print("    ADJUST SPEED    ")
 		print("    ------------    ")
