@@ -57,7 +57,8 @@ double quat_to_rad(geometry_msgs::PoseStamped ps, std::string unit="rad")
 }
 
 double angle_diff(double x, double y, std::string unit="rad")
-{
+{	
+	// convert to 0 -> 2*PI
 	if (x < 0)
 	{
 		x = 2*PI + x;
@@ -66,17 +67,31 @@ double angle_diff(double x, double y, std::string unit="rad")
 	{
 		y = 2*PI + y;
 	}
-	double diff = x-y;
-	if (std::abs(diff) >= PI)
-	{
-		diff = 2*PI - std::abs(diff);
-	}
+
+
+	x += 2*PI-y; // increase y to 0 and increase x by same amount
+
 	if (unit=="rad")
 	{
-		return diff;
+		if (x <= PI)
+		{
+			return x;
+		}
+		else
+		{
+			return (x - 2*PI);
+		}
 	}
 	else
 	{
-		return (diff/PI*180);
+		if (x <= PI)
+		{
+			return (x/PI*180);
+		}
+		else
+		{
+			return ((x - 2*PI)/PI*180);
+		}
 	}
+	
 }
