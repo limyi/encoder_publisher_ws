@@ -1,6 +1,9 @@
 <launch>
+	<arg name="vision" default="false"/>
+	<group if="$(eval arg('vision') == true)">
+		<include file="$(find zed_wrapper)/launch/zed2.launch"/>
+	</group>
 	<include file="$(find ds4_driver)/launch/ds4_twist.launch"/>
-	<!--node name="Controller" type="ds4_controller.py" pkg="panthera_locomotion" output="screen"/-->
 	<node name="Controller" type="new_controller.py" pkg="panthera_locomotion" output="screen"/>
-	<!--include file="$(find roboclaw_node)/launch/panthera.launch"/-->
+	<!--node name="Controller" type="fake.py" pkg="panthera_locomotion" output="screen"/-->
 </launch>

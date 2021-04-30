@@ -28,7 +28,7 @@ class Ds4Controller():
 		### VISION ###
 		rospy.Subscriber('/zed2/zed_node/obj_det/objects', ObjectsStamped, self.human_loc)
 		self.human_dist = float('inf')
-		self.human_stop = 1.5
+		self.human_stop = 1.0
 		##############
 
 		self.pub = rospy.Publisher('/panthera_cmd', Twist, queue_size=1)
@@ -40,26 +40,6 @@ class Ds4Controller():
 		self.actuators = rospy.Publisher('/actuators_topic', Twist, queue_size=1)
 		self.vacuum = rospy.Publisher('/vacuum_topic', Twist, queue_size=1)
 		###
-		
-		rospy.wait_for_service('/lb_steer_status')
-		rospy.wait_for_service('/lf_steer_status')
-		rospy.wait_for_service('/rb_steer_status')
-		rospy.wait_for_service('/rf_steer_status')
-		
-		self.lb_status = rospy.ServiceProxy('lb_steer_status', Status)
-		self.lf_status = rospy.ServiceProxy('lf_steer_status', Status)
-		self.rb_status = rospy.ServiceProxy('rb_steer_status', Status)
-		self.rf_status = rospy.ServiceProxy('rf_steer_status', Status)
-		
-		rospy.wait_for_service('/lb_reconfig_status')
-		rospy.wait_for_service('/lf_reconfig_status')
-		rospy.wait_for_service('/rb_reconfig_status')
-		rospy.wait_for_service('/rf_reconfig_status')
-		
-		self.lb_stat = rospy.ServiceProxy('lb_reconfig_status', Status)
-		self.lf_stat = rospy.ServiceProxy('lf_reconfig_status', Status)
-		self.rb_stat = rospy.ServiceProxy('rb_reconfig_status', Status)
-		self.rf_stat = rospy.ServiceProxy('rf_reconfig_status', Status)
 		
 		self.width = 0.6
 		self.length = 1.31
@@ -106,7 +86,6 @@ class Ds4Controller():
 			if person.position[0] <= nearest_human:
 				nearest_human = person.position[0]
 		self.human_dist = nearest_human
-		#print(self.human_dist)
 
 	def custom_twist(self, val1, val2):
 		ts = Twist()
@@ -180,32 +159,6 @@ class Ds4Controller():
 			while self.d_wz == 1:
 				pass
 			self.wz += (1*(not self.decrease) + self.decrease) * self.step
-		
-	def check(self):
-		req = StatusRequest()
-		req.reconfig = True
-		signal = False
-		rate = rospy.Rate(2)
-		while signal == False and not rospy.is_shutdown():
-			rate.sleep()
-			lb = self.lb_status(req)
-			rb = self.rb_status(req)
-			lf = self.lf_status(req)
-			rf = self.rf_status(req)
-			signal = (lb.status and rb.status and lf.status and rf.status)
-			print([lb.status, rb.status, lf.status, rf.status])
-			print("Status of steering motors:" + str(signal))
-
-	def reconfig(self, state):
-		req = StatusRequest()
-		req.reconfig = state
-		stat = not state
-		while stat!= state:
-			lb = self.lb_stat(req)
-			lf = self.lf_stat(req)
-			rb = self.rb_stat(req)
-			rf = self.rf_stat(req)
-			stat = (lb.status and rb.status and lf.status and rf.status)
 
 	def adjust_wheels(self, vx, wz): # radius in m, direction c(-1) or ccw(1)
 		if wz == 0:
@@ -236,10 +189,6 @@ class Ds4Controller():
 
 		# determine mode: mode 1 -> smooth | mode 0 -> reconfig
 		self.mode = 1 * (not self.rot_right) * (not self.rot_left) * (not self.holo_right) * (not self.holo_left) * (not self.rec_l) * (not self.rec_r)
-		self.reconfig(not self.mode)
-
-		if sum(self.input_list) == 0:
-			self.reconfig(True)
 
 		# update vx and wz
 		f = self.linear_x * self.vx
@@ -280,11 +229,11 @@ class Ds4Controller():
 				self.twist.angular.y = 0
 				self.twist.angular.z = 0
 				self.pub.publish(self.twist)
-				self.check()
+				
 			else:
 				pass
 		else:
-			self.check()
+			
 			pass
 
 		# wheel speeds for reconfig
@@ -298,6 +247,7 @@ class Ds4Controller():
 		self.twist.angular.y = f * (not self.rec_r and not self.rec_l)
 		self.twist.angular.z = s * (not self.rec_r and not self.rec_l)
 		self.pub.publish(self.twist)
+		print(f,s, self.human_dist)
 
 	def e_stop(self):
 		self.twist.angular.y = 0
@@ -318,14 +268,14 @@ class Ds4Controller():
 				if self.human_dist > self.human_stop:
 					self.pub_once = sum(self.input_list)
 					self.locomotion()
-					self.print_instructions()
+					#self.print_instructions()
 				else:
 					self.e_stop()
 		else:
 			self.pub_once = sum(self.input_list)
-			self.print_instructions()
 			if self.human_dist <= self.human_stop:
 				self.e_stop()
+			#self.print_instructions()
 
 		#print(sum(self.input_list), self.mode)
 
@@ -396,8 +346,8 @@ class Button():
 
 if __name__ == "__main__":
 	start = Ds4Controller()
-	rate = rospy.Rate(10)
 	start.print_instructions()
+	rate = rospy.Rate(10)
 	while not rospy.is_shutdown():
 		start.run()
 		rate.sleep()

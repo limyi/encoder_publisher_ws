@@ -70,6 +70,10 @@ double angle_diff(double x, double y, std::string unit="rad")
 
 
 	x += 2*PI-y; // increase y to 0 and increase x by same amount
+	if (x >= 2*PI)
+	{
+		x = x - 2*PI;
+	}
 
 	if (unit=="rad")
 	{

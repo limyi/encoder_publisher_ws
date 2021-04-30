@@ -41,8 +41,8 @@ private:
 	geometry_msgs::Twist twist_msg;
 
 	// speed
-	float vx = 0.1;
-	float wz = 0.03;
+	float vx = 0.12;
+	float wz = 0.05;
 	int rotating; // check if robot is already rotating
 
 	float width;
@@ -201,7 +201,8 @@ public:
 			else
 			{
 				if (rotate_dir != 0)
-				{
+				{	
+					std::cout << "rotating" << std::endl;
 					if (rotate_dir == 1)
 					{
 						if (rotate_dir != rotating)
@@ -234,105 +235,6 @@ public:
 				}
 			}
 		}
-		/**
-		if (global_path.size() != 0)
-		{	
-			int rotate_dir;
-			if (goal_check(curr_x, curr_y, global_path[1]) == true)
-			{	
-				printf("Reached wp!\n");
-				// check if aligned to goal
-				rotate_dir = align_pose(curr_t, global_path[1]);
-				std::cout << "Rotate Dir: " << rotate_dir << std::endl;
-				if (rotate_dir == 0)
-				{	
-					stop();
-					global_path.erase(global_path.begin());
-
-				}
-				else
-				{
-					if (radius_clear != 1)
-					{
-						sm(curr_x, curr_y); // continue state machine until can rotate
-					}
-					else
-					{
-						if (rotate_dir == 1)
-						{
-							if (rotate_dir != rotating)
-							{
-								rotate_right();
-								rotating = rotate_dir;
-							}
-						}
-						else if (rotate_dir == -1)
-						{
-							if (rotate_dir != rotating)
-							{
-								rotate_left();
-								rotating = rotate_dir;
-							}
-						}
-					}
-				}
-			}
-			else
-			{	
-				// check if aligned to current pose
-				rotate_dir = align_pose(curr_t, global_path[0]);
-				if (rotate_dir != 0)
-				{
-					if (radius_clear != 1)
-					{	
-						if (rotate_dir != rotating)
-						{
-							stop();
-							rotating = rotate_dir;
-						}
-						else
-						{	
-							sm(curr_x, curr_y); // continue state machine until can rotate
-						}
-						//printf("state machine running\n");
-					}
-					else
-					{
-						if (rotate_dir == 1)
-						{
-							if (rotate_dir != rotating)
-							{
-								rotate_right();
-								printf("Rotate Right\n");
-								rotating = rotate_dir;
-							}
-						}
-						else if (rotate_dir == -1)
-						{
-							if (rotate_dir != rotating)
-							{
-								rotate_left();
-								printf("Rotate Left\n");
-								rotating = rotate_dir;
-							}
-						}
-					}
-				}
-				else
-				{	
-					if (rotate_dir != rotating)
-					{
-						stop();
-						rotating = rotate_dir;
-					}
-					else
-					{
-						sm(curr_x, curr_y);
-					}
-					//printf("state machine running\n");
-				}
-			}
-		}**/	
 	}
 
 	// Check costmap if clear to move left/right/up/rotate
@@ -383,33 +285,31 @@ public:
 		// moving right
 		if (curr_state == 1)
 		{	
-			if (prev_state == 2)
-			{
-				if (right_clear == 0 || finished_step == true)
+			//if (prev_state == 2)
+			//{
+			if (right_clear == 0 || finished_step == true)
+			{	
+				stop();
+				start_x = x;
+				start_y = y;
+				step = forward_limit;
+				curr_state = 2;
+				prev_state = 1;
+			}
+			else if (right_clear == true && finished_step == false)
+			{	
+				if (dir!=curr_state)
 				{	
-					//printf("checking\n");
-					stop();
-					start_x = x;
-					start_y = y;
-					step = forward_limit;
-					curr_state = 2;
-					prev_state = 1;
-					up();
+					right();
 					dir = curr_state;
-					//printf("check1\n");
-				}
-				else
-				{	
-					//printf("check3\n");
-					if (dir!=curr_state)
-					{	
-						//printf("check4\n");
-						right();
-						//printf("check2\n");
-						dir = curr_state;
-					}
 				}
 			}
+			else
+			{
+				stop();
+			}
+			//}
+			/**
 			else if (prev_state == 3)
 			{
 				if (up_clear == 1 || finished_step == true)
@@ -420,22 +320,20 @@ public:
 					step = forward_limit;
 					curr_state = 2;
 					prev_state = 3;
-					dir = curr_state;
 				}
 				else if (right_clear == 0)
 				{
 					stop();
 				}
 			}
+			**/
 		}
 		// moving up
 		else if (curr_state == 2)
 		{	
-			std::cout << "State 2" << std::endl;
-			std::cout << (finished_step == 1) << " " << (up_clear == false) << std::endl;
 			if (prev_state == 1)
 			{
-				if (finished_step == 1)// || up_clear == false)
+				if (finished_step == true || up_clear == false)
 				{
 					stop();
 					curr_state = 3;
@@ -444,7 +342,7 @@ public:
 					start_y = y;
 					step = horizontal_limit;
 				}
-				else if (up_clear == true)
+				else if (up_clear == true  && finished_step == false)
 				{
 					if (dir!=curr_state)
 					{
@@ -455,7 +353,7 @@ public:
 			}
 			else if (prev_state == 3)
 			{
-				if (finished_step == 1 || up_clear == false)
+				if (finished_step == true || up_clear == false)
 				{
 					stop();
 					curr_state = 1;
@@ -464,7 +362,7 @@ public:
 					start_y = y;
 					step = horizontal_limit;
 				}
-				else if (up_clear == true)
+				else if (up_clear == true && finished_step == false)
 				{
 					if (dir!=curr_state)
 					{
@@ -473,30 +371,39 @@ public:
 					}
 				}
 			}
+			else
+			{
+				stop();
+			}
 		}
 		// moving left
 		else if (curr_state == 3)
 		{
-			if (prev_state == 2)
+			//if (prev_state == 2)
+			//{
+			if (left_clear == false || finished_step == true)
 			{
-				if (left_clear == 0 || finished_step == true)
+				stop();
+				start_x = x;
+				start_y = y;
+				step = forward_limit;
+				curr_state = 2;
+				prev_state = 3;
+			}
+			else if (left_clear == true && finished_step == false)
+			{
+				if (dir!=curr_state)
 				{
-					stop();
-					start_x = x;
-					start_y = y;
-					step = forward_limit;
-					curr_state = 2;
-					prev_state = 3;
-				}
-				else if (left_clear == true)
-				{
-					if (dir!=curr_state)
-					{
-						left();
-						dir = curr_state;
-					}
+					left();
+					dir = curr_state;
 				}
 			}
+			else
+			{
+				stop();
+			}
+			//}
+			/**
 			else if (prev_state == 1)
 			{
 				if (up_clear == 1 || finished_step == true)
@@ -521,6 +428,7 @@ public:
 					}
 				}
 			}
+			**/
 		}
 	}
 

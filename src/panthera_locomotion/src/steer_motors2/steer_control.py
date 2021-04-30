@@ -25,6 +25,8 @@ class SteerMotor():
 		self.MAX_SPEED = rospy.get_param('/{}_max_speed'.format(self.name))
 		self.sn = rospy.get_param('/{}_serial_number'.format(self.name))
 		self.tolerance = rospy.get_param('/angle_tolerance')
+		if self.name == "lb":
+			self.tolerance+=0.5
 		self.integral_reset = rospy.get_param('/{}_pid'.format(self.name))['ir']
 
 		p = list(serial.tools.list_ports.grep(self.sn))
