@@ -45,6 +45,7 @@ private:
 	float wz = 0.05;
 	float factor;
 	int rotating; // check if robot is already rotating
+	bool static_turn = false;
 
 	float width;
 	float length;
@@ -319,10 +320,14 @@ public:
 			}
 			else if (right_clear == true && finished_step == false)
 			{	
-				if (dir!=curr_state)
+				if (dir!=curr_state && static_turn==true)
 				{	
-					right(ratio);
+					right(1);
 					dir = curr_state;
+				}
+				else if (static_turn==false)
+				{
+					right(ratio);
 				}
 			}
 			else
@@ -413,10 +418,14 @@ public:
 			}
 			else if (left_clear == true && finished_step == false)
 			{
-				if (dir!=curr_state)
+				if (dir!=curr_state && static_turn==true)
+				{
+					left(1);
+					dir = curr_state;
+				}
+				else if (static_turn==false)
 				{
 					left(ratio);
-					dir = curr_state;
 				}
 			}
 			else
@@ -478,8 +487,8 @@ public:
 		ts->linear.y = -90;
 		ts->linear.z = -90;
 		ts->angular.x = -90;
-		ts->angular.y = 0;
-		twist_pub.publish(*ts);
+		//ts->angular.y = 0;
+		//twist_pub.publish(*ts);
 
 		//check_steer();
 
@@ -495,8 +504,8 @@ public:
 		ts->linear.y = 90;
 		ts->linear.z = 90;
 		ts->angular.x = 90;
-		ts->angular.y = 0;
-		twist_pub.publish(*ts);
+		//ts->angular.y = 0;
+		//twist_pub.publish(*ts);
 
 		//check_steer();
 
