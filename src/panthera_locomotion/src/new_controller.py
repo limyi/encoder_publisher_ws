@@ -101,11 +101,14 @@ class Ds4Controller():
 		self.vb.rumble_small = 0.5
 
 	def human_loc(self, data):
-		nearest_human = float('inf')
-		for person in data.objects:
-			if person.position[0] <= nearest_human:
-				nearest_human = person.position[0]
-		self.human_dist = nearest_human
+		if self.vision.data == 1:
+			nearest_human = float('inf')
+			for person in data.objects:
+				if person.position[0] <= nearest_human:
+					nearest_human = person.position[0]
+			self.human_dist = nearest_human
+		else:
+			self.human_dist = float('inf')
 		#print(self.human_dist)
 
 	def custom_twist(self, val1, val2):

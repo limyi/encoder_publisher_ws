@@ -41,7 +41,7 @@ private:
 	geometry_msgs::Twist twist_msg;
 
 	// speed
-	float vx = 0.12;
+	float vx = 0.085;
 	float wz = 0.05;
 	int rotating; // check if robot is already rotating
 
@@ -64,6 +64,7 @@ private:
 	double delta_theta;
 
 	// Global path
+	nav_msgs::Path path;
 	std::vector<geometry_msgs::PoseStamped> global_path;
 
 public:
@@ -113,7 +114,6 @@ public:
 			}
 			i++;
 		}
-		nav_msgs::Path path;
 		path.poses = global_path;
 		path.header.frame_id = "/map";
 		std::cout << "Path of size " << global_path.size() << " received."<< std::endl;
@@ -197,27 +197,42 @@ public:
 			if (goal_check(curr_x, curr_y, global_path[1]) == true)
 			{
 				global_path.erase(global_path.begin());
+				path.poses = global_path;
+				path_pub.publish(path);
 			}
 			else
 			{
 				if (rotate_dir != 0)
 				{	
-					std::cout << "rotating" << std::endl;
-					if (rotate_dir == 1)
+					if (radius_clear == true)
 					{
-						if (rotate_dir != rotating)
+						if (rotate_dir == 1)
 						{
-							rotate_right();
-							rotating = rotate_dir;
+							if (rotate_dir != rotating)
+							{	
+								stop();
+								rotate_right();
+								rotating = rotate_dir;
+							}
+						}
+						else if (rotate_dir == -1)
+						{
+							if (rotate_dir != rotating)
+							{	
+								stop();
+								rotate_left();
+								rotating = rotate_dir;
+							}
 						}
 					}
-					else if (rotate_dir == -1)
+					else if (radius_clear == false && back_clear == true)
 					{
 						if (rotate_dir != rotating)
 						{
-							rotate_left();
-							rotating = rotate_dir;
+							reverse();
+							rotating = 4;
 						}
+
 					}
 				}
 				else
@@ -460,7 +475,7 @@ public:
 		ts->angular.y = 0;
 		twist_pub.publish(*ts);
 
-		check_steer();
+		//check_steer();
 
 		ts->angular.y = vx;
 		ts->angular.z = 0;
@@ -477,7 +492,7 @@ public:
 		ts->angular.y = 0;
 		twist_pub.publish(*ts);
 
-		check_steer();
+		//check_steer();
 
 		ts->angular.y = vx;
 		twist_pub.publish(*ts);
@@ -493,7 +508,7 @@ public:
 		ts->angular.y = 0;
 		twist_pub.publish(*ts);
 
-		check_steer();
+		//check_steer();
 
 		ts->angular.y = vx;
 		twist_pub.publish(*ts);

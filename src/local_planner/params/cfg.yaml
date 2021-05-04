@@ -1,7 +1,7 @@
-robot_length: 2.5
-robot_width: 1.5
-safety_dist: 0.3
-clear_tolerance: 2
+robot_length: 2.1
+robot_width: 1.0
+safety_dist: 0.1
+clear_tolerance: 10
 clear_radius: 1.1
 
 # limits
@@ -12,11 +12,7 @@ horizontal_limit: 1.0
 delta_theta: 20 # degrees
 wp_interval: 10 # number of wp in between each goal
 pose_tolerance: 10 # adjust if pose deviates more than this
-goal_stop: 0.5 # reached goal if within this distance from goal
-
-# lidar offset
-offset_x: 0
-offset_y: 0
+goal_stop: 1.0 # reached goal if within this distance from goal
 
 # ultrasonic sensor
 side_spacing: 0.3
