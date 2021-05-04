@@ -16,3 +16,8 @@ goal_stop: 1.0 # reached goal if within this distance from goal
 
 # ultrasonic sensor
 side_spacing: 0.3
+
+# speeds
+factor: 1.5
+vx: 0.085 # max speed = vx * factor
+wz: 0.05

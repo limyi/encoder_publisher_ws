@@ -43,6 +43,7 @@ private:
 	// speed
 	float vx = 0.085;
 	float wz = 0.05;
+	float factor;
 	int rotating; // check if robot is already rotating
 
 	float width;
@@ -95,6 +96,9 @@ public:
 		delta_theta = nh->param("/delta_theta", 10);
 		pose_tolerance = nh->param("/pose_tolerance", 5);
 		wp_interval = nh->param("/wp_interval", 10);
+		vx = nh->param("/vx", 0.085);
+		wz = nh->param("/wz", 0.05);
+		factor = nh->param("/factor", 1.5);
 	}
 
 	// get global path (edit to add points if dtheta is more than certain angle)
@@ -297,6 +301,8 @@ public:
 		}
 		std::cout << (finished_step == true) << std::endl;
 		std::cout << curr_state << " " << prev_state << std::endl;
+
+		double ratio = factor - (std::abs(dist - step/2)/(step/2));
 		// moving right
 		if (curr_state == 1)
 		{	
@@ -315,7 +321,7 @@ public:
 			{	
 				if (dir!=curr_state)
 				{	
-					right();
+					right(ratio);
 					dir = curr_state;
 				}
 			}
@@ -409,7 +415,7 @@ public:
 			{
 				if (dir!=curr_state)
 				{
-					left();
+					left(ratio);
 					dir = curr_state;
 				}
 			}
@@ -465,7 +471,7 @@ public:
 
 	//////////////// Velocity Commands ///////////////////////////
 	
-	void right()
+	void right(double ratio)
 	{	
 		auto* ts = &twist_msg;
 		ts->linear.x = -90;
@@ -477,12 +483,12 @@ public:
 
 		//check_steer();
 
-		ts->angular.y = vx;
+		ts->angular.y = vx * ratio;
 		ts->angular.z = 0;
 		twist_pub.publish(*ts);
 	}
 
-	void left()
+	void left(double ratio)
 	{
 		auto* ts = &twist_msg;
 		ts->linear.x = 90;
@@ -494,7 +500,7 @@ public:
 
 		//check_steer();
 
-		ts->angular.y = vx;
+		ts->angular.y = vx * ratio;
 		twist_pub.publish(*ts);
 	}
 
