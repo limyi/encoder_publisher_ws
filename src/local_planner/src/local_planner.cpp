@@ -204,6 +204,16 @@ public:
 				global_path.erase(global_path.begin());
 				path.poses = global_path;
 				path_pub.publish(path);
+				if (align_pose(curr_t, global_path[0]) == 1)
+				{
+					curr_state = 3;
+					prev_state = 2;
+				}
+				else if (align_pose(curr_t, global_path[0]) == -1)
+				{
+					curr_state = 1;
+					prev_state = 2;
+				}
 			}
 			else
 			{

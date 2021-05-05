@@ -41,6 +41,8 @@ class Robot
 	private:
 		ros::Subscriber CostMap;
 		ros::Subscriber RobotPose;
+		ros::Subscriber RobotWidth;
+
 		ros::Publisher cmap_clear;
 		ros::Publisher robot_footprint;
 		ros::Publisher search_area_pub;
@@ -71,6 +73,7 @@ class Robot
 		Robot(ros::NodeHandle *nh)
 		{	
 			CostMap = nh->subscribe("/semantics/costmap_generator/occupancy_grid", 10, &Robot::mapCallback, this);
+			RobotWidth = nh->subscribe("/can_encoder", 10, &Robot::widthCallback, this);
 			cmap_clear = nh->advertise<local_planner::CmapClear>("check_cmap",100);
 			robot_footprint = nh->advertise<geometry_msgs::PolygonStamped>("/robot_footprint", 100);
 			search_area_pub = nh->advertise<geometry_msgs::PolygonStamped>("/search", 100);
@@ -80,6 +83,11 @@ class Robot
 			safety_dist = nh->param("/safety_dist", 0.5);
 			clear_tolerance = nh->param("/clear_tolerance", 1);
 			clear_radius = nh->param("/clear_radius", 1.0);
+		}
+
+		void widthCallback(const geometry_msgs::Twist& msg)
+		{
+			width = (msg.angular.y + msg.angular.z)/2 + 0.3;
 		}
 
 		void mapCallback(const nav_msgs::OccupancyGrid& msg)
