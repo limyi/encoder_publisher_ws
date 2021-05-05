@@ -168,6 +168,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+local_planner/CMakeFiles/pose_recorder_node.dir/rule:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/pose_recorder_node.dir/rule
+.PHONY : local_planner/CMakeFiles/pose_recorder_node.dir/rule
+
+# Convenience name for target.
+pose_recorder_node: local_planner/CMakeFiles/pose_recorder_node.dir/rule
+
+.PHONY : pose_recorder_node
+
+# fast build rule for target.
+pose_recorder_node/fast:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/pose_recorder_node.dir/build.make local_planner/CMakeFiles/pose_recorder_node.dir/build
+.PHONY : pose_recorder_node/fast
+
+# Convenience name for target.
 local_planner/CMakeFiles/costmap_clear_node.dir/rule:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/costmap_clear_node.dir/rule
 .PHONY : local_planner/CMakeFiles/costmap_clear_node.dir/rule
@@ -1151,6 +1166,33 @@ src/local_planner.cpp.s:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/local_planner_node.dir/build.make local_planner/CMakeFiles/local_planner_node.dir/src/local_planner.cpp.s
 .PHONY : src/local_planner.cpp.s
 
+src/pose_recorder.o: src/pose_recorder.cpp.o
+
+.PHONY : src/pose_recorder.o
+
+# target to build an object file
+src/pose_recorder.cpp.o:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/pose_recorder_node.dir/build.make local_planner/CMakeFiles/pose_recorder_node.dir/src/pose_recorder.cpp.o
+.PHONY : src/pose_recorder.cpp.o
+
+src/pose_recorder.i: src/pose_recorder.cpp.i
+
+.PHONY : src/pose_recorder.i
+
+# target to preprocess a source file
+src/pose_recorder.cpp.i:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/pose_recorder_node.dir/build.make local_planner/CMakeFiles/pose_recorder_node.dir/src/pose_recorder.cpp.i
+.PHONY : src/pose_recorder.cpp.i
+
+src/pose_recorder.s: src/pose_recorder.cpp.s
+
+.PHONY : src/pose_recorder.s
+
+# target to generate assembly for a file
+src/pose_recorder.cpp.s:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/pose_recorder_node.dir/build.make local_planner/CMakeFiles/pose_recorder_node.dir/src/pose_recorder.cpp.s
+.PHONY : src/pose_recorder.cpp.s
+
 src/sonar_costmap.o: src/sonar_costmap.cpp.o
 
 .PHONY : src/sonar_costmap.o
@@ -1212,6 +1254,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/strip"
+	@echo "... pose_recorder_node"
 	@echo "... test"
 	@echo "... costmap_clear_node"
 	@echo "... local_planner_genpy"
@@ -1286,6 +1329,9 @@ help:
 	@echo "... src/local_planner.o"
 	@echo "... src/local_planner.i"
 	@echo "... src/local_planner.s"
+	@echo "... src/pose_recorder.o"
+	@echo "... src/pose_recorder.i"
+	@echo "... src/pose_recorder.s"
 	@echo "... src/sonar_costmap.o"
 	@echo "... src/sonar_costmap.i"
 	@echo "... src/sonar_costmap.s"

@@ -82,7 +82,7 @@ class Ds4Controller():
 		self.decrease = 0
 
 		#### Initial VX, WZ and reconfig speed ####
-		self.vx = 0.085
+		self.vx = 0.12
 		self.wz = 0.08618
 		self.reconfig_vel = 0.1
 

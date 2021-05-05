@@ -558,6 +558,19 @@ std_msgs_generate_messages_py/fast:
 .PHONY : std_msgs_generate_messages_py/fast
 
 #=============================================================================
+# Target rules for targets named pose_recorder_node
+
+# Build rule for target.
+pose_recorder_node: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 pose_recorder_node
+.PHONY : pose_recorder_node
+
+# fast build rule for target.
+pose_recorder_node/fast:
+	$(MAKE) -f local_planner/CMakeFiles/pose_recorder_node.dir/build.make local_planner/CMakeFiles/pose_recorder_node.dir/build
+.PHONY : pose_recorder_node/fast
+
+#=============================================================================
 # Target rules for targets named costmap_clear_node
 
 # Build rule for target.
@@ -2043,6 +2056,7 @@ help:
 	@echo "... std_msgs_generate_messages_nodejs"
 	@echo "... roscpp_generate_messages_nodejs"
 	@echo "... std_msgs_generate_messages_py"
+	@echo "... pose_recorder_node"
 	@echo "... costmap_clear_node"
 	@echo "... local_planner_genpy"
 	@echo "... local_planner_node"
