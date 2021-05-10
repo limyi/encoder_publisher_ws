@@ -204,15 +204,19 @@ public:
 				global_path.erase(global_path.begin());
 				path.poses = global_path;
 				path_pub.publish(path);
+
+				// clean left if path turns right & clean right if path turns left
 				if (align_pose(curr_t, global_path[0]) == 1)
 				{
 					curr_state = 3;
 					prev_state = 2;
+					dir = 0;
 				}
 				else if (align_pose(curr_t, global_path[0]) == -1)
 				{
 					curr_state = 1;
 					prev_state = 2;
+					dir = 0;
 				}
 			}
 			else
@@ -253,7 +257,8 @@ public:
 				else
 				{
 					if (rotating != 0)
-					{
+					{	
+						ros::Duration(1).sleep();
 						stop();
 						rotating = 0;
 						dir = 0;
@@ -313,12 +318,12 @@ public:
 		std::cout << (finished_step == true) << std::endl;
 		std::cout << curr_state << " " << prev_state << std::endl;
 
+		// lateral acceleration
 		double ratio = factor - (std::abs(dist - step/2)/(step/2));
+
 		// moving right
 		if (curr_state == 1)
 		{	
-			//if (prev_state == 2)
-			//{
 			if (right_clear == 0 || finished_step == true)
 			{	
 				stop();
@@ -344,25 +349,6 @@ public:
 			{
 				stop();
 			}
-			//}
-			/**
-			else if (prev_state == 3)
-			{
-				if (up_clear == 1 || finished_step == true)
-				{
-					stop();
-					start_x = x;
-					start_y = y;
-					step = forward_limit;
-					curr_state = 2;
-					prev_state = 3;
-				}
-				else if (right_clear == 0)
-				{
-					stop();
-				}
-			}
-			**/
 		}
 		// moving up
 		else if (curr_state == 2)
@@ -442,33 +428,6 @@ public:
 			{
 				stop();
 			}
-			//}
-			/**
-			else if (prev_state == 1)
-			{
-				if (up_clear == 1 || finished_step == true)
-				{
-					stop();
-					start_x = x;
-					start_y = y;
-					step = forward_limit;
-					curr_state = 2;
-					prev_state = 1;
-				}
-				else if (left_clear == 0)
-				{
-					stop();
-				}
-				else if (left_clear == true)
-				{
-					if (dir!=curr_state)
-					{
-						left();
-						dir = curr_state;
-					}
-				}
-			}
-			**/
 		}
 	}
 
@@ -484,7 +443,6 @@ public:
 		{
 			reached_goal = false;
 		}
-		//std::cout << "reached goal: " << reached_goal << std::endl;
 		return reached_goal;
 	}
 
