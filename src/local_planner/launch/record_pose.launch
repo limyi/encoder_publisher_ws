@@ -1,0 +1,3 @@
+<launch>
+	<node name="pose_recorder_node" type="pose_recorder" pkg="local_planner" output="screen"/>
+</launch>

@@ -6,7 +6,7 @@ clear_radius: 1.1
 
 # limits
 forward_limit: 1.0
-horizontal_limit: 1.0
+horizontal_limit: 10.0
 
 # goal path
 delta_theta: 20 # degrees
@@ -19,5 +19,5 @@ side_spacing: 0.3
 
 # speeds
 factor: 1.5
-vx: 0.085 # max speed = vx * factor
+vx: 0.1 # max speed = vx * factor
 wz: 0.05

@@ -45,7 +45,7 @@ private:
 	float wz = 0.05;
 	float factor;
 	int rotating; // check if robot is already rotating
-	bool static_turn = false;
+	bool static_turn = false; // check if static steer is allowed
 
 	float width;
 	float length;
@@ -93,7 +93,7 @@ public:
 		length = nh->param("/robot_length", 1.5);
 		goal_stop = nh->param("/goal_stop", 0.5);
 		forward_limit = nh->param("/forward_limit", 0.5);
-		horizontal_limit = nh->param("/horizontal_limit", 6.0);
+		horizontal_limit = nh->param("/horizontal_limit", 10.0);
 		delta_theta = nh->param("/delta_theta", 10);
 		pose_tolerance = nh->param("/pose_tolerance", 5);
 		wp_interval = nh->param("/wp_interval", 10);
@@ -319,7 +319,7 @@ public:
 		std::cout << curr_state << " " << prev_state << std::endl;
 
 		// lateral acceleration
-		double ratio = factor - (std::abs(dist - step/2)/(step/2));
+		double ratio = 1;//factor - (std::abs(dist - step/2)/(step/2));
 
 		// moving right
 		if (curr_state == 1)

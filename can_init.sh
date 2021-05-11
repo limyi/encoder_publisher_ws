@@ -6,3 +6,5 @@ cansend can0 000#0100
 sleep 2
 cansend can0 000#0100
 sudo chmod 666 /dev/ttyUSB*
+
+#rosrun can_encoder_pub can_encoder_pub_node
