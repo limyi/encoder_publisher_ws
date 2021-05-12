@@ -2,7 +2,7 @@
 <launch>
   <arg name="addr" default="" />
 
-  <arg name="dof" default="6" />
+  <arg name="dof" default="2" />
   <arg name="stamped" default="false" />
 
   <include file="$(find ds4_driver)/launch/ds4_driver.launch" >
