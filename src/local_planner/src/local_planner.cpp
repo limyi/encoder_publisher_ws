@@ -401,8 +401,6 @@ public:
 		// moving left
 		else if (curr_state == 3)
 		{
-			//if (prev_state == 2)
-			//{
 			if (left_clear == false || finished_step == true)
 			{
 				stop();
