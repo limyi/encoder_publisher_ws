@@ -2,13 +2,13 @@
 "use strict";
 
 let Report = require('./Report.js');
-let Feedback = require('./Feedback.js');
 let Trackpad = require('./Trackpad.js');
+let Feedback = require('./Feedback.js');
 let Status = require('./Status.js');
 
 module.exports = {
   Report: Report,
-  Feedback: Feedback,
   Trackpad: Trackpad,
+  Feedback: Feedback,
   Status: Status,
 };

@@ -321,36 +321,68 @@ public:
 		// lateral acceleration
 		double ratio = 1;//factor - (std::abs(dist - step/2)/(step/2));
 
-		// moving right
+		//////////////////////////// MOVING RIGHT ////////////////////////////////////
 		if (curr_state == 1)
 		{	
-			if (right_clear == 0 || finished_step == true)
-			{	
-				stop();
-				start_x = x;
-				start_y = y;
-				step = forward_limit;
-				curr_state = 2;
-				prev_state = 1;
-			}
-			else if (right_clear == true && finished_step == false)
-			{	
-				if (dir!=curr_state && static_turn==true)
+			if (prev_state != 3)
+			{
+				if (right_clear == 0 || finished_step == true)
 				{	
-					right(1);
-					dir = curr_state;
+					stop();
+					start_x = x;
+					start_y = y;
+					if (up_clear == false)
+					{
+						curr_state = 3;
+						prev_state = 1;
+						step = horizontal_limit;
+					}
+					else
+					{
+						step = forward_limit;
+						curr_state = 2;
+						prev_state = 1;
+					}
 				}
-				else if (static_turn==false)
-				{
-					right(ratio);
+				else if (right_clear == true && finished_step == false)
+				{	
+					if (dir!=curr_state && static_turn==true)
+					{	
+						right(1);
+						dir = curr_state;
+					}
+					else if (static_turn==false)
+					{
+						right(ratio);
+					}
 				}
 			}
 			else
 			{
-				stop();
+				if (up_clear == true || right_clear == false || finished_step == true)
+				{	
+					stop();
+					start_x = x;
+					start_y = y;
+					step = forward_limit;
+					curr_state = 2;
+					prev_state = 3;
+				}
+				else if (right_clear == true && finished_step == false)
+				{	
+					if (dir!=curr_state && static_turn==true)
+					{	
+						right(1);
+						dir = curr_state;
+					}
+					else if (static_turn==false)
+					{
+						right(ratio);
+					}
+				}
 			}
 		}
-		// moving up
+		//////////////////////////// MOVING UP ////////////////////////////////////
 		else if (curr_state == 2)
 		{	
 			if (prev_state == 1)
@@ -398,34 +430,68 @@ public:
 				stop();
 			}
 		}
-		// moving left
+		//////////////////////////// MOVING LEFT ////////////////////////////////////
 		else if (curr_state == 3)
 		{
-			if (left_clear == false || finished_step == true)
+			if (prev_state != 1)
 			{
-				stop();
-				start_x = x;
-				start_y = y;
-				step = forward_limit;
-				curr_state = 2;
-				prev_state = 3;
-			}
-			else if (left_clear == true && finished_step == false)
-			{
-				if (dir!=curr_state && static_turn==true)
+				if (left_clear == false || finished_step == true)
 				{
-					left(1);
-					dir = curr_state;
+					stop();
+					start_x = x;
+					start_y = y;
+					if (up_clear == false)
+					{
+						curr_state = 1;
+						prev_state = 3;
+						step = horizontal_limit;
+					}
+					else
+					{
+						step = forward_limit;
+						curr_state = 2;
+						prev_state = 3;
+					}
 				}
-				else if (static_turn==false)
+				else if (left_clear == true && finished_step == false)
 				{
-					left(ratio);
+					if (dir!=curr_state && static_turn==true)
+					{
+						left(1);
+						dir = curr_state;
+					}
+					else if (static_turn==false)
+					{
+						left(ratio);
+					}
 				}
 			}
 			else
 			{
-				stop();
+
+				if (up_clear == true || left_clear == false || finished_step == true)
+				{	
+					stop();
+					start_x = x;
+					start_y = y;
+					step = forward_limit;
+					curr_state = 2;
+					prev_state = 1;
+				}
+				else if (left_clear == true && finished_step == false)
+				{	
+					if (dir!=curr_state && static_turn==true)
+					{	
+						left(1);
+						dir = curr_state;
+					}
+					else if (static_turn==false)
+					{
+						left(ratio);
+					}
+				}
 			}
+
 		}
 	}
 
