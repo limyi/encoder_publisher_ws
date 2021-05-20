@@ -143,6 +143,7 @@ add_executable(twist_pub_node src/twist_pub_node.cpp)
 add_executable(${PROJECT_NAME}_node src/local_planner.cpp)
 add_executable(sonar_costmap src/sonar_costmap.cpp)
 add_executable(pose_recorder_node src/pose_recorder.cpp)
+add_executable(global_planner_node src/global_planner.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -157,6 +158,7 @@ add_dependencies(twist_pub_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXP
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(sonar_costmap ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(pose_recorder_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(global_planner_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(
@@ -181,6 +183,11 @@ target_link_libraries(
 
 target_link_libraries(
   pose_recorder_node
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(
+  global_planner_node
   ${catkin_LIBRARIES}
 )
 

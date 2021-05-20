@@ -168,6 +168,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+local_planner/CMakeFiles/global_planner_node.dir/rule:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/global_planner_node.dir/rule
+.PHONY : local_planner/CMakeFiles/global_planner_node.dir/rule
+
+# Convenience name for target.
+global_planner_node: local_planner/CMakeFiles/global_planner_node.dir/rule
+
+.PHONY : global_planner_node
+
+# fast build rule for target.
+global_planner_node/fast:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/global_planner_node.dir/build.make local_planner/CMakeFiles/global_planner_node.dir/build
+.PHONY : global_planner_node/fast
+
+# Convenience name for target.
 local_planner/CMakeFiles/pose_recorder_node.dir/rule:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/pose_recorder_node.dir/rule
 .PHONY : local_planner/CMakeFiles/pose_recorder_node.dir/rule
@@ -1139,6 +1154,33 @@ src/costmap_clear.cpp.s:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/costmap_clear_node.dir/build.make local_planner/CMakeFiles/costmap_clear_node.dir/src/costmap_clear.cpp.s
 .PHONY : src/costmap_clear.cpp.s
 
+src/global_planner.o: src/global_planner.cpp.o
+
+.PHONY : src/global_planner.o
+
+# target to build an object file
+src/global_planner.cpp.o:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/global_planner_node.dir/build.make local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o
+.PHONY : src/global_planner.cpp.o
+
+src/global_planner.i: src/global_planner.cpp.i
+
+.PHONY : src/global_planner.i
+
+# target to preprocess a source file
+src/global_planner.cpp.i:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/global_planner_node.dir/build.make local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.i
+.PHONY : src/global_planner.cpp.i
+
+src/global_planner.s: src/global_planner.cpp.s
+
+.PHONY : src/global_planner.s
+
+# target to generate assembly for a file
+src/global_planner.cpp.s:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/global_planner_node.dir/build.make local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.s
+.PHONY : src/global_planner.cpp.s
+
 src/local_planner.o: src/local_planner.cpp.o
 
 .PHONY : src/local_planner.o
@@ -1254,6 +1296,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/strip"
+	@echo "... global_planner_node"
 	@echo "... pose_recorder_node"
 	@echo "... test"
 	@echo "... costmap_clear_node"
@@ -1326,6 +1369,9 @@ help:
 	@echo "... src/costmap_clear.o"
 	@echo "... src/costmap_clear.i"
 	@echo "... src/costmap_clear.s"
+	@echo "... src/global_planner.o"
+	@echo "... src/global_planner.i"
+	@echo "... src/global_planner.s"
 	@echo "... src/local_planner.o"
 	@echo "... src/local_planner.i"
 	@echo "... src/local_planner.s"
