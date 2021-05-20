@@ -33,6 +33,16 @@ int pose_to_index(geometry_msgs::PoseStamped ps, double res, int size_x)
 	return index;
 }
 
+geometry_msgs::PoseStamped index_to_pose(int i, double res, int size_x)
+{	
+	geometry_msgs::PoseStamped ps;
+	int y_cell = floor(i/size_x);
+	int x_cell = i - y_cell*size_x;
+	ps.pose.position.x = x_cell*res;
+	ps.pose.position.y = y_cell*res;
+	return ps;
+}
+
 double e_distance(int ind1, int ind2, int width)
 {
 	int y1 = floor(ind1/width);
