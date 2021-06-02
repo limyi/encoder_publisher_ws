@@ -5,6 +5,7 @@
 #include <nav_msgs/OccupancyGrid.h>
 #include <local_planner/astar.h>
 #include <vector>
+#include <algorithm>
 
 class GlobalPlanner
 {
@@ -20,15 +21,22 @@ private:
 	bool goal_reached=true;
 	std::vector<geometry_msgs::PoseStamped> plan;
 
+	// start
+	int start_index;
+
 	// map info
 	double res;
 	int width, height;
 	std::vector<signed char> data_pts;
 
+	// global path
+	std::vector<geometry_msgs::PoseStamped> g_path;
+	nav_msgs::Path path;
+
 public:
 	GlobalPlanner(ros::NodeHandle *nh)
 	{
-		pose_sub = nh->subscribe("/ndt_pose", 100, &GlobalPlanner::RobotPose, this);
+		pose_sub = nh->subscribe("/initial_pose", 100, &GlobalPlanner::RobotPose, this);
 		occ_grid = nh->subscribe("/occupancy_grid", 100, &GlobalPlanner::OccGrid, this);
 		simple_goal = nh->subscribe("/move_base_simple/goal", 100, &GlobalPlanner::SimpleGoal, this);
 		global_path = nh->advertise<nav_msgs::Path>("global_path", 100);
@@ -37,8 +45,6 @@ public:
 	void RobotPose(const geometry_msgs::PoseStamped& msg)
 	{
 		curr_pose = msg;
-		search(msg);
-
 	}
 
 	void OccGrid(const nav_msgs::OccupancyGrid& msg)
@@ -47,103 +53,101 @@ public:
 		width = msg.info.width;
 		height = msg.info.height;
 		data_pts = msg.data;
+		makePlan(data_pts);
 	}
 
 	void SimpleGoal(const geometry_msgs::PoseStamped& msg)
 	{
 		goal = msg;
-		goal_index = pose_to_index(msg);
+		goal_index = pose_to_index(msg, res, width);
 	}
 
 	void init(geometry_msgs::PoseStamped st)
 	{
 		Node start{pose_to_index(st, res, width), pose_to_index(st, res, width), 0, 0};
 		open_list.push_back(start);
+		start_index = pose_to_index(st, res, width);
 	}
 
-	void expand_node(Node n)
-	{	
-		open_list.erase(open_list.begin());
-		std::vector<int> neighbours{n.index+width-1, n.index+width, n.index+width+1,
-									n.index-1,						n.index+1,
-									n.index-width-1, n.index-width, n.index-width+1};
+	std::vector<int> get_neighbours(int cell)
+	{
+		int x_index = index_to_x(cell, width);
+		int y_index = index_to_y(cell, width);
 
-		for (int i : neighbours)
-		{	
-			// remove parent node from neighbours to be expanded
-			if (i != n.parent)
+		int neighbour;
+		std::vector<int> neighbours;
+		for (int i=-1; i<=1; i++)
+		{
+			for (int j=-1; j<=1; j++)
 			{
-				// skip squares which are occupied
-				if (data_pts[i] < 100)
+				if ((x_index+j < width) && (x_index+j >= 0) && (y_index+i < height) && (y_index+i >= 0))
 				{
-					Node x{i, n.index, e_distance(n.index, i, width), data_pts[i]};
-
-					// goal check
-					if (goal_check(i) == true)
-					{
-						closed_list.push_back(x);
-						goal_reached = true;
-					}
-					else
-					{
-						// check for duplicate node with different heuristic
-						for (Node nd : closed_list)
-						{
-							if (x.index == nd.index && x.f < nd.f)
-							{	
-								open_list.push_back(x);
-								open_list.remove(open_list.begin(), open_list.end(), nd);
-							}
-						}
-					}
+					neighbour = coordinates_to_index(x_index+j, y_index+i, width);
 				}
 			}
 		}
-		std::sort(open_list.begin(), open_list.end(), compareHeuristic);
-		closed_list.push_back(n);
 	}
 
-	bool compareHeuristic(const Node& a, const Node& b)
-	{
-		return a.f > b.f;
-	}
+	void makePlan(std::vector<signed char> map)
+	{	
+		Node current = open_list[0];
+		open_list.erase(open_list.begin());
+		closed_list.push_back(current);
 
-	bool goal_check(int index)
-	{
-		return index == goal_index;
-	}
-
-	void search(geometry_msgs::PoseStamped& ps)
-	{
-		open_list.clear();
-		closed_list.clear();
-		plan.clear();
-		init(ps);
-		goal_reached = false;
-		while (open_list.size() > 0 || goal_reached == false)
+		if (goal_check(current) == true)
 		{
-			expand_node(open_list[0]);
-		}
-		makePlan(closed_list[closed_list.size()-1]);
-	}
-
-	void makePlan(Node goal)
-	{
-		int start = pose_to_index(curr_pose);
-		int par;
-		std::vector<int> path;
-		path.push_back(goal.index);
-		while (par != start)
-		{
-			par = goal.parent;
-			path.push_front(par);
+			Node nd = current;
+			g_path.insert(g_path.begin(), index_to_pose(nd.index, res, width));
+			while (nd.index != start_index)
+			{
+				nd.index = current.parent;
+				geometry_msgs::PoseStamped ind = index_to_pose(nd.index, res, width);
+				g_path.insert(g_path.begin(), ind);
+			}
+			path.poses = g_path;
+			global_path.publish(path);
 		}
 
-		for (auto n : path)
+		else
 		{
-			plan.push_back(index_to_pose(n, res, width));
+			std::vector<int> neighbours = get_neighbours(current.index);
+			for (int i : neighbours)
+			{	
+				for (auto node : closed_list)
+				{
+					if (node.index == i || map[i] == 100)
+					{
+						break;
+					}
+				}
+				for (auto node : open_list)
+				{
+					Node x{i, current.index, e_distance(i, current.index, width), map[i], e_distance(i, current.index, width) + map[i]};
+					if (node.f > x.f)
+					{
+						node.f = x.f;
+						node.parent = current.index;
+					}
+
+					else
+					{
+						open_list.push_back(x);
+					}
+				}
+			}
+			std::sort(open_list.begin(), open_list.end(), compareF);
 		}
-		goal_path.publish(plan);
+
+	}
+
+	bool goal_check(Node goal)
+	{
+		return (goal.index == goal_index);
+	}
+
+	static bool compareF(const Node& a, const Node& b)
+	{
+		return (a.f > b.f);
 	}
 
 };

@@ -3,6 +3,8 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <nav_msgs/Path.h>
 #include <nav_msgs/OccupancyGrid.h>
+#include <algorithm>
+#include <vector>
 #define PI 3.14159265359
 
 int distance(int x1, int y1, int x2, int y2)
@@ -11,18 +13,13 @@ int distance(int x1, int y1, int x2, int y2)
 	return dist;
 }
 
-double heuristic(double h, double g)
-{
-	return (h+g);
-}
-
 struct Node
 {	
 	int index;
 	int parent;
-	double h;
-	double g;
-	double f = h+g; // h + g
+	double h; // estimated distance
+	double g; // movement cost
+	double f; // h + g
 };
 
 int pose_to_index(geometry_msgs::PoseStamped ps, double res, int size_x)
@@ -53,4 +50,21 @@ double e_distance(int ind1, int ind2, int width)
 
 	int d = distance(x1, y1, x2, y2);
 	return d;
+}
+
+int index_to_x(int index, int width)
+{
+	return remainder(index, width);
+}
+
+int index_to_y(int index, int width)
+{
+	int quotient = index/width;
+	return quotient;
+}
+
+int coordinates_to_index(int x, int y, int width)
+{
+	int index = x + y*width;
+	return index;
 }
