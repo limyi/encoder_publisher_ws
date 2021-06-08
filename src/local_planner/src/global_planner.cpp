@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ros/ros.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
 #include <nav_msgs/Path.h>
 #include <nav_msgs/OccupancyGrid.h>
 #include <local_planner/astar.h>
@@ -36,15 +37,16 @@ private:
 public:
 	GlobalPlanner(ros::NodeHandle *nh)
 	{
-		pose_sub = nh->subscribe("/initial_pose", 100, &GlobalPlanner::RobotPose, this);
-		occ_grid = nh->subscribe("/occupancy_grid", 100, &GlobalPlanner::OccGrid, this);
+		pose_sub = nh->subscribe("/initialpose", 100, &GlobalPlanner::RobotPose, this);
+		occ_grid = nh->subscribe("/occupancy_wayarea", 100, &GlobalPlanner::OccGrid, this);
 		simple_goal = nh->subscribe("/move_base_simple/goal", 100, &GlobalPlanner::SimpleGoal, this);
 		global_path = nh->advertise<nav_msgs::Path>("global_path", 100);
 	}
 
-	void RobotPose(const geometry_msgs::PoseStamped& msg)
+	void RobotPose(const geometry_msgs::PoseWithCovarianceStamped& msg)
 	{
-		curr_pose = msg;
+		curr_pose.pose = msg.pose.pose;
+		//std::cout << curr_pose << std::endl;
 	}
 
 	void OccGrid(const nav_msgs::OccupancyGrid& msg)
@@ -53,13 +55,14 @@ public:
 		width = msg.info.width;
 		height = msg.info.height;
 		data_pts = msg.data;
-		makePlan(data_pts);
 	}
 
 	void SimpleGoal(const geometry_msgs::PoseStamped& msg)
 	{
 		goal = msg;
 		goal_index = pose_to_index(msg, res, width);
+		init(curr_pose);
+		std::cout << goal_index << std::endl;
 	}
 
 	void init(geometry_msgs::PoseStamped st)
@@ -67,6 +70,8 @@ public:
 		Node start{pose_to_index(st, res, width), pose_to_index(st, res, width), 0, 0};
 		open_list.push_back(start);
 		start_index = pose_to_index(st, res, width);
+		std::cout << start_index << std::endl;
+		printf("Start initialized!\n");
 	}
 
 	std::vector<int> get_neighbours(int cell)
@@ -83,9 +88,11 @@ public:
 				if ((x_index+j < width) && (x_index+j >= 0) && (y_index+i < height) && (y_index+i >= 0))
 				{
 					neighbour = coordinates_to_index(x_index+j, y_index+i, width);
+					neighbours.push_back(neighbour);
 				}
 			}
 		}
+		return neighbours;
 	}
 
 	void makePlan(std::vector<signed char> map)
@@ -93,7 +100,7 @@ public:
 		Node current = open_list[0];
 		open_list.erase(open_list.begin());
 		closed_list.push_back(current);
-
+		printf("starting search!\n");
 		if (goal_check(current) == true)
 		{
 			Node nd = current;
@@ -116,22 +123,24 @@ public:
 				for (auto node : closed_list)
 				{
 					if (node.index == i || map[i] == 100)
-					{
-						break;
+					{	
+						printf("Cell occupied!\n");
+						std::remove(neighbours.begin(), neighbours.end(), i);
 					}
-				}
-				for (auto node : open_list)
-				{
+				
 					Node x{i, current.index, e_distance(i, current.index, width), map[i], e_distance(i, current.index, width) + map[i]};
+					printf("Map index checkpoint!\n");
 					if (node.f > x.f)
 					{
 						node.f = x.f;
 						node.parent = current.index;
+						printf("Updating Node\n");
 					}
 
 					else
 					{
 						open_list.push_back(x);
+						printf("Addded Node to open_list\n");
 					}
 				}
 			}

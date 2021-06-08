@@ -168,6 +168,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+local_planner/CMakeFiles/icr_search_node.dir/rule:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/icr_search_node.dir/rule
+.PHONY : local_planner/CMakeFiles/icr_search_node.dir/rule
+
+# Convenience name for target.
+icr_search_node: local_planner/CMakeFiles/icr_search_node.dir/rule
+
+.PHONY : icr_search_node
+
+# fast build rule for target.
+icr_search_node/fast:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/icr_search_node.dir/build.make local_planner/CMakeFiles/icr_search_node.dir/build
+.PHONY : icr_search_node/fast
+
+# Convenience name for target.
 local_planner/CMakeFiles/global_planner_node.dir/rule:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/global_planner_node.dir/rule
 .PHONY : local_planner/CMakeFiles/global_planner_node.dir/rule
@@ -1181,6 +1196,33 @@ src/global_planner.cpp.s:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/global_planner_node.dir/build.make local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.s
 .PHONY : src/global_planner.cpp.s
 
+src/icr_search.o: src/icr_search.cpp.o
+
+.PHONY : src/icr_search.o
+
+# target to build an object file
+src/icr_search.cpp.o:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/icr_search_node.dir/build.make local_planner/CMakeFiles/icr_search_node.dir/src/icr_search.cpp.o
+.PHONY : src/icr_search.cpp.o
+
+src/icr_search.i: src/icr_search.cpp.i
+
+.PHONY : src/icr_search.i
+
+# target to preprocess a source file
+src/icr_search.cpp.i:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/icr_search_node.dir/build.make local_planner/CMakeFiles/icr_search_node.dir/src/icr_search.cpp.i
+.PHONY : src/icr_search.cpp.i
+
+src/icr_search.s: src/icr_search.cpp.s
+
+.PHONY : src/icr_search.s
+
+# target to generate assembly for a file
+src/icr_search.cpp.s:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/icr_search_node.dir/build.make local_planner/CMakeFiles/icr_search_node.dir/src/icr_search.cpp.s
+.PHONY : src/icr_search.cpp.s
+
 src/local_planner.o: src/local_planner.cpp.o
 
 .PHONY : src/local_planner.o
@@ -1296,6 +1338,7 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... install/strip"
+	@echo "... icr_search_node"
 	@echo "... global_planner_node"
 	@echo "... pose_recorder_node"
 	@echo "... test"
@@ -1372,6 +1415,9 @@ help:
 	@echo "... src/global_planner.o"
 	@echo "... src/global_planner.i"
 	@echo "... src/global_planner.s"
+	@echo "... src/icr_search.o"
+	@echo "... src/icr_search.i"
+	@echo "... src/icr_search.s"
 	@echo "... src/local_planner.o"
 	@echo "... src/local_planner.i"
 	@echo "... src/local_planner.s"

@@ -558,6 +558,19 @@ std_msgs_generate_messages_py/fast:
 .PHONY : std_msgs_generate_messages_py/fast
 
 #=============================================================================
+# Target rules for targets named icr_search_node
+
+# Build rule for target.
+icr_search_node: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 icr_search_node
+.PHONY : icr_search_node
+
+# fast build rule for target.
+icr_search_node/fast:
+	$(MAKE) -f local_planner/CMakeFiles/icr_search_node.dir/build.make local_planner/CMakeFiles/icr_search_node.dir/build
+.PHONY : icr_search_node/fast
+
+#=============================================================================
 # Target rules for targets named global_planner_node
 
 # Build rule for target.
@@ -2069,6 +2082,7 @@ help:
 	@echo "... std_msgs_generate_messages_nodejs"
 	@echo "... roscpp_generate_messages_nodejs"
 	@echo "... std_msgs_generate_messages_py"
+	@echo "... icr_search_node"
 	@echo "... global_planner_node"
 	@echo "... pose_recorder_node"
 	@echo "... costmap_clear_node"

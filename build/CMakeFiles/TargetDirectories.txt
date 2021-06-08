@@ -71,6 +71,7 @@
 /home/joel/encoder_publisher_ws/build/key_command_pub/CMakeFiles/rebuild_cache.dir
 /home/joel/encoder_publisher_ws/build/key_command_pub/CMakeFiles/install.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/install/strip.dir
+/home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/icr_search_node.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/global_planner_node.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/pose_recorder_node.dir
 /home/joel/encoder_publisher_ws/build/local_planner/CMakeFiles/test.dir

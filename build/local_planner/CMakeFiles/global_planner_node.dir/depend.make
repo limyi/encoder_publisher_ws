@@ -6,6 +6,8 @@ local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /home
 local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/Point.h
 local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/Pose.h
 local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/PoseStamped.h
+local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/PoseWithCovariance.h
+local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/PoseWithCovarianceStamped.h
 local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/Quaternion.h
 local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/nav_msgs/MapMetaData.h
 local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/nav_msgs/OccupancyGrid.h
