@@ -62,8 +62,7 @@ class Robot
 		//int l1,l2,l3,l4,r1,r2,r3,r4,f1,f2,f3,f4,b1,b2,b3,b4;
 		//int b2, b3, f2, f3;
 
-		geometry_msgs::Point32 lb, lf, rb, rf;
-		std::vector<geometry_msgs::Point32> footprint{lb, lf, rb, rf};
+		std::vector<geometry_msgs::Point32> footprint;
 		// std::vector<int> radial_area;
 
 		// Map info
@@ -78,6 +77,7 @@ class Robot
 
 		// angle to rotate
 		double angle;
+		bool received_angle = false;
 
 	public:
 		Robot(ros::NodeHandle *nh)
@@ -99,22 +99,30 @@ class Robot
 		{
 			angle = theta.data;
 			std::cout << footprint_points.size() << std::endl;
-			int count=1;
+			received_angle = true;
+		}
+
+		void run()
+		{	
+			int count = 1;
 			for (auto i : footprint_points)
 			{	
-
-				if (rotation_clear(i, angle) == true)
+				if (rotation_clear(i, angle, data_pts) == true)
 				{
 					possible_icr.push_back(i);
 				}
-				std::cout << count << std::endl;
 				count++;
+				std::cout << "Count: " << count << std::endl;
 			}
+			printf("Search Done\n");
 			std::cout << possible_icr.size() << std::endl;
+			possible_icr.clear();
+			/**
 			for (auto i : possible_icr)
 			{
 				std::cout << i << std::endl;
 			}
+			**/
 		}
 
 		void widthCallback(const geometry_msgs::Twist& msg)
@@ -133,10 +141,16 @@ class Robot
 				n += 1;
 			}
 			data_pts = msg.data;
+			if (received_angle == true)
+			{
+				run();
+				received_angle = false;
+			}
 		}
 
 		void cornerPoints()
 		{	
+			geometry_msgs::Point32 lb, lf, rb, rf;
 			lb.x = (len_x/2 - length/2)/res;
 			lb.y = (len_y/2 + width/2)/res;
 
@@ -147,8 +161,15 @@ class Robot
 			rb.y = (len_y/2 - width/2)/res;
 
 			rf.x = (len_x/2 + length/2)/res;
-			rf.y = (len_y/2 + width/2)/res;
-
+			rf.y = (len_y/2 - width/2)/res;
+			footprint.push_back(lb);
+			footprint.push_back(lf);
+			footprint.push_back(rf);
+			footprint.push_back(rb);
+			for (auto i : footprint)
+			{
+				std::cout << i << std::endl;
+			}
 			// get robot cells
 			for (int j=rb.y; j<= lb.y; j++)
 			{
@@ -164,62 +185,84 @@ class Robot
 
 		std::vector<geometry_msgs::Point32> outlinepolygon(std::vector<geometry_msgs::Point32> polygon) // inputs vector of point32 (map coordinates)
 		{	
-			std::vector<geometry_msgs::Point32> outline;
-			for (int i=0; i < polygon.size()-1; i++)
+			printf("outlining polygon\n");
+			std::vector<geometry_msgs::Point32> outline = polygon;
+			outline.push_back(outline[0]);
+			std::cout << "outline size: " << outline.size()-1 << std::endl;
+			for (int i=0; i < 4; i++)
 			{	
-				double AB = distance(polygon[i].x, polygon[i].y, polygon[i+1].x, polygon[i+1].y);
-				
 				int x0,x1,y0,y1;
-
-				if (polygon[i].x > polygon[i+1].x)
+				//std::cout << i << std::endl;
+				if (outline[i].x > outline[i+1].x)
 				{
-					x0 = polygon[i+1].x;
-					x1 = polygon[i].x;
+					x0 = outline[i+1].x;
+					x1 = outline[i].x;
 				}
 				else
 				{	
-					x0 = polygon[i].x;
-					x1 = polygon[i+1].x;
+					x0 = outline[i].x;
+					x1 = outline[i+1].x;
 				}
 
-				if (polygon[i].y > polygon[i+1].y)
+				if (outline[i].y > outline[i+1].y)
 				{
-					y0 = polygon[i+1].y;
-					y1 = polygon[i].y;
+					y0 = outline[i+1].y;
+					y1 = outline[i].y;
 				}
 				else
 				{	
-					y0 = polygon[i].y;
-					y1 = polygon[i+1].y;
+					y0 = outline[i].y;
+					y1 = outline[i+1].y;
 				}
-
+				//std::cout << x0 << ' ' << x1 << ' ' << y0 << ' ' << y1 << std::endl;
 				for (int x=x0; x<=x1; x++)
 				{
 					for (int y=y0; y<=y1; y++)
 					{
 						// distance 
-						double AE = distance(polygon[i].x, polygon[i].y, x, y);
-						double BE = distance(polygon[i+1].x, polygon[i+1].y, x, y);
-						double theta = acos(pow(AB,2) + pow(BE,2) - pow(AE,2)/(2*AB*BE));
-						double distance = BE * sin(theta);
-
-						if (distance < res)
+						double d = distanceToLine(x, y, outline[i].x, outline[i].y, outline[i+1].x, outline[i+1].y) * res;
+						//std::cout << d << std::endl;
+						if (d < res)
 						{
 							geometry_msgs::Point32 pt;
 							pt.x = x;
 							pt.y = y;
-
-							if (std::count(outline.begin(), outline.end(), pt)){}
-							else
-							{
-								outline.push_back(pt);
-							}
+							outline.push_back(pt);
 						}
 					}
 				}
 			}
 			std::sort(outline.begin(), outline.end(), sort_y);
+			printf("sorted list\n");
 			return outline;
+		}
+
+		double distanceToLine(double pX, double pY, double x0, double y0, double x1, double y1)
+		{
+			double A = pX - x0;
+			double B = pY - y0;
+			double C = x1 - x0;
+			double D = y1 - y0;
+			double dot = A * C + B * D;
+			double len_sq = C * C + D * D;
+			double param = dot / len_sq;
+			double xx,yy;
+			if(param < 0)
+			{
+				xx = x0;
+				yy = y0;
+			}
+			else if(param > 1)
+			{
+				xx = x1;
+				yy = y1;
+			}
+			else
+			{
+				xx = x0 + param * C;
+				yy = y0 + param * D;
+			}
+			return distance(pX,pY,xx,yy);
 		}
 
 		double distance(int x0, int y0, int x1, int y1)
@@ -229,23 +272,32 @@ class Robot
 
 		std::vector<int> fill_polygon_outline(std::vector<geometry_msgs::Point32> outline) // sorted vector according to y value
 		{	
-			printf("Filling polygon outline...\n");
+			//printf("Filling polygon outline...\n");
 			std::vector<int> filled_cells;
-			for (int i=0; i<(int)(outline.size())-1; i++)
+			for (int i=0; i<(int)(outline.size()-1); i++)
 			{
 				int current = coordinates_to_index((outline[i]).x, (outline[i]).y, len_x/res);
 				filled_cells.push_back(current);
-				if ((outline[i]).y == (outline[i+1]).y)
+				if ((outline[i]).y == (outline[i+1]).y && (outline[i].x != outline[i+1].x))
 				{
 					int c = (int)(outline[i].x);
 					while (c != (int)(outline[i+1].x))
-					{
+					{	
 						filled_cells.push_back(coordinates_to_index(c, outline[i].y, len_x/res));
-						c++;
+						if (c > (int)(outline[i+1].x))
+						{
+							c--;
+						}
+						else
+						{
+							c++;
+						}
+						//printf("While loop\n");
+						std::cout << "c: " << c << ", outline[i+1].x: " << outline[i+1].x << std::endl;
 					}
 				}
 			}
-			printf("Filled polygon outline\n");
+			//printf("Filled polygon outline\n");
 			return filled_cells;
 		}
 
@@ -256,7 +308,8 @@ class Robot
 
 		std::vector<geometry_msgs::Point32> sector_footprint(geometry_msgs::Point32 icr, geometry_msgs::Point32 corner, double theta) // angle in radians
 		{
-			std::vector<geometry_msgs::Point32> footprint{icr};
+			//std::vector<geometry_msgs::Point32> footprint{icr};
+			std::vector<geometry_msgs::Point32> footprint;
 			int interval = 5; // number of points on arc
 			double radius = distance(icr.x, icr.y, corner.x, corner.y);
 			double angle_interval = std::ceil(theta/interval);
@@ -269,13 +322,11 @@ class Robot
 		}
 
 		geometry_msgs::Point32 rotate_pt(geometry_msgs::Point32 pt, geometry_msgs::Point32 icr, double gamma)
-		{
-			geometry_msgs::Point32 tf_corner;
-			tf_corner.x = pt.x - icr.x;
-			tf_corner.y = pt.y - icr.y;
+		{	
+			printf("rotating point\n");
 			geometry_msgs::Point32 new_corner;
-			new_corner.x = tf_corner.x*sin(gamma) - tf_corner.y*cos(gamma);
-			new_corner.y = tf_corner.x*sin(gamma) + tf_corner.y*cos(gamma);
+			new_corner.x = (pt.x - icr.x)*cos(gamma) - (pt.y - icr.y)*sin(gamma);
+			new_corner.y = (pt.x - icr.x)*sin(gamma) + (pt.y - icr.y)*cos(gamma);
 
 			new_corner.x += icr.x;
 			new_corner.y += icr.y;
@@ -290,7 +341,7 @@ class Robot
 		{	
 
 			std::vector<geometry_msgs::Point32> fp;
-			for (int i=0; i<(int)(footprint.size()); i++)
+			for (int i=0; i<4; i++)
 			{
 				fp.push_back(rotate_pt(footprint[i], icr, theta));
 			}
@@ -311,26 +362,30 @@ class Robot
 			return search_area;
 		}
 
-		bool rotation_clear(geometry_msgs::Point32 icr, double theta)
+		bool rotation_clear(geometry_msgs::Point32 icr, double theta, std::vector<signed char>& cmap)
 		{
-			std::vector<int> search_area;
-
 			// get new footprint
 			std::vector<geometry_msgs::Point32> rotated_fp = new_fp(icr, theta);
+			for (auto i : rotated_fp)
+			{
+				std::cout << i << std::endl;
+			}
 			std::vector<int> filled_rotated_fp = fill_polygon_outline(outlinepolygon(rotated_fp));
-
+			std::cout << "new fp cells: " << filled_rotated_fp.size() << std::endl;
 			// get sector cells
+			
 			std::vector<std::vector<int>> sectors(4);
 			for (int i=0; i<footprint.size(); i++)
 			{
 				sectors[i] = fill_polygon_outline(sector_footprint(footprint[i], icr, theta));
 			}
 			std::vector<int> sa = concat_search_area(filled_rotated_fp, sectors[0], sectors[1], sectors[2], sectors[3]);
-
-			for (auto i : sa)
-			{
-				if (data_pts[i] > 0)
-				{
+			
+			for (auto i : cmap)
+			{	
+				
+				if (cmap[i] > 0)
+				{	
 					return false;
 				}
 			}

@@ -30,7 +30,7 @@ if __name__ == "__main__":
 	rate = rospy.Rate(1)
 	while not rospy.is_shutdown():
 		pub_width()
-		pub_map(0.1, 5, 5)
+		pub_map(0.1, 10, 10)
 		rate.sleep()
 
 
