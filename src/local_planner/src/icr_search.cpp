@@ -55,7 +55,7 @@ class Robot
 		std::vector<geometry_msgs::Point32> footprint; // footprint points -> cells
 
 		// Map info
-		int len_x=10, len_y=10;
+		int len_x=50, len_y=50; // in cells
 		double res=0.05;
 
 		std::vector<signed char> data_pts;
@@ -93,6 +93,7 @@ class Robot
 			h_max_rot = nh->param("/max_rotation_function", 1.0);
 			h_icr_dist = nh->param("/min_icr_dist", -1.0);
 			angle_interval = nh->param("/angle_sample", 10);
+			ws_length = nh->param("/front_back_wheel_sep", 1.5);
 		}
 
 		struct ICR
@@ -160,7 +161,7 @@ class Robot
 			}
 			printf("Search Done\n");
 			std::cout << possible_icr.size() << std::endl;
-
+			
 			if (possible_icr.size() == 0)
 			{
 				printf("No possible_icr.\n");
@@ -175,6 +176,8 @@ class Robot
 				geometry_msgs::Point32 pt = optimize(possible_icr);
 				std::cout << "Best point: " <<  pt << std::endl;
 			}
+			
+			possible_icr.clear();
 		}
 
 		geometry_msgs::Point32 optimize(std::vector<geometry_msgs::Point32> icrs)
@@ -202,10 +205,6 @@ class Robot
 		void widthCallback(const geometry_msgs::Twist& msg)
 		{
 			ws_width = (msg.angular.y + msg.angular.z)/2 + 0.3;
-			geometry_msgs::PolygonStamped fp;
-			fp.header.frame_id = "footprint";
-			fp.polygon.points = footprint;
-			robot_footprint.publish(fp);
 		}
 
 		void mapCallback(const nav_msgs::OccupancyGrid& msg)
@@ -229,34 +228,30 @@ class Robot
 		void cornerPoints()
 		{	
 			geometry_msgs::Point32 lb, lf, rb, rf;
-			lb.x = (len_x/2 - length/2)/res;
-			lb.y = (len_y/2 + width/2)/res;
+			lb.x = std::floor(len_x/2 - length/res/2);
+			lb.y = std::ceil(len_y/2 + width/res/2);
 
-			lf.x = (len_x/2 + length/2)/res;
-			lf.y = (len_y/2 + width/2)/res;
+			lf.x = std::ceil(len_x/2 + (length/res)/2);
+			lf.y = std::ceil(len_y/2 + (width/res)/2);
 
-			rb.x = (len_x/2 - length/2)/res;
-			rb.y = (len_y/2 - width/2)/res;
+			rb.x = std::floor(len_x/2 - (length/res)/2);
+			rb.y = std::floor(len_y/2 - (width/res)/2);
 
-			rf.x = (len_x/2 + length/2)/res;
-			rf.y = (len_y/2 - width/2)/res;
+			rf.x = std::ceil(len_x/2 + (length/res)/2);
+			rf.y = std::floor(len_y/2 - (width/res)/2);
 			footprint.push_back(lb);
 			footprint.push_back(lf);
 			footprint.push_back(rf);
 			footprint.push_back(rb);
-			geometry_msgs::PolygonStamped fp;
-			fp.header.frame_id = "footprint";
-			fp.polygon.points = footprint;
-			robot_footprint.publish(fp);
-			/**
+			
 			for (auto i : footprint)
 			{
 				std::cout << i << std::endl;
 			}
-			**/
+			
 			// get robot cells
 			for (int j=rb.y; j<= lb.y; j++)
-			{
+			{	
 				for (int i=lb.x; i<=lf.x; i++)
 				{
 					geometry_msgs::Point32 pt;
@@ -266,19 +261,20 @@ class Robot
 				}
 			}
 
+
 			// wheel points
 			geometry_msgs::Point32 l_b, l_f, r_b, r_f;
-			l_b.x = len_x/2 - ws_length/2;
-			l_b.y = len_y/2 + ws_width/2;
+			l_b.x = len_x/2 - ws_length/res/2;
+			l_b.y = len_y/2 + ws_width/res/2;
 
-			l_f.x = len_x/2 + ws_length/2;
-			l_f.y = len_y/2 + ws_width/2;
+			l_f.x = len_x/2 + ws_length/res/2;
+			l_f.y = len_y/2 + ws_width/res/2;
 
-			r_b.x = len_x/2 - ws_length/2;
-			r_b.y = len_y/2 - ws_width/2;
+			r_b.x = len_x/2 - ws_length/res/2;
+			r_b.y = len_y/2 - ws_width/res/2;
 
-			r_f.x = len_x/2 + ws_length/2;
-			r_f.y = len_y/2 - ws_width/2;
+			r_f.x = len_x/2 + ws_length/res/2;
+			r_f.y = len_y/2 - ws_width/res/2;
 
 			wheels = {l_b, l_f, r_f, r_b};
 		}
@@ -376,14 +372,14 @@ class Robot
 			std::vector<int> filled_cells;
 			for (int i=0; i<(int)(outline.size()-1); i++)
 			{
-				int current = coordinates_to_index((outline[i]).x, (outline[i]).y, len_x/res);
+				int current = coordinates_to_index((outline[i]).x, (outline[i]).y, len_x);
 				filled_cells.push_back(current);
 				if ((outline[i]).y == (outline[i+1]).y && (outline[i].x != outline[i+1].x))
 				{
 					int c = (int)(outline[i].x);
 					while (c != (int)(outline[i+1].x))
 					{	
-						filled_cells.push_back(coordinates_to_index(c, outline[i].y, len_x/res));
+						filled_cells.push_back(coordinates_to_index(c, outline[i].y, len_x));
 						if (c > (int)(outline[i+1].x))
 						{
 							c--;
@@ -409,16 +405,16 @@ class Robot
 		std::vector<geometry_msgs::Point32> sector_footprint(geometry_msgs::Point32 icr, geometry_msgs::Point32 corner, double theta) // angle in radians
 		{
 			//std::vector<geometry_msgs::Point32> footprint{icr};
-			std::vector<geometry_msgs::Point32> footprint;
+			std::vector<geometry_msgs::Point32> footp{icr};
 			int interval = 5; // number of points on arc
 			double radius = distance(icr.x, icr.y, corner.x, corner.y);
 			double angle_interval = std::ceil(theta/interval);
 
 			for (int i=0; i<=interval; i++)
 			{
-				footprint.push_back(rotate_pt(corner, icr, i*angle_interval));
+				footp.push_back(rotate_pt(corner, icr, i*angle_interval));
 			}
-			return footprint; // outline
+			return footp; // outline
 		}
 
 		geometry_msgs::Point32 rotate_pt(geometry_msgs::Point32 pt, geometry_msgs::Point32 icr, double gamma)
@@ -444,6 +440,7 @@ class Robot
 			for (int i=0; i<4; i++)
 			{
 				fp.push_back(rotate_pt(footprint[i], icr, theta));
+				//std::cout << rotate_pt(footprint[i], icr, theta) << std::endl;
 			}
 			return fp;
 		}
@@ -483,9 +480,8 @@ class Robot
 			}
 			std::vector<int> sa = concat_search_area(filled_rotated_fp, sectors[0], sectors[1], sectors[2], sectors[3]);
 			
-			for (auto i : cmap)
+			for (auto i : sa)
 			{	
-				
 				if (cmap[i] > 0)
 				{	
 					return false;
