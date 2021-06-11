@@ -8,7 +8,7 @@ to run:
 
 1st terminal:
 -------------
-rostopic pub -r 10 /can_encer geometry_msgs/Twist "linear:
+rostopic pub -r 10 /can_encoder geometry_msgs/Twist "linear:
   x: 0.0
   y: 0.0
   z: 0.0
@@ -27,5 +27,5 @@ run any rosbag
 
 4th terminal:
 -------------
-rostopic pub /turn_angle stdsgs/Float64 "data: x.xx"
+rostopic pub /turn_angle std_msgs/Float64 "data: x.xx"
 - data to publish is in radians
