@@ -22,7 +22,7 @@ ros/builtin_message_traits.h
 ros/message_operations.h
 -
 
-/home/joel/encoder_publisher_ws/src/local_planner/include/local_planner/astar.h
+/home/joel/encoder_publisher_ws/src/local_planner/include/local_planner/icr_utils.h
 cmath
 -
 math.h
@@ -36,6 +36,8 @@ nav_msgs/OccupancyGrid.h
 algorithm
 -
 vector
+-
+geometry_msgs/Point32.h
 -
 
 /home/joel/encoder_publisher_ws/src/local_planner/src/icr_search.cpp
@@ -65,7 +67,7 @@ geometry_msgs/Point32.h
 -
 cmath
 -
-local_planner/astar.h
+local_planner/icr_utils.h
 -
 
 /opt/ros/melodic/include/geometry_msgs/Point.h

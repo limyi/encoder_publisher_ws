@@ -7,5 +7,4 @@
 # new environment variables
 
 # modified environment variables
-export PATH='/home/joel/autoware.ai/install/sick_ldmrs_driver/bin:/opt/ros/melodic/bin:/home/joel/miniconda3/condabin:/home/joel/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin'
 export PWD='/home/joel/encoder_publisher_ws/build'

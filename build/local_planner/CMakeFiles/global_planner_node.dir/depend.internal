@@ -5,6 +5,7 @@ local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o
  /home/joel/encoder_publisher_ws/src/local_planner/include/local_planner/astar.h
  /home/joel/encoder_publisher_ws/src/local_planner/src/global_planner.cpp
  /opt/ros/melodic/include/geometry_msgs/Point.h
+ /opt/ros/melodic/include/geometry_msgs/Point32.h
  /opt/ros/melodic/include/geometry_msgs/Pose.h
  /opt/ros/melodic/include/geometry_msgs/PoseStamped.h
  /opt/ros/melodic/include/geometry_msgs/PoseWithCovariance.h

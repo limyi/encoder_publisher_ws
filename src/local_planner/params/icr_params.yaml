@@ -1,0 +1,6 @@
+steering_function: -1.0
+max_rotation_function: 1.0
+min_icr_dist: -1.0
+angle_interval: 10
+robot_length: 1.0
+robot_width: 0.7

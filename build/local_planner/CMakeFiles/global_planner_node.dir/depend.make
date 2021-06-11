@@ -4,6 +4,7 @@
 local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /home/joel/encoder_publisher_ws/src/local_planner/include/local_planner/astar.h
 local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /home/joel/encoder_publisher_ws/src/local_planner/src/global_planner.cpp
 local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/Point.h
+local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/Point32.h
 local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/Pose.h
 local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/PoseStamped.h
 local_planner/CMakeFiles/global_planner_node.dir/src/global_planner.cpp.o: /opt/ros/melodic/include/geometry_msgs/PoseWithCovariance.h

@@ -15,7 +15,7 @@
 #include <geometry_msgs/PolygonStamped.h>
 #include <geometry_msgs/Point32.h>
 #include <cmath>
-#include <local_planner/astar.h>
+#include <local_planner/icr_utils.h>
 
 /** PARAMS:
 	- length of robot
@@ -50,25 +50,13 @@ class Robot
 
 		// Footprint info
 		double length, width;
-		std::vector<geometry_msgs::Point32> footprint_points;
+		std::vector<geometry_msgs::Point32> footprint_points; // total cells within footprint
 		std::vector<geometry_msgs::Point32> possible_icr;
-
-		float safety_dist;
-		int buffer; // number of squares safety distance
-		int clear_tolerance;
-		double clear_radius;
-
-		// search area
-		//int l1,l2,l3,l4,r1,r2,r3,r4,f1,f2,f3,f4,b1,b2,b3,b4;
-		//int b2, b3, f2, f3;
-
-		std::vector<geometry_msgs::Point32> footprint;
-		// std::vector<int> radial_area;
+		std::vector<geometry_msgs::Point32> footprint; // footprint points -> cells
 
 		// Map info
 		int len_x=10, len_y=10;
 		double res=0.05;
-		local_planner::CmapClear bools;
 
 		std::vector<signed char> data_pts;
 
@@ -79,26 +67,82 @@ class Robot
 		double angle;
 		bool received_angle = false;
 
+		// optimization params
+		float h_steer, h_max_rot, h_icr_dist;
+		int angle_interval;
+
+		// wheel seperation
+		float ws_length = 1.3;
+		float ws_width = 0.7;
+		std::vector<geometry_msgs::Point32> wheels;
+
 	public:
 		Robot(ros::NodeHandle *nh)
 		{	
 			CostMap = nh->subscribe("/semantics/costmap_generator/occupancy_grid", 10, &Robot::mapCallback, this);
 			RobotWidth = nh->subscribe("/can_encoder", 10, &Robot::widthCallback, this);
 			turn_angle = nh->subscribe("/turn_angle", 10, &Robot::rotation_angle, this); // subscribe to get angle to rotate
-			//robot_footprint = nh->advertise<geometry_msgs::PolygonStamped>("/robot_footprint", 100);
+			robot_footprint = nh->advertise<geometry_msgs::PolygonStamped>("/robot_footprint", 100);
 			//search_area_pub = nh->advertise<geometry_msgs::PolygonStamped>("/search", 100);
 
 			length = nh->param("/robot_length", 2.2);
 			width = nh->param("/robot_width", 1.0);
-			safety_dist = nh->param("/safety_dist", 0.5);
-			clear_tolerance = nh->param("/clear_tolerance", 1);
-			clear_radius = nh->param("/clear_radius", 1.0);
+
+			// optimization params
+			h_steer = nh->param("/steering_function", -1.0);
+			h_max_rot = nh->param("/max_rotation_function", 1.0);
+			h_icr_dist = nh->param("/min_icr_dist", -1.0);
+			angle_interval = nh->param("/angle_sample", 10);
+		}
+
+		struct ICR
+		{	
+			int index;
+			double h1;
+			double h2;
+			double h3;
+			double h4;
+		};
+
+		// Optimization functions
+		double angle_change(int index)
+		{	
+			geometry_msgs::Point32 ind = index_to_coordinates(index, res, len_x);
+			double total_angle;
+			for (auto w : wheels)
+			{
+				double theta = acos((pow(abs(w.x - ind.x), 2) + pow(distance(w.x, w.y, ind.x, ind.y), 2) - pow(abs(w.y - ind.y), 2))/(2*abs(w.x - ind.x)*distance(w.x, w.y, ind.x, ind.y)));				
+				total_angle += theta;
+			}
+			return total_angle;
+		}
+
+		double distance_from_centre(int index)
+		{
+			geometry_msgs::Point32 pt = index_to_coordinates(index, res, len_x);
+			return distance(pt.x, pt.y, len_x/2, len_y/2);
+		}
+
+		double max_rotation(int index, double min_theta)
+		{
+			bool clear = true;
+			geometry_msgs::Point32 pt = index_to_coordinates(index, res, len_x);
+			double theta = min_theta + (angle_interval*2*PI/360);
+			while (clear == true && theta <= 2*PI)
+			{
+				clear = rotation_clear(pt, theta, data_pts);
+				if (clear == true)
+				{
+					theta += (angle_interval*2*PI/360);
+				}
+			}
+			return theta;
 		}
 
 		void rotation_angle(const std_msgs::Float64& theta)
 		{
 			angle = theta.data;
-			std::cout << footprint_points.size() << std::endl;
+			//std::cout << footprint_points.size() << std::endl;
 			received_angle = true;
 		}
 
@@ -112,22 +156,56 @@ class Robot
 					possible_icr.push_back(i);
 				}
 				count++;
-				std::cout << "Count: " << count << std::endl;
+				//std::cout << "Count: " << count << std::endl;
 			}
 			printf("Search Done\n");
 			std::cout << possible_icr.size() << std::endl;
-			possible_icr.clear();
-			/**
-			for (auto i : possible_icr)
+
+			if (possible_icr.size() == 0)
 			{
-				std::cout << i << std::endl;
+				printf("No possible_icr.\n");
 			}
-			**/
+			else if (possible_icr.size() == 1)
+			{
+				std::cout << possible_icr[0] << std::endl;
+				std::cout << "Best point: " <<  possible_icr[0] << std::endl;
+			}
+			else
+			{
+				geometry_msgs::Point32 pt = optimize(possible_icr);
+				std::cout << "Best point: " <<  pt << std::endl;
+			}
+		}
+
+		geometry_msgs::Point32 optimize(std::vector<geometry_msgs::Point32> icrs)
+		{	
+			std::vector<ICR> icr_nodes;
+			for (auto icr : icrs)
+			{	
+				int i = coordinates_to_index(icr.x, icr.y, len_x);
+				double h1 = h_steer*angle_change(i);
+				double h2 = h_max_rot*max_rotation(i, angle);
+				double h3 = h_icr_dist*distance_from_centre(i);
+				double h4 = h1 + h2 + h3;
+				ICR x{i, h1, h2, h3, h4};
+				icr_nodes.push_back(x);
+			}
+			std::sort(icr_nodes.begin(), icr_nodes.end(), sort_h);
+			return index_to_coordinates(icr_nodes[0].index, res, len_x);
+		}
+
+		static bool sort_h(const ICR& a, const ICR& b)
+		{
+			return (a.h4 < b.h4);
 		}
 
 		void widthCallback(const geometry_msgs::Twist& msg)
 		{
-			width = (msg.angular.y + msg.angular.z)/2 + 0.3;
+			ws_width = (msg.angular.y + msg.angular.z)/2 + 0.3;
+			geometry_msgs::PolygonStamped fp;
+			fp.header.frame_id = "footprint";
+			fp.polygon.points = footprint;
+			robot_footprint.publish(fp);
 		}
 
 		void mapCallback(const nav_msgs::OccupancyGrid& msg)
@@ -166,10 +244,16 @@ class Robot
 			footprint.push_back(lf);
 			footprint.push_back(rf);
 			footprint.push_back(rb);
+			geometry_msgs::PolygonStamped fp;
+			fp.header.frame_id = "footprint";
+			fp.polygon.points = footprint;
+			robot_footprint.publish(fp);
+			/**
 			for (auto i : footprint)
 			{
 				std::cout << i << std::endl;
 			}
+			**/
 			// get robot cells
 			for (int j=rb.y; j<= lb.y; j++)
 			{
@@ -181,14 +265,30 @@ class Robot
 					footprint_points.push_back(pt);
 				}
 			}
+
+			// wheel points
+			geometry_msgs::Point32 l_b, l_f, r_b, r_f;
+			l_b.x = len_x/2 - ws_length/2;
+			l_b.y = len_y/2 + ws_width/2;
+
+			l_f.x = len_x/2 + ws_length/2;
+			l_f.y = len_y/2 + ws_width/2;
+
+			r_b.x = len_x/2 - ws_length/2;
+			r_b.y = len_y/2 - ws_width/2;
+
+			r_f.x = len_x/2 + ws_length/2;
+			r_f.y = len_y/2 - ws_width/2;
+
+			wheels = {l_b, l_f, r_f, r_b};
 		}
 
 		std::vector<geometry_msgs::Point32> outlinepolygon(std::vector<geometry_msgs::Point32> polygon) // inputs vector of point32 (map coordinates)
 		{	
-			printf("outlining polygon\n");
+			//printf("outlining polygon\n");
 			std::vector<geometry_msgs::Point32> outline = polygon;
 			outline.push_back(outline[0]);
-			std::cout << "outline size: " << outline.size()-1 << std::endl;
+			//std::cout << "outline size: " << outline.size()-1 << std::endl;
 			for (int i=0; i < 4; i++)
 			{	
 				int x0,x1,y0,y1;
@@ -233,7 +333,7 @@ class Robot
 				}
 			}
 			std::sort(outline.begin(), outline.end(), sort_y);
-			printf("sorted list\n");
+			//printf("sorted list\n");
 			return outline;
 		}
 
@@ -293,7 +393,7 @@ class Robot
 							c++;
 						}
 						//printf("While loop\n");
-						std::cout << "c: " << c << ", outline[i+1].x: " << outline[i+1].x << std::endl;
+						//std::cout << "c: " << c << ", outline[i+1].x: " << outline[i+1].x << std::endl;
 					}
 				}
 			}
@@ -323,7 +423,7 @@ class Robot
 
 		geometry_msgs::Point32 rotate_pt(geometry_msgs::Point32 pt, geometry_msgs::Point32 icr, double gamma)
 		{	
-			printf("rotating point\n");
+			//printf("rotating point\n");
 			geometry_msgs::Point32 new_corner;
 			new_corner.x = (pt.x - icr.x)*cos(gamma) - (pt.y - icr.y)*sin(gamma);
 			new_corner.y = (pt.x - icr.x)*sin(gamma) + (pt.y - icr.y)*cos(gamma);
@@ -350,7 +450,7 @@ class Robot
 
 		std::vector<int> concat_search_area(std::vector<int> fp, std::vector<int> c1, std::vector<int> c2, std::vector<int> c3, std::vector<int> c4)
 		{	
-			printf("Concating search area...\n");
+			//printf("Concating search area...\n");
 			std::vector<int> search_area;
 			search_area.reserve(fp.size() + c1.size() + c2.size() + c3.size() + c4.size());
 			search_area.insert(search_area.end(), fp.begin(), fp.end());
@@ -358,7 +458,7 @@ class Robot
 			search_area.insert(search_area.end(), c2.begin(), c2.end());
 			search_area.insert(search_area.end(), c3.begin(), c3.end());
 			search_area.insert(search_area.end(), c4.begin(), c4.end());
-			printf("Got search area\n");
+			//printf("Got search area\n");
 			return search_area;
 		}
 
@@ -366,12 +466,14 @@ class Robot
 		{
 			// get new footprint
 			std::vector<geometry_msgs::Point32> rotated_fp = new_fp(icr, theta);
+			/**
 			for (auto i : rotated_fp)
 			{
 				std::cout << i << std::endl;
 			}
+			**/
 			std::vector<int> filled_rotated_fp = fill_polygon_outline(outlinepolygon(rotated_fp));
-			std::cout << "new fp cells: " << filled_rotated_fp.size() << std::endl;
+			//std::cout << "new fp cells: " << filled_rotated_fp.size() << std::endl;
 			// get sector cells
 			
 			std::vector<std::vector<int>> sectors(4);

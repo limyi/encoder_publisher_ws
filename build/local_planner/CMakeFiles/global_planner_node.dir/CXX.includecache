@@ -21,6 +21,8 @@ algorithm
 -
 vector
 -
+geometry_msgs/Point32.h
+-
 
 /home/joel/encoder_publisher_ws/src/local_planner/src/global_planner.cpp
 iostream
@@ -43,6 +45,22 @@ algorithm
 -
 
 /opt/ros/melodic/include/geometry_msgs/Point.h
+string
+-
+vector
+-
+map
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+
+/opt/ros/melodic/include/geometry_msgs/Point32.h
 string
 -
 vector
