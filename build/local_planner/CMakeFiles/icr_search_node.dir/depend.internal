@@ -3,6 +3,9 @@
 
 local_planner/CMakeFiles/icr_search_node.dir/src/icr_search.cpp.o
  /home/joel/encoder_publisher_ws/devel/include/local_planner/CmapClear.h
+ /home/joel/encoder_publisher_ws/devel/include/panthera_locomotion/Status.h
+ /home/joel/encoder_publisher_ws/devel/include/panthera_locomotion/StatusRequest.h
+ /home/joel/encoder_publisher_ws/devel/include/panthera_locomotion/StatusResponse.h
  /home/joel/encoder_publisher_ws/src/local_planner/include/local_planner/icr_utils.h
  /home/joel/encoder_publisher_ws/src/local_planner/src/icr_search.cpp
  /opt/ros/melodic/include/geometry_msgs/Point.h

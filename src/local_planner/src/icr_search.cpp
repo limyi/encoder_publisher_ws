@@ -16,6 +16,7 @@
 #include <geometry_msgs/Point32.h>
 #include <cmath>
 #include <local_planner/icr_utils.h>
+#include <panthera_locomotion/Status.h>
 
 /** PARAMS:
 	- length of robot
@@ -47,6 +48,12 @@ class Robot
 		ros::Publisher cmap_clear;
 		ros::Publisher robot_footprint;
 		ros::Publisher search_area_pub;
+		ros::Publisher angle_pub;
+		ros::Publisher vel_pub;
+
+		ros::ServiceClient lb_stat, rb_stat, lf_stat, rf_stat;
+
+		bool operation = false;
 
 		// Footprint info
 		double length, width;
@@ -76,6 +83,11 @@ class Robot
 		float ws_width = 0.7;
 		std::vector<geometry_msgs::Point32> wheels;
 
+		// cmd vel
+		geometry_msgs::Twist cmd_angle;
+		geometry_msgs::Twist cmd_vel;
+		float wz = 0.5;
+
 	public:
 		Robot(ros::NodeHandle *nh)
 		{	
@@ -83,6 +95,8 @@ class Robot
 			RobotWidth = nh->subscribe("/can_encoder", 10, &Robot::widthCallback, this);
 			turn_angle = nh->subscribe("/turn_angle", 10, &Robot::rotation_angle, this); // subscribe to get angle to rotate
 			robot_footprint = nh->advertise<geometry_msgs::PolygonStamped>("/robot_footprint", 100);
+			angle_pub = nh->advertise<geometry_msgs::Twist>("/panthera_cmd", 100);
+			vel_pub = nh->advertise<geometry_msgs::Twist>("/reconfig", 100);
 			//search_area_pub = nh->advertise<geometry_msgs::PolygonStamped>("/search", 100);
 
 			length = nh->param("/robot_length", 2.2);
@@ -94,6 +108,17 @@ class Robot
 			h_icr_dist = nh->param("/min_icr_dist", -1.0);
 			angle_interval = nh->param("/angle_sample", 10);
 			ws_length = nh->param("/front_back_wheel_sep", 1.5);
+			wz = nh->param("/turn_speed", 0.5);
+
+			lb_stat = nh->serviceClient<panthera_locomotion::Status>("lb_steer_status");
+			rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
+			lf_stat = nh->serviceClient<panthera_locomotion::Status>("lf_steer_status");
+			rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
+			
+			lb_stat.waitForExistence();
+			rb_stat.waitForExistence();
+			lf_stat.waitForExistence();
+			rf_stat.waitForExistence();
 		}
 
 		struct ICR
@@ -105,6 +130,99 @@ class Robot
 			double h4;
 			std::vector<double> wheel_angles;
 		};
+
+		void publish_vel(geometry_msgs::Point32 icr, std::vector<geometry_msgs::Point32> wheel_vec)
+		{
+			auto* ts = &cmd_vel;
+			if (withinWheelBase(icr) == true)
+			{
+				ts->linear.x = distance(wheel_vec[0].x, wheel_vec[0].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+				ts->linear.y = distance(wheel_vec[1].x, wheel_vec[1].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+				ts->linear.z = distance(wheel_vec[2].x, wheel_vec[2].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+				ts->angular.x = distance(wheel_vec[3].x, wheel_vec[3].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+			}
+			else
+			{
+				ts->linear.x = distance(wheel_vec[0].x, wheel_vec[0].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+				ts->linear.y = distance(wheel_vec[1].x, wheel_vec[1].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+				ts->linear.z = distance(wheel_vec[2].x, wheel_vec[2].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+				ts->angular.x = distance(wheel_vec[3].x, wheel_vec[3].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+			}
+			vel_pub.publish(*ts);
+
+		}
+
+		void publish_angle(ICR icr)
+		{
+			auto* ts = &cmd_angle;
+			ts->linear.x = icr.wheel_angles[0];
+			ts->linear.y = icr.wheel_angles[1];
+			ts->linear.z = icr.wheel_angles[2];
+			ts->angular.x = icr.wheel_angles[3];
+			angle_pub.publish(*ts);
+		}
+
+		void stop_pub()
+		{
+			auto* ts = &cmd_angle;
+			ts->linear.x = 0;
+			ts->linear.y = 0;
+			ts->linear.z = 0;
+			ts->angular.x = 0;
+			angle_pub.publish(*ts);
+
+			auto* tv = &cmd_vel;
+			tv->linear.x = 0;
+			tv->linear.y = 0;
+			tv->linear.z = 0;
+			tv->angular.x = 0;
+			angle_pub.publish(*tv);
+		}
+
+		void send_cmds(geometry_msgs::Point32 icr, std::vector<geometry_msgs::Point32> wheel_vec, ICR icr_node)
+		{
+			publish_vel(icr, wheel_vec);
+			check_steer();
+			publish_angle(icr_node);
+			float t = abs(angle)/wz;
+			ros::Duration(t).sleep();
+			stop_pub();
+		}
+
+		void check_steer()
+		{
+			if (operation == true)
+			{
+				panthera_locomotion::Status lb_req,rb_req,lf_req,rf_req;
+				lb_req.request.reconfig = true;
+				rb_req.request.reconfig = true;
+				lf_req.request.reconfig = true;
+				rf_req.request.reconfig = true;
+				bool signal = false;
+				ros::Rate rate(1);
+				int count = 0;
+				while (signal == false || count<2 )
+				{
+					lb_stat.call(lb_req);
+					rb_stat.call(rb_req);
+					lf_stat.call(lf_req);
+					rf_stat.call(rf_req);
+					signal = ((bool)lb_req.response.status && (bool)lf_req.response.status && (bool)rb_req.response.status && (bool)rf_req.response.status);
+					//std::cout << "Signal: " << signal << std::endl;
+					rate.sleep();
+					if (signal==true)
+					{
+						count++;
+					}
+					else
+					{
+						count = 0;
+					}
+				}
+				printf("Clear!\n");
+			}
+		}
+			
 
 		// Optimization functions
 		std::vector<double> angle_change(int index)
@@ -181,26 +299,25 @@ class Robot
 			}
 			printf("Search Done\n");
 			std::cout << possible_icr.size() << std::endl;
+			ICR best_pt;
 			
 			if (possible_icr.size() == 0)
 			{
 				printf("No possible_icr.\n");
 			}
-			else if (possible_icr.size() == 1)
-			{
-				std::cout << possible_icr[0] << std::endl;
-				std::cout << "Best point: " <<  possible_icr[0] << std::endl;
-			}
+
 			else
 			{
-				ICR pt = optimize(possible_icr);
-				std::cout << "Best point: " <<  index_to_coordinates(pt.index, res, len_x) << std::endl;
+				best_pt = optimize(possible_icr);
+				geometry_msgs::Point32 best_pt_coor = index_to_coordinates(best_pt.index, res, len_x);
+				std::cout << "Best point: " <<  index_to_coordinates(best_pt.index, res, len_x) << std::endl;
 				for (int i=0; i<4; i++)
 				{
-					std::cout <<"Wheel angle " << i << ": " << pt.wheel_angles[i]/PI*180 << std::endl;
+					std::cout <<"Wheel angle " << i << ": " << best_pt.wheel_angles[i]/PI*180 << std::endl;
 				}
 
 			}
+
 			
 			possible_icr.clear();
 		}
