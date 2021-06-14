@@ -224,7 +224,7 @@ class Robot
 
 		static bool sort_h(const ICR& a, const ICR& b)
 		{
-			return (a.h4 < b.h4);
+			return (a.h4 > b.h4);
 		}
 
 		void widthCallback(const geometry_msgs::Twist& msg)
