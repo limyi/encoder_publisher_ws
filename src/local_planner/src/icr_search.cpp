@@ -103,19 +103,37 @@ class Robot
 			double h2;
 			double h3;
 			double h4;
+			std::vector<double> wheel_angles;
 		};
 
 		// Optimization functions
-		double angle_change(int index)
+		std::vector<double> angle_change(int index)
 		{	
 			geometry_msgs::Point32 ind = index_to_coordinates(index, res, len_x);
+			std::vector<double> angles;
 			double total_angle;
 			for (auto w : wheels)
 			{
-				double theta = acos((pow(abs(w.x - ind.x), 2) + pow(distance(w.x, w.y, ind.x, ind.y), 2) - pow(abs(w.y - ind.y), 2))/(2*abs(w.x - ind.x)*distance(w.x, w.y, ind.x, ind.y)));				
-				total_angle += theta;
+				double theta = 	gradient_angle(ind.x, ind.y, w.x, w.y);
+				angles.push_back(theta);
+				total_angle += abs(theta);
 			}
-			return total_angle;
+			angles.push_back(total_angle);
+			return angles;
+		}
+
+		double gradient_angle(int x0, int y0, double x1, double y1)
+		{
+			double grad = atan(-(x1 - x0)/(y1 - y0));
+			if (grad >= PI/2)
+			{
+				grad = PI - grad;
+			}
+			else if ( grad <= -PI/2)
+			{
+				grad = PI + grad;
+			}
+			return grad;
 		}
 
 		double distance_from_centre(int index)
@@ -140,6 +158,7 @@ class Robot
 			return theta;
 		}
 
+		// subscriber for angle to turn
 		void rotation_angle(const std_msgs::Float64& theta)
 		{
 			angle = theta.data;
@@ -147,6 +166,7 @@ class Robot
 			received_angle = true;
 		}
 
+		// run search + optimize
 		void run()
 		{	
 			int count = 1;
@@ -173,28 +193,33 @@ class Robot
 			}
 			else
 			{
-				geometry_msgs::Point32 pt = optimize(possible_icr);
-				std::cout << "Best point: " <<  pt << std::endl;
+				ICR pt = optimize(possible_icr);
+				std::cout << "Best point: " <<  index_to_coordinates(pt.index, res, len_x) << std::endl;
+				for (int i=0; i<4; i++)
+				{
+					std::cout <<"Wheel angle " << i << ": " << pt.wheel_angles[i]/PI*180 << std::endl;
+				}
+
 			}
 			
 			possible_icr.clear();
 		}
 
-		geometry_msgs::Point32 optimize(std::vector<geometry_msgs::Point32> icrs)
+		ICR optimize(std::vector<geometry_msgs::Point32> icrs)
 		{	
 			std::vector<ICR> icr_nodes;
 			for (auto icr : icrs)
 			{	
 				int i = coordinates_to_index(icr.x, icr.y, len_x);
-				double h1 = h_steer*angle_change(i);
+				double h1 = h_steer*angle_change(i)[4];
 				double h2 = h_max_rot*max_rotation(i, angle);
 				double h3 = h_icr_dist*distance_from_centre(i);
 				double h4 = h1 + h2 + h3;
-				ICR x{i, h1, h2, h3, h4};
+				ICR x{i, h1, h2, h3, h4, angle_change(i)};
 				icr_nodes.push_back(x);
 			}
 			std::sort(icr_nodes.begin(), icr_nodes.end(), sort_h);
-			return index_to_coordinates(icr_nodes[0].index, res, len_x);
+			return icr_nodes[0];
 		}
 
 		static bool sort_h(const ICR& a, const ICR& b)
@@ -204,7 +229,7 @@ class Robot
 
 		void widthCallback(const geometry_msgs::Twist& msg)
 		{
-			ws_width = (msg.angular.y + msg.angular.z)/2 + 0.3;
+			ws_width = (msg.angular.y + msg.angular.z)/2;
 		}
 
 		void mapCallback(const nav_msgs::OccupancyGrid& msg)
@@ -277,6 +302,11 @@ class Robot
 			r_f.y = len_y/2 - ws_width/res/2;
 
 			wheels = {l_b, l_f, r_f, r_b};
+
+			for (auto w : wheels)
+			{
+				std::cout << w << std::endl;
+			}
 		}
 
 		std::vector<geometry_msgs::Point32> outlinepolygon(std::vector<geometry_msgs::Point32> polygon) // inputs vector of point32 (map coordinates)
@@ -489,6 +519,25 @@ class Robot
 			}
 			return true;
 		}
+
+		bool withinWheelBase(geometry_msgs::Point32 icr)
+		{	
+			geometry_msgs::Point32 lb_, lf_, rb_, rf_;
+			lb_ = wheels[0];
+			lf_ = wheels[1];
+			rb_ = wheels[2];
+			rf_ = wheels[3];
+			if (icr.x < lb_.x || icr.x > lf_.x || icr.y > lb_.y || icr.y < rb_.y)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+
+
 		
 };
 

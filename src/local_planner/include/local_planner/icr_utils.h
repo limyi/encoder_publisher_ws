@@ -75,7 +75,7 @@ geometry_msgs::Point32 index_to_coordinates(int i, double res, int size_x)
 	geometry_msgs::Point32 pt;
 	int y_cell = floor(i/size_x);
 	int x_cell = i - y_cell*size_x;
-	pt.x = x_cell*res;
-	pt.y = y_cell*res;
+	pt.x = x_cell;
+	pt.y = y_cell;
 	return pt;
 }
