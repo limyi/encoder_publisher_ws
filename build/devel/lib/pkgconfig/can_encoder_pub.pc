@@ -1,8 +1,0 @@
-prefix=/home/joel/encoder_publisher_ws/build/devel
-
-Name: can_encoder_pub
-Description: Description of can_encoder_pub
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

@@ -1,8 +1,0 @@
-prefix=/home/joel/encoder_publisher_ws/build/devel
-
-Name: key_command_pub
-Description: Description of key_command_pub
-Version: 0.0.0
-Cflags: 
-Libs: -L${prefix}/lib 
-Requires: 

@@ -291,6 +291,7 @@ class Robot
 		void run()
 		{	
 			int count = 1;
+			
 			for (auto i : footprint_points)
 			{	
 				if (rotation_clear(i, angle, data_pts) == true)
@@ -300,6 +301,9 @@ class Robot
 				count++;
 				//std::cout << "Count: " << count << std::endl;
 			}
+			
+			//bool l = rotation_clear(footprint_points[1250], angle, data_pts);
+			
 			printf("Search Done\n");
 			
 			std::cout << possible_icr.size() << std::endl;
@@ -472,7 +476,7 @@ class Robot
 						// distance 
 						double d = distanceToLine(x, y, outline[i].x, outline[i].y, outline[i+1].x, outline[i+1].y) * res;
 						//std::cout << d << std::endl;
-						if (d < res)
+						if (d <= res)
 						{
 							geometry_msgs::Point32 pt;
 							pt.x = x;
@@ -640,14 +644,20 @@ class Robot
 		bool rotation_clear(geometry_msgs::Point32 icr, double theta, std::vector<signed char>& cmap)
 		{
 			// get new footprint
-			std::vector<geometry_msgs::Point32> rotated_fp = new_fp(icr, theta);
+			std::vector<geometry_msgs::Point32> rotated_fp = outlinepolygon(new_fp(icr, theta));
 			/**
+			int p = 0;
 			for (auto i : rotated_fp)
-			{
-				std::cout << i << std::endl;
+			{	
+				if (p != i.y)
+				{
+					std::cout << std::endl;
+				}
+				std::cout << i << ' ';
+				p = i.y;
 			}
 			**/
-			std::vector<int> filled_rotated_fp = fill_polygon_outline(outlinepolygon(rotated_fp));
+			std::vector<int> filled_rotated_fp = fill_polygon_outline(rotated_fp);
 			//std::cout << "new fp cells: " << filled_rotated_fp.size() << std::endl;
 			// get sector cells
 			
