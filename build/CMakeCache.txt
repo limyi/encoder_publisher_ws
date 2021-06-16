@@ -23,60 +23,6 @@ BUILD_GTEST:BOOL=OFF
 //Build shared libraries (DLLs).
 BUILD_SHARED_LIBS:BOOL=ON
 
-//Use OpenMP
-BUILD_WITH_OPENMP:BOOL=OFF
-
-//Path to a library.
-BULLET_COLLISION_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libBulletCollision.so
-
-//Path to a library.
-BULLET_COLLISION_LIBRARY_DEBUG:FILEPATH=BULLET_COLLISION_LIBRARY_DEBUG-NOTFOUND
-
-//Path to a library.
-BULLET_DYNAMICS_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libBulletDynamics.so
-
-//Path to a library.
-BULLET_DYNAMICS_LIBRARY_DEBUG:FILEPATH=BULLET_DYNAMICS_LIBRARY_DEBUG-NOTFOUND
-
-//Path to a file.
-BULLET_INCLUDE_DIR:PATH=/usr/include/bullet
-
-//Path to a library.
-BULLET_MATH_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libLinearMath.so
-
-//Path to a library.
-BULLET_MATH_LIBRARY_DEBUG:FILEPATH=BULLET_MATH_LIBRARY_DEBUG-NOTFOUND
-
-//Path to a library.
-BULLET_SOFTBODY_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libBulletSoftBody.so
-
-//Path to a library.
-BULLET_SOFTBODY_LIBRARY_DEBUG:FILEPATH=BULLET_SOFTBODY_LIBRARY_DEBUG-NOTFOUND
-
-//The directory containing a CMake configuration file for Boost.
-Boost_DIR:PATH=Boost_DIR-NOTFOUND
-
-//Boost filesystem library (debug)
-Boost_FILESYSTEM_LIBRARY_DEBUG:FILEPATH=/usr/lib/x86_64-linux-gnu/libboost_filesystem.so
-
-//Boost filesystem library (release)
-Boost_FILESYSTEM_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libboost_filesystem.so
-
-//Path to a file.
-Boost_INCLUDE_DIR:PATH=/usr/include
-
-//Boost library directory DEBUG
-Boost_LIBRARY_DIR_DEBUG:PATH=/usr/lib/x86_64-linux-gnu
-
-//Boost library directory RELEASE
-Boost_LIBRARY_DIR_RELEASE:PATH=/usr/lib/x86_64-linux-gnu
-
-//Boost system library (debug)
-Boost_SYSTEM_LIBRARY_DEBUG:FILEPATH=/usr/lib/x86_64-linux-gnu/libboost_system.so
-
-//Boost system library (release)
-Boost_SYSTEM_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libboost_system.so
-
 //List of ';' separated packages to exclude
 CATKIN_BLACKLIST_PACKAGES:STRING=
 
@@ -299,9 +245,6 @@ LSB_RELEASE_EXECUTABLE:FILEPATH=/usr/bin/lsb_release
 //Path to a program.
 NOSETESTS:FILEPATH=/usr/bin/nosetests-2.7
 
-//pkg-config executable
-PKG_CONFIG_EXECUTABLE:FILEPATH=/usr/bin/pkg-config
-
 //Path to a program.
 PYTHON_EXECUTABLE:FILEPATH=/usr/bin/python2
 
@@ -317,26 +260,8 @@ Project_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src
 //Path to a library.
 RT_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/librt.so
 
-//Path to a library.
-SDLMAIN_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libSDLmain.a
-
-//Path to a file.
-SDL_IMAGE_INCLUDE_DIR:PATH=/usr/include/SDL
-
-//Path to a library.
-SDL_IMAGE_LIBRARY:FILEPATH=/usr/lib/x86_64-linux-gnu/libSDL_image.so
-
-//Path to a file.
-SDL_INCLUDE_DIR:PATH=/usr/include/SDL
-
-//Where the SDL Library can be found
-SDL_LIBRARY:STRING=/usr/lib/x86_64-linux-gnu/libSDLmain.a;/usr/lib/x86_64-linux-gnu/libSDL.so;-lpthread
-
 //Enable debian style python package layout
 SETUPTOOLS_DEB_LAYOUT:BOOL=ON
-
-//Set user wait point in startup (for debug)
-SET_USER_BREAK_AT_STARTUP:BOOL=OFF
 
 //Name of the computer/site where compile is being run
 SITE:STRING=joel-laptop
@@ -346,9 +271,6 @@ UBUNTU:BOOL=TRUE
 
 //LSB Distrib - codename tag
 UBUNTU_BIONIC:BOOL=TRUE
-
-//Path to a file.
-_file_name:FILEPATH=/home/joel/encoder_publisher_ws/src/navigation/amcl/test/texas_willow_hallway_loop.xml
 
 //Path to a file.
 _gmock_INCLUDES:FILEPATH=/usr/include/gmock/gmock.h
@@ -362,41 +284,14 @@ _gtest_INCLUDES:FILEPATH=/usr/include/gtest/gtest.h
 //Path to a file.
 _gtest_SOURCES:FILEPATH=/usr/src/gtest/src/gtest.cc
 
-//Path to a file.
-_path_name:FILEPATH=/home/joel/encoder_publisher_ws/src/realsense-ros/realsense2_description/tests
-
 //The directory containing a CMake configuration file for actionlib.
 actionlib_DIR:PATH=/opt/ros/melodic/share/actionlib/cmake
 
 //The directory containing a CMake configuration file for actionlib_msgs.
 actionlib_msgs_DIR:PATH=/opt/ros/melodic/share/actionlib_msgs/cmake
 
-//Value Computed by CMake
-amcl_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/navigation/amcl
-
-//Value Computed by CMake
-amcl_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/navigation/amcl
-
-//Dependencies for target
-amcl_map_LIB_DEPENDS:STATIC=
-
-//Dependencies for target
-amcl_pf_LIB_DEPENDS:STATIC=
-
-//Dependencies for the target
-amcl_sensors_LIB_DEPENDS:STATIC=general;amcl_map;general;amcl_pf;
-
-//The directory containing a CMake configuration file for angles.
-angles_DIR:PATH=/opt/ros/melodic/share/angles/cmake
-
 //The directory containing a CMake configuration file for autoware_msgs.
 autoware_msgs_DIR:PATH=/home/joel/autoware.ai/install/autoware_msgs/share/autoware_msgs/cmake
-
-//The directory containing a CMake configuration file for bond.
-bond_DIR:PATH=/opt/ros/melodic/share/bond/cmake
-
-//The directory containing a CMake configuration file for bondcpp.
-bondcpp_DIR:PATH=/opt/ros/melodic/share/bondcpp/cmake
 
 //Value Computed by CMake
 can_encoder_pub_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/can_encoder_pub
@@ -407,47 +302,14 @@ can_encoder_pub_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/can_encode
 //The directory containing a CMake configuration file for catkin.
 catkin_DIR:PATH=/opt/ros/melodic/share/catkin/cmake
 
-//The directory containing a CMake configuration file for class_loader.
-class_loader_DIR:PATH=/opt/ros/melodic/share/class_loader/cmake
-
-//The directory containing a CMake configuration file for cmake_modules.
-cmake_modules_DIR:PATH=/opt/ros/melodic/share/cmake_modules/cmake
-
-//Value Computed by CMake
-costmap_2d_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/navigation/costmap_2d
-
-//Value Computed by CMake
-costmap_2d_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/navigation/costmap_2d
-
 //The directory containing a CMake configuration file for cpp_common.
 cpp_common_DIR:PATH=/opt/ros/melodic/share/cpp_common/cmake
-
-//The directory containing a CMake configuration file for cv_bridge.
-cv_bridge_DIR:PATH=/opt/ros/melodic/share/cv_bridge/cmake
-
-//The directory containing a CMake configuration file for ddynamic_reconfigure.
-ddynamic_reconfigure_DIR:PATH=/opt/ros/melodic/share/ddynamic_reconfigure/cmake
-
-//The directory containing a CMake configuration file for diagnostic_msgs.
-diagnostic_msgs_DIR:PATH=/opt/ros/melodic/share/diagnostic_msgs/cmake
-
-//The directory containing a CMake configuration file for diagnostic_updater.
-diagnostic_updater_DIR:PATH=/opt/ros/melodic/share/diagnostic_updater/cmake
 
 //Value Computed by CMake
 ds4_driver_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/ds4_driver
 
 //Value Computed by CMake
 ds4_driver_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/ds4_driver
-
-//The directory containing a CMake configuration file for dynamic_reconfigure.
-dynamic_reconfigure_DIR:PATH=/opt/ros/melodic/share/dynamic_reconfigure/cmake
-
-//Value Computed by CMake
-fake_localization_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/navigation/fake_localization
-
-//Value Computed by CMake
-fake_localization_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/navigation/fake_localization
 
 //The directory containing a CMake configuration file for gencpp.
 gencpp_DIR:PATH=/opt/ros/melodic/share/gencpp/cmake
@@ -522,9 +384,6 @@ gtest_hide_internal_symbols:BOOL=OFF
 //Dependencies for the target
 gtest_main_LIB_DEPENDS:STATIC=general;-lpthread;general;gtest;
 
-//The directory containing a CMake configuration file for image_transport.
-image_transport_DIR:PATH=/opt/ros/melodic/share/image_transport/cmake
-
 //The directory containing a CMake configuration file for jsk_footstep_msgs.
 jsk_footstep_msgs_DIR:PATH=/opt/ros/melodic/share/jsk_footstep_msgs/cmake
 
@@ -540,9 +399,6 @@ key_command_pub_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/key_comm
 //Value Computed by CMake
 key_command_pub_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/key_command_pub
 
-//The directory containing a CMake configuration file for laser_geometry.
-laser_geometry_DIR:PATH=/opt/ros/melodic/share/laser_geometry/cmake
-
 //Path to a library.
 lib:FILEPATH=/opt/ros/melodic/lib/libkdl_conversions.so
 
@@ -551,18 +407,6 @@ local_planner_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/local_plan
 
 //Value Computed by CMake
 local_planner_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/local_planner
-
-//The directory containing a CMake configuration file for map_msgs.
-map_msgs_DIR:PATH=/opt/ros/melodic/share/map_msgs/cmake
-
-//Value Computed by CMake
-map_server_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/navigation/map_server
-
-//Value Computed by CMake
-map_server_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/navigation/map_server
-
-//Dependencies for the target
-map_server_image_loader_LIB_DEPENDS:STATIC=general;/usr/lib/x86_64-linux-gnu/libBulletDynamics.so;general;/usr/lib/x86_64-linux-gnu/libBulletCollision.so;general;/usr/lib/x86_64-linux-gnu/libLinearMath.so;general;/usr/lib/x86_64-linux-gnu/libBulletSoftBody.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/libtf2.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;general;/usr/lib/x86_64-linux-gnu/libSDLmain.a;general;/usr/lib/x86_64-linux-gnu/libSDL.so;general;-lpthread;general;/usr/lib/x86_64-linux-gnu/libSDL_image.so;
 
 //The directory containing a CMake configuration file for message_filters.
 message_filters_DIR:PATH=/opt/ros/melodic/share/message_filters/cmake
@@ -577,30 +421,6 @@ message_runtime_DIR:PATH=/opt/ros/melodic/share/message_runtime/cmake
 nav_msgs_DIR:PATH=/opt/ros/melodic/share/nav_msgs/cmake
 
 //Value Computed by CMake
-navigation_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/navigation/navigation
-
-//Value Computed by CMake
-navigation_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/navigation/navigation
-
-//The directory containing a CMake configuration file for nodelet.
-nodelet_DIR:PATH=/opt/ros/melodic/share/nodelet/cmake
-
-//Value Computed by CMake
-object_msgs_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/object_msgs
-
-//Value Computed by CMake
-object_msgs_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/object_msgs
-
-//Value Computed by CMake
-occupancy_grid_utils_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/occupancy_grid_utils
-
-//The directory containing a CMake configuration file for occupancy_grid_utils.
-occupancy_grid_utils_DIR:PATH=occupancy_grid_utils_DIR-NOTFOUND
-
-//Value Computed by CMake
-occupancy_grid_utils_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/occupancy_grid_utils
-
-//Value Computed by CMake
 panthera_locomotion_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/panthera_locomotion
 
 //Value Computed by CMake
@@ -609,38 +429,11 @@ panthera_locomotion_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/panthe
 //The directory containing a CMake configuration file for pcl_msgs.
 pcl_msgs_DIR:PATH=/opt/ros/melodic/share/pcl_msgs/cmake
 
-//The directory containing a CMake configuration file for pluginlib.
-pluginlib_DIR:PATH=/opt/ros/melodic/share/pluginlib/cmake
-
-//The directory containing a CMake configuration file for realsense2.
-realsense2_DIR:PATH=/opt/ros/melodic/lib/cmake/realsense2
-
-//Value Computed by CMake
-realsense2_camera_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/realsense-ros/realsense2_camera
-
-//Dependencies for the target
-realsense2_camera_LIB_DEPENDS:STATIC=general;realsense2::realsense2;general;/opt/ros/melodic/lib/libnodeletlib.so;general;/opt/ros/melodic/lib/libbondcpp.so;general;/usr/lib/x86_64-linux-gnu/libuuid.so;general;/opt/ros/melodic/lib/libcv_bridge.so;general;/usr/lib/x86_64-linux-gnu/libopencv_core.so.3.2.0;general;/usr/lib/x86_64-linux-gnu/libopencv_imgproc.so.3.2.0;general;/usr/lib/x86_64-linux-gnu/libopencv_imgcodecs.so.3.2.0;general;/opt/ros/melodic/lib/libimage_transport.so;general;/opt/ros/melodic/lib/libclass_loader.so;general;/usr/lib/libPocoFoundation.so;general;/usr/lib/x86_64-linux-gnu/libdl.so;general;/opt/ros/melodic/lib/libroslib.so;general;/opt/ros/melodic/lib/librospack.so;general;/usr/lib/x86_64-linux-gnu/libpython2.7.so;general;/usr/lib/x86_64-linux-gnu/libboost_program_options.so;general;/usr/lib/x86_64-linux-gnu/libtinyxml2.so;general;/opt/ros/melodic/lib/libtf.so;general;/opt/ros/melodic/lib/libtf2_ros.so;general;/opt/ros/melodic/lib/libactionlib.so;general;/opt/ros/melodic/lib/libmessage_filters.so;general;/opt/ros/melodic/lib/libtf2.so;general;/opt/ros/melodic/lib/libddynamic_reconfigure.so;general;/opt/ros/melodic/lib/libdynamic_reconfigure_config_init_mutex.so;general;/opt/ros/melodic/lib/libdiagnostic_updater.so;general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
-
-//Value Computed by CMake
-realsense2_camera_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/realsense-ros/realsense2_camera
-
-//Value Computed by CMake
-realsense2_description_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/realsense-ros/realsense2_description
-
-//Value Computed by CMake
-realsense2_description_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/realsense-ros/realsense2_description
-
 //Value Computed by CMake
 roboclaw_node_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/roboclaw_node
 
 //Value Computed by CMake
 roboclaw_node_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/roboclaw_node
-
-//The directory containing a CMake configuration file for rosbag.
-rosbag_DIR:PATH=/opt/ros/melodic/share/rosbag/cmake
-
-//The directory containing a CMake configuration file for rosbag_storage.
-rosbag_storage_DIR:PATH=/opt/ros/melodic/share/rosbag_storage/cmake
 
 //The directory containing a CMake configuration file for rosconsole.
 rosconsole_DIR:PATH=/opt/ros/melodic/share/rosconsole/cmake
@@ -660,29 +453,14 @@ rosgraph_DIR:PATH=/opt/ros/melodic/share/rosgraph/cmake
 //The directory containing a CMake configuration file for rosgraph_msgs.
 rosgraph_msgs_DIR:PATH=/opt/ros/melodic/share/rosgraph_msgs/cmake
 
-//The directory containing a CMake configuration file for roslib.
-roslib_DIR:PATH=/opt/ros/melodic/share/roslib/cmake
-
-//The directory containing a CMake configuration file for roslz4.
-roslz4_DIR:PATH=/opt/ros/melodic/share/roslz4/cmake
-
-//The directory containing a CMake configuration file for rospack.
-rospack_DIR:PATH=/opt/ros/melodic/share/rospack/cmake
-
 //The directory containing a CMake configuration file for rospy.
 rospy_DIR:PATH=/opt/ros/melodic/share/rospy/cmake
-
-//The directory containing a CMake configuration file for rostest.
-rostest_DIR:PATH=/opt/ros/melodic/share/rostest/cmake
 
 //The directory containing a CMake configuration file for rostime.
 rostime_DIR:PATH=/opt/ros/melodic/share/rostime/cmake
 
 //The directory containing a CMake configuration file for sensor_msgs.
 sensor_msgs_DIR:PATH=/opt/ros/melodic/share/sensor_msgs/cmake
-
-//The directory containing a CMake configuration file for smclib.
-smclib_DIR:PATH=/opt/ros/melodic/share/smclib/cmake
 
 //The directory containing a CMake configuration file for std_msgs.
 std_msgs_DIR:PATH=/opt/ros/melodic/share/std_msgs/cmake
@@ -693,12 +471,6 @@ std_srvs_DIR:PATH=/opt/ros/melodic/share/std_srvs/cmake
 //The directory containing a CMake configuration file for tf2.
 tf2_DIR:PATH=/opt/ros/melodic/share/tf2/cmake
 
-//The directory containing a CMake configuration file for tf2_bullet.
-tf2_bullet_DIR:PATH=tf2_bullet_DIR-NOTFOUND
-
-//The directory containing a CMake configuration file for tf2_geometry_msgs.
-tf2_geometry_msgs_DIR:PATH=/opt/ros/melodic/share/tf2_geometry_msgs/cmake
-
 //The directory containing a CMake configuration file for tf2_msgs.
 tf2_msgs_DIR:PATH=/opt/ros/melodic/share/tf2_msgs/cmake
 
@@ -708,29 +480,14 @@ tf2_py_DIR:PATH=/opt/ros/melodic/share/tf2_py/cmake
 //The directory containing a CMake configuration file for tf2_ros.
 tf2_ros_DIR:PATH=/opt/ros/melodic/share/tf2_ros/cmake
 
-//The directory containing a CMake configuration file for tf2_sensor_msgs.
-tf2_sensor_msgs_DIR:PATH=tf2_sensor_msgs_DIR-NOTFOUND
-
 //The directory containing a CMake configuration file for tf.
 tf_DIR:PATH=/opt/ros/melodic/share/tf/cmake
 
 //The directory containing a CMake configuration file for tf_conversions.
 tf_conversions_DIR:PATH=/opt/ros/melodic/share/tf_conversions/cmake
 
-//The directory containing a CMake configuration file for topic_tools.
-topic_tools_DIR:PATH=/opt/ros/melodic/share/topic_tools/cmake
-
 //The directory containing a CMake configuration file for visualization_msgs.
 visualization_msgs_DIR:PATH=/opt/ros/melodic/share/visualization_msgs/cmake
-
-//Value Computed by CMake
-voxel_grid_BINARY_DIR:STATIC=/home/joel/encoder_publisher_ws/build/navigation/voxel_grid
-
-//Dependencies for the target
-voxel_grid_LIB_DEPENDS:STATIC=general;/opt/ros/melodic/lib/libroscpp.so;general;/usr/lib/x86_64-linux-gnu/libboost_filesystem.so;general;/opt/ros/melodic/lib/librosconsole.so;general;/opt/ros/melodic/lib/librosconsole_log4cxx.so;general;/opt/ros/melodic/lib/librosconsole_backend_interface.so;general;/usr/lib/x86_64-linux-gnu/liblog4cxx.so;general;/usr/lib/x86_64-linux-gnu/libboost_regex.so;general;/opt/ros/melodic/lib/libroscpp_serialization.so;general;/opt/ros/melodic/lib/libxmlrpcpp.so;general;/opt/ros/melodic/lib/librostime.so;general;/opt/ros/melodic/lib/libcpp_common.so;general;/usr/lib/x86_64-linux-gnu/libboost_system.so;general;/usr/lib/x86_64-linux-gnu/libboost_thread.so;general;/usr/lib/x86_64-linux-gnu/libboost_chrono.so;general;/usr/lib/x86_64-linux-gnu/libboost_date_time.so;general;/usr/lib/x86_64-linux-gnu/libboost_atomic.so;general;/usr/lib/x86_64-linux-gnu/libpthread.so;general;/usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4;
-
-//Value Computed by CMake
-voxel_grid_SOURCE_DIR:STATIC=/home/joel/encoder_publisher_ws/src/navigation/voxel_grid
 
 //The directory containing a CMake configuration file for xmlrpcpp.
 xmlrpcpp_DIR:PATH=/opt/ros/melodic/share/xmlrpcpp/cmake
@@ -740,38 +497,6 @@ xmlrpcpp_DIR:PATH=/opt/ros/melodic/share/xmlrpcpp/cmake
 # INTERNAL cache entries
 ########################
 
-//ADVANCED property for variable: BULLET_COLLISION_LIBRARY
-BULLET_COLLISION_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: BULLET_COLLISION_LIBRARY_DEBUG
-BULLET_COLLISION_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: BULLET_DYNAMICS_LIBRARY
-BULLET_DYNAMICS_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: BULLET_DYNAMICS_LIBRARY_DEBUG
-BULLET_DYNAMICS_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: BULLET_MATH_LIBRARY
-BULLET_MATH_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: BULLET_MATH_LIBRARY_DEBUG
-BULLET_MATH_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: BULLET_SOFTBODY_LIBRARY
-BULLET_SOFTBODY_LIBRARY-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: BULLET_SOFTBODY_LIBRARY_DEBUG
-BULLET_SOFTBODY_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: Boost_DIR
-Boost_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: Boost_FILESYSTEM_LIBRARY_DEBUG
-Boost_FILESYSTEM_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: Boost_FILESYSTEM_LIBRARY_RELEASE
-Boost_FILESYSTEM_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: Boost_INCLUDE_DIR
-Boost_INCLUDE_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: Boost_LIBRARY_DIR_DEBUG
-Boost_LIBRARY_DIR_DEBUG-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: Boost_LIBRARY_DIR_RELEASE
-Boost_LIBRARY_DIR_RELEASE-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: Boost_SYSTEM_LIBRARY_DEBUG
-Boost_SYSTEM_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: Boost_SYSTEM_LIBRARY_RELEASE
-Boost_SYSTEM_LIBRARY_RELEASE-ADVANCED:INTERNAL=1
 //catkin environment
 CATKIN_ENV:INTERNAL=/home/joel/encoder_publisher_ws/build/catkin_generated/env_cached.sh
 CATKIN_TEST_RESULTS_DIR:INTERNAL=/home/joel/encoder_publisher_ws/build/test_results
@@ -918,16 +643,8 @@ CMAKE_STRIP-ADVANCED:INTERNAL=1
 CMAKE_UNAME:INTERNAL=/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
-//Details about finding Bullet
-FIND_PACKAGE_MESSAGE_DETAILS_Bullet:INTERNAL=[/usr/lib/x86_64-linux-gnu/libBulletDynamics.so][/usr/lib/x86_64-linux-gnu/libBulletCollision.so][/usr/lib/x86_64-linux-gnu/libLinearMath.so][/usr/lib/x86_64-linux-gnu/libBulletSoftBody.so][/usr/include/bullet][v()]
-//Details about finding PkgConfig
-FIND_PACKAGE_MESSAGE_DETAILS_PkgConfig:INTERNAL=[/usr/bin/pkg-config][v0.29.1()]
 //Details about finding PythonInterp
 FIND_PACKAGE_MESSAGE_DETAILS_PythonInterp:INTERNAL=[/usr/bin/python2][v2.7.17()]
-//Details about finding SDL
-FIND_PACKAGE_MESSAGE_DETAILS_SDL:INTERNAL=[/usr/lib/x86_64-linux-gnu/libSDLmain.a;/usr/lib/x86_64-linux-gnu/libSDL.so;-lpthread][/usr/include/SDL][v1.2.15()]
-//Details about finding SDL_image
-FIND_PACKAGE_MESSAGE_DETAILS_SDL_image:INTERNAL=[/usr/lib/x86_64-linux-gnu/libSDL_image.so][/usr/include/SDL][v1.2.12()]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 GMOCK_FROM_SOURCE_FOUND:INTERNAL=TRUE
@@ -950,73 +667,10 @@ GTEST_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 GTEST_MAIN_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: GTEST_MAIN_LIBRARY_DEBUG
 GTEST_MAIN_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
-//Have symbol drand48
-HAVE_DRAND48:INTERNAL=1
-//Have include sys/time.h
-HAVE_SYS_TIME_H:INTERNAL=1
-//Have include unistd.h
-HAVE_UNISTD_H:INTERNAL=1
-//ADVANCED property for variable: PKG_CONFIG_EXECUTABLE
-PKG_CONFIG_EXECUTABLE-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: PYTHON_EXECUTABLE
 PYTHON_EXECUTABLE-ADVANCED:INTERNAL=1
 //This needs to be in PYTHONPATH when 'setup.py install' is called.
 //  And it needs to match.  But setuptools won't tell us where
 // it will install things.
 PYTHON_INSTALL_DIR:INTERNAL=lib/python2.7/dist-packages
-//ADVANCED property for variable: SDL_IMAGE_INCLUDE_DIR
-SDL_IMAGE_INCLUDE_DIR-ADVANCED:INTERNAL=1
-//ADVANCED property for variable: SDL_IMAGE_LIBRARY
-SDL_IMAGE_LIBRARY-ADVANCED:INTERNAL=1
-//Path to a library.
-SDL_LIBRARY_TEMP:INTERNAL=/usr/lib/x86_64-linux-gnu/libSDL.so
-YAMLCPP_CFLAGS:INTERNAL=
-YAMLCPP_CFLAGS_I:INTERNAL=
-YAMLCPP_CFLAGS_OTHER:INTERNAL=
-YAMLCPP_FOUND:INTERNAL=1
-YAMLCPP_INCLUDEDIR:INTERNAL=/usr/include
-YAMLCPP_INCLUDE_DIRS:INTERNAL=
-YAMLCPP_LDFLAGS:INTERNAL=-lyaml-cpp
-YAMLCPP_LDFLAGS_OTHER:INTERNAL=
-YAMLCPP_LIBDIR:INTERNAL=
-YAMLCPP_LIBRARIES:INTERNAL=yaml-cpp
-YAMLCPP_LIBRARY_DIRS:INTERNAL=
-YAMLCPP_LIBS:INTERNAL=
-YAMLCPP_LIBS_L:INTERNAL=
-YAMLCPP_LIBS_OTHER:INTERNAL=
-YAMLCPP_LIBS_PATHS:INTERNAL=
-YAMLCPP_PREFIX:INTERNAL=/usr
-YAMLCPP_STATIC_CFLAGS:INTERNAL=
-YAMLCPP_STATIC_CFLAGS_I:INTERNAL=
-YAMLCPP_STATIC_CFLAGS_OTHER:INTERNAL=
-YAMLCPP_STATIC_INCLUDE_DIRS:INTERNAL=
-YAMLCPP_STATIC_LDFLAGS:INTERNAL=-lyaml-cpp
-YAMLCPP_STATIC_LDFLAGS_OTHER:INTERNAL=
-YAMLCPP_STATIC_LIBDIR:INTERNAL=
-YAMLCPP_STATIC_LIBRARIES:INTERNAL=yaml-cpp
-YAMLCPP_STATIC_LIBRARY_DIRS:INTERNAL=
-YAMLCPP_STATIC_LIBS:INTERNAL=
-YAMLCPP_STATIC_LIBS_L:INTERNAL=
-YAMLCPP_STATIC_LIBS_OTHER:INTERNAL=
-YAMLCPP_STATIC_LIBS_PATHS:INTERNAL=
-YAMLCPP_VERSION:INTERNAL=0.5.2
-YAMLCPP_yaml-cpp_INCLUDEDIR:INTERNAL=
-YAMLCPP_yaml-cpp_LIBDIR:INTERNAL=
-YAMLCPP_yaml-cpp_PREFIX:INTERNAL=
-YAMLCPP_yaml-cpp_VERSION:INTERNAL=
-//Components requested for this build tree.
-_Boost_COMPONENTS_SEARCHED:INTERNAL=filesystem;system
-//Last used Boost_INCLUDE_DIR value.
-_Boost_INCLUDE_DIR_LAST:INTERNAL=/usr/include
-//Last used Boost_LIBRARY_DIR_DEBUG value.
-_Boost_LIBRARY_DIR_DEBUG_LAST:INTERNAL=/usr/lib/x86_64-linux-gnu
-//Last used Boost_LIBRARY_DIR_RELEASE value.
-_Boost_LIBRARY_DIR_RELEASE_LAST:INTERNAL=/usr/lib/x86_64-linux-gnu
-//Last used Boost_NAMESPACE value.
-_Boost_NAMESPACE_LAST:INTERNAL=boost
-//Last used Boost_USE_MULTITHREADED value.
-_Boost_USE_MULTITHREADED_LAST:INTERNAL=TRUE
-__pkg_config_arguments_YAMLCPP:INTERNAL=yaml-cpp;QUIET
-__pkg_config_checked_YAMLCPP:INTERNAL=1
-prefix_result:INTERNAL=
 

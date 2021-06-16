@@ -114,11 +114,6 @@ class Robot
 			rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
 			lf_stat = nh->serviceClient<panthera_locomotion::Status>("lf_steer_status");
 			rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
-			
-			lb_stat.waitForExistence();
-			rb_stat.waitForExistence();
-			lf_stat.waitForExistence();
-			rf_stat.waitForExistence();
 		}
 
 		struct ICR
@@ -264,13 +259,21 @@ class Robot
 		{
 			bool clear = true;
 			geometry_msgs::Point32 pt = index_to_coordinates(index, res, len_x);
-			double theta = min_theta + (angle_interval*2*PI/360);
+			double theta = min_theta;
+
 			while (clear == true && theta <= 2*PI)
-			{
+			{	
 				clear = rotation_clear(pt, theta, data_pts);
 				if (clear == true)
 				{
-					theta += (angle_interval*2*PI/360);
+					if (theta > 0)
+					{
+						theta += (angle_interval*PI/180);
+					}
+					else
+					{
+						theta -= (angle_interval*PI/180);
+					}
 				}
 			}
 			return theta;
@@ -298,6 +301,7 @@ class Robot
 				//std::cout << "Count: " << count << std::endl;
 			}
 			printf("Search Done\n");
+			
 			std::cout << possible_icr.size() << std::endl;
 			ICR best_pt;
 			
@@ -307,7 +311,7 @@ class Robot
 			}
 
 			else
-			{
+			{	
 				best_pt = optimize(possible_icr);
 				geometry_msgs::Point32 best_pt_coor = index_to_coordinates(best_pt.index, res, len_x);
 				std::cout << "Best point: " <<  index_to_coordinates(best_pt.index, res, len_x) << std::endl;
@@ -328,8 +332,11 @@ class Robot
 			for (auto icr : icrs)
 			{	
 				int i = coordinates_to_index(icr.x, icr.y, len_x);
+				
 				double h1 = h_steer*angle_change(i)[4];
+				
 				double h2 = h_max_rot*max_rotation(i, angle);
+				
 				double h3 = h_icr_dist*distance_from_centre(i);
 				double h4 = h1 + h2 + h3;
 				ICR x{i, h1, h2, h3, h4, angle_change(i)};
@@ -475,7 +482,8 @@ class Robot
 					}
 				}
 			}
-			std::sort(outline.begin(), outline.end(), sort_y);
+			std::sort(outline.begin(), outline.end(), sort_xy);
+			outline.erase(unique(outline.begin(), outline.end()), outline.end());
 			//printf("sorted list\n");
 			return outline;
 		}
@@ -547,6 +555,29 @@ class Robot
 		static bool sort_y(const geometry_msgs::Point32& a, const geometry_msgs::Point32& b)
 		{
 			return (a.y < b.y);
+		}
+
+		static bool sort_xy(const geometry_msgs::Point32& a, const geometry_msgs::Point32& b)
+		{
+			if (a.y == b.y)
+			{
+				if (a.x < b.x)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else if (a.y < b.y)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 
 		std::vector<geometry_msgs::Point32> sector_footprint(geometry_msgs::Point32 icr, geometry_msgs::Point32 corner, double theta) // angle in radians

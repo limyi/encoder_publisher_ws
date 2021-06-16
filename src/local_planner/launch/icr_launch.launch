@@ -1,6 +1,6 @@
 <launch>
 	<rosparam command="load" file="$(find local_planner)/params/icr_params.yaml"/>
 	<node name="icr_search_node" type="icr_search_node" pkg="local_planner" output="screen"/>
-	<node pkg="tf" type="static_transform_publisher" name="search_broadcaster" args="0 0 0 0 0 0 1 map footprint 100" />
+	<!--node pkg="tf" type="static_transform_publisher" name="search_broadcaster" args="0 0 0 0 0 0 1 map footprint 100" /-->
 </launch>
 

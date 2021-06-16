@@ -47,6 +47,20 @@ ros/message_operations.h
 -
 
 /home/joel/encoder_publisher_ws/devel/include/panthera_locomotion/StatusResponse.h
+string
+-
+vector
+-
+map
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
 
 /home/joel/encoder_publisher_ws/src/local_planner/include/local_planner/twist_pub_node.h
 iostream
