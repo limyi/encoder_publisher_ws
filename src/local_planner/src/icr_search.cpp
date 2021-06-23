@@ -53,7 +53,7 @@ class Robot
 
 		ros::ServiceClient lb_stat, rb_stat, lf_stat, rf_stat;
 
-		bool operation = false;
+		bool operation;
 
 		// Footprint info
 		double length, width;
@@ -86,7 +86,7 @@ class Robot
 		// cmd vel
 		geometry_msgs::Twist cmd_angle;
 		geometry_msgs::Twist cmd_vel;
-		float wz = 0.5;
+		float wz = 0.07;
 
 	public:
 		Robot(ros::NodeHandle *nh)
@@ -108,7 +108,8 @@ class Robot
 			h_icr_dist = nh->param("/min_icr_dist", -1.0);
 			angle_interval = nh->param("/angle_sample", 10);
 			ws_length = nh->param("/front_back_wheel_sep", 1.5);
-			wz = nh->param("/turn_speed", 0.5);
+			wz = nh->param("/turn_speed", 0.07);
+			operation = nh->param("/operation", false);
 
 			lb_stat = nh->serviceClient<panthera_locomotion::Status>("lb_steer_status");
 			rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
@@ -150,10 +151,10 @@ class Robot
 		void publish_angle(ICR icr)
 		{
 			auto* ts = &cmd_angle;
-			ts->linear.x = icr.wheel_angles[0];
-			ts->linear.y = icr.wheel_angles[1];
-			ts->linear.z = icr.wheel_angles[2];
-			ts->angular.x = icr.wheel_angles[3];
+			ts->linear.x = icr.wheel_angles[0]*180/PI;
+			ts->linear.y = icr.wheel_angles[1]*180/PI;
+			ts->linear.z = icr.wheel_angles[2]*180/PI;
+			ts->angular.x = icr.wheel_angles[3]*180/PI;
 			angle_pub.publish(*ts);
 		}
 
@@ -171,7 +172,7 @@ class Robot
 			tv->linear.y = 0;
 			tv->linear.z = 0;
 			tv->angular.x = 0;
-			angle_pub.publish(*tv);
+			vel_pub.publish(*tv);
 		}
 
 		void send_cmds(geometry_msgs::Point32 icr, std::vector<geometry_msgs::Point32> wheel_vec, ICR icr_node)
@@ -323,6 +324,7 @@ class Robot
 				{
 					std::cout <<"Wheel angle " << i << ": " << best_pt.wheel_angles[i]/PI*180 << std::endl;
 				}
+				send_cmds(best_pt_coor, wheels, best_pt);
 			}
 			possible_icr.clear();
 		}
