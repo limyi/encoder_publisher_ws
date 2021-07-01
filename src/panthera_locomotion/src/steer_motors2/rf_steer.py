@@ -161,16 +161,12 @@ if __name__ == "__main__":
         period = 0.05
         rate = rospy.Rate(20)
         while not rospy.is_shutdown():
-        	if abs(rf_steer.position) >= 180:
-        		rf_steer.motor.writeSpeed(0)
-        		break
-        	else:
-	        	start = rospy.get_time()
-                #rf_steer.adjust_max_speed()
-                rf_steer.adjust_speed(period)
-                rate.sleep()
-                end = rospy.get_time()
-                period = end - start
-                #print(rf_steer.target)
+            start = rospy.get_time()
+            #rf_steer.adjust_max_speed()
+            rf_steer.adjust_speed(period)
+            rate.sleep()
+            end = rospy.get_time()
+            period = end - start
+            #print(rf_steer.target)
     except rospy.ROSInterruptException:
         pass

@@ -55,6 +55,7 @@ class TransMotor():
 			self.position = data.angular.x
 			self.complement = data.linear.z
 
+		#self.width = data.angular.z
 		self.width = (data.angular.z + data.angular.y)/2
 
 	def reconfig(self, data): ###

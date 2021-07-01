@@ -132,18 +132,23 @@ class Robot
 			auto* ts = &cmd_vel;
 			if (withinWheelBase(icr) == true)
 			{
-				ts->linear.x = distance(wheel_vec[0].x, wheel_vec[0].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
-				ts->linear.y = distance(wheel_vec[1].x, wheel_vec[1].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
-				ts->linear.z = distance(wheel_vec[2].x, wheel_vec[2].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
-				ts->angular.x = distance(wheel_vec[3].x, wheel_vec[3].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+				ts->linear.x = -double_dist(wheel_vec[0].x, wheel_vec[0].y, icr.x, icr.y)*res * (abs(angle)/angle) * wz;
+				//std::cout << double_dist(wheel_vec[0].x, wheel_vec[0].y, icr.x, icr.y) << std::endl;
+				ts->linear.y = double_dist(wheel_vec[1].x, wheel_vec[1].y, icr.x, icr.y)*res * (abs(angle)/angle) * wz;
+				//std::cout << double_dist(wheel_vec[1].x, wheel_vec[1].y, icr.x, icr.y) << std::endl;
+				ts->linear.z = double_dist(wheel_vec[2].x, wheel_vec[2].y, icr.x, icr.y)*res * (abs(angle)/angle) * wz;
+				//std::cout << double_dist(wheel_vec[2].x, wheel_vec[2].y, icr.x, icr.y) << std::endl;
+				ts->angular.x = double_dist(wheel_vec[3].x, wheel_vec[3].y, icr.x, icr.y)*res * (abs(angle)/angle) * wz;
+				//std::cout << double_dist(wheel_vec[3].x, wheel_vec[3].y, icr.x, icr.y) << std::endl;
 			}
 			else
-			{
-				ts->linear.x = distance(wheel_vec[0].x, wheel_vec[0].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
-				ts->linear.y = distance(wheel_vec[1].x, wheel_vec[1].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
-				ts->linear.z = distance(wheel_vec[2].x, wheel_vec[2].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
-				ts->angular.x = distance(wheel_vec[3].x, wheel_vec[3].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+			{	
+				ts->linear.x = 0;//double_dist(wheel_vec[0].x, wheel_vec[0].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+				ts->linear.y = 0;//-double_dist(wheel_vec[1].x, wheel_vec[1].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+				ts->linear.z = 0;//double_dist(wheel_vec[2].x, wheel_vec[2].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
+				ts->angular.x = 0;//double_dist(wheel_vec[3].x, wheel_vec[3].y, icr.x, icr.y) * (abs(angle)/angle) * wz;
 			}
+			std::cout << *ts << std::endl;
 			vel_pub.publish(*ts);
 
 		}
@@ -177,9 +182,11 @@ class Robot
 
 		void send_cmds(geometry_msgs::Point32 icr, std::vector<geometry_msgs::Point32> wheel_vec, ICR icr_node)
 		{
-			publish_vel(icr, wheel_vec);
-			check_steer();
 			publish_angle(icr_node);
+
+			check_steer();
+			
+			publish_vel(icr, wheel_vec);
 			float t = abs(angle)/wz;
 			ros::Duration(t).sleep();
 			stop_pub();
@@ -431,13 +438,13 @@ class Robot
 			r_f.x = len_x/2 + ws_length/res/2;
 			r_f.y = len_y/2 - ws_width/res/2;
 
-			wheels = {l_b, l_f, r_f, r_b};
-			/**
+			wheels = {l_b, r_b, l_f, r_f};
+			
 			for (auto w : wheels)
 			{
 				std::cout << w << std::endl;
 			}
-			**/
+			
 		}
 
 		void outlinepolygon(std::vector<geometry_msgs::Point32>* polygon) // inputs vector of point32 (map coordinates)
@@ -521,6 +528,11 @@ class Robot
 				yy = y0 + param * D;
 			}
 			return distance(pX,pY,xx,yy);
+		}
+
+		double double_dist(double x0, double y0, double x1, double y1)
+		{
+			return sqrt(pow(x0 - x1,2) + pow(y0 - y1,2));
 		}
 
 		double distance(int x0, int y0, int x1, int y1)
@@ -690,8 +702,8 @@ class Robot
 		{	
 			geometry_msgs::Point32 lb_, lf_, rb_, rf_;
 			lb_ = wheels[0];
-			lf_ = wheels[1];
-			rb_ = wheels[2];
+			rb_ = wheels[1];
+			lf_ = wheels[2];
 			rf_ = wheels[3];
 			if (icr.x < lb_.x || icr.x > lf_.x || icr.y > lb_.y || icr.y < rb_.y)
 			{

@@ -131,6 +131,8 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/joel/encoder_publisher_ws/build/gtest/cmake_install.cmake")
+  include("/home/joel/encoder_publisher_ws/build/serial/cmake_install.cmake")
+  include("/home/joel/encoder_publisher_ws/build/serial-example/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/can_encoder_pub/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/key_command_pub/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/local_planner/cmake_install.cmake")

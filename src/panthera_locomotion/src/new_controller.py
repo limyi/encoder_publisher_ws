@@ -132,6 +132,7 @@ class Ds4Controller():
 				#print(i)
 				self.vibrate.publish(self.vb)
 		self.width = (data.angular.y + data.angular.z)/2
+		#self.width = data.angular.z
 
 	def cmd_sub(self, data):
 		self.linear_x = data.linear.x
@@ -267,7 +268,7 @@ class Ds4Controller():
 		# determine and publish wheel angles and speed
 		h_r = self.holo_right * 90
 		h_l = -self.holo_left * 90
-		recon_r = self.rec_r * 90
+		recon_r = -self.rec_r * 90
 		recon_l = self.rec_l * 90
 		recon_move = (self.rec_r or self.rec_l) * f
 		lb,rb,lf,rf = self.adjust_wheels(f, s)
@@ -315,7 +316,7 @@ class Ds4Controller():
 		v = self.custom_twist(self.vac.data*100, 0)
 		self.vacuum.publish(v)
 		if sum(self.input_list) != self.pub_once:
-			if sum(self.input_list) > 2:
+			if sum(self.input_list) > 3:
 				print("Error: Pressing more than 2 buttons")
 			else:
 				if self.human_dist > self.human_stop:

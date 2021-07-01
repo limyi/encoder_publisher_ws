@@ -1,0 +1,8 @@
+prefix=/home/joel/encoder_publisher_ws/install
+
+Name: serial_example
+Description: Description of serial_example
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: serial std_msgs geometry_msgs

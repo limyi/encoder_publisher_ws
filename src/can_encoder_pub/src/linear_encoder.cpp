@@ -240,7 +240,7 @@ int main(int argc, char **argv)
                 uint d = can_array[i].data[3];
                 uint position = (d << 24) | (c << 16) | (b << 8) | (a);
                 double positionFloat = position;
-                positionFloat = ((positionFloat - 137458) * 0.02197) - 1484.5;
+                positionFloat = ((positionFloat - 137458) * 0.02197) - 1482.5;
                 /**std::cout << positionFloat << "\n";**/
                 msg.linear.y = positionFloat;
             }
