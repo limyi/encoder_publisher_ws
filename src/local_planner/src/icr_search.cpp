@@ -344,17 +344,22 @@ class Robot
 				ICR* x = new ICR();
 				//printf("Optimizing\n");
 				x->index = coordinates_to_index(icr.x, icr.y, len_x);
-				x->h1 = h_steer*angle_change(x->index)[4];
+				x->h1 = angle_change(x->index)[4];
 				//printf("checking max rotation\n");
-				x->h2 = h_max_rot*max_rotation(x->index, angle);
+				x->h2 = max_rotation(x->index, angle);
 				//printf("checking distance from centre\n");
-				x->h3 = h_icr_dist*distance_from_centre(x->index);
-				x->h4 = x->h1 + x->h2 + x->h3;
+				x->h3 = distance_from_centre(x->index);
+				x->h4 = (x->h1*h_steer + x->h2*h_max_rot + x->h3*h_icr_dist)/(abs(h_icr_dist) + abs(h_max_rot) + abs(h_steer));
 				x->wheel_angles = angle_change(x->index);
 				icr_nodes.push_back(*x);
 				delete x;
 			}
 			std::sort(icr_nodes.begin(), icr_nodes.end(), sort_h);
+			std::cout << "h1: " << icr_nodes[0].h1 << std::endl;
+			std::cout << "h2: " << icr_nodes[0].h2 << std::endl;
+			std::cout << "h3: " << icr_nodes[0].h3 << std::endl;
+			std::cout << "h4: " << icr_nodes[0].h4 << std::endl;
+
 			return icr_nodes[0];
 		}
 
