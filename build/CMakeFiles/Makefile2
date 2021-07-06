@@ -6199,6 +6199,24 @@ clean: panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_eus.
 .PHONY : clean
 
 #=============================================================================
+# Directory level rules for directory ultrasonic_sensors
+
+# Convenience name for "all" pass in the directory.
+ultrasonic_sensors/all:
+
+.PHONY : ultrasonic_sensors/all
+
+# Convenience name for "clean" pass in the directory.
+ultrasonic_sensors/clean:
+
+.PHONY : ultrasonic_sensors/clean
+
+# Convenience name for "preinstall" pass in the directory.
+ultrasonic_sensors/preinstall:
+
+.PHONY : ultrasonic_sensors/preinstall
+
+#=============================================================================
 # Special targets to cleanup operation of make.
 
 # Special rule to run CMake to check the build system integrity.

@@ -139,6 +139,7 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/joel/encoder_publisher_ws/build/ds4_driver/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/roboclaw_node/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/panthera_locomotion/cmake_install.cmake")
+  include("/home/joel/encoder_publisher_ws/build/ultrasonic_sensors/cmake_install.cmake")
 
 endif()
 

@@ -1,7 +1,3 @@
-/** TO DO LIST **/
-// ADD SUBSCRIBER FOR ROBOT WIDTH
-// CHECK fpCoordinates()
-
 #include <ros/ros.h>
 #include <nav_msgs/OccupancyGrid.h>
 #include <nav_msgs/Path.h>

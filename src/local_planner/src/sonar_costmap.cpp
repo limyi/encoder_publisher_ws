@@ -15,8 +15,11 @@ private:
 	double width, length, offset_x;
 	float side_spacing;
 
-	// lidar costmap
-	nav_msgs::OccupancyGrid lidar_map;
+	// lidar map
+	std::vector<signed char> lidar_map;
+	std::vector<signed char> ult_map;
+	double res;
+	int height, width;
 
 	// sonar readings (cells)
 	int left_b, left_m, left_f, front_l, front_r, right_b, right_m, right_f, back_r, back_l;
@@ -36,9 +39,7 @@ public:
 
 	void map_callback(const nav_msgs::OccupancyGrid& msg)
 	{
-		lidar_map = msg;
-		insert_cells();
-		fused_cmap.publish(lidar_map);
+		lidar_map = msg.data;
 	}
 
 	void sonar_callback(const local_planner::Sonar& msg)
@@ -86,7 +87,8 @@ public:
 	}
 
 	void insert_cells()
-	{
+	{	
+		/**
 		int centre = std::round(lidar_map.info.height * lidar_map.info.width / 2);
 
 		int lb = centre - std::round(length/2/lidar_map.info.resolution) + (std::round(width/2/lidar_map.info.resolution) + left_b)*lidar_map.info.width;
@@ -116,6 +118,8 @@ public:
 
 		check_valid(bl, back_l);
 		check_valid(br, back_r);
+		**/
+		
 	}
 
 };

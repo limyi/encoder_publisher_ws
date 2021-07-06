@@ -247,3 +247,10 @@
 /home/joel/encoder_publisher_ws/build/panthera_locomotion/CMakeFiles/test.dir
 /home/joel/encoder_publisher_ws/build/panthera_locomotion/CMakeFiles/std_srvs_generate_messages_eus.dir
 /home/joel/encoder_publisher_ws/build/panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_eus.dir
+/home/joel/encoder_publisher_ws/build/ultrasonic_sensors/CMakeFiles/install/strip.dir
+/home/joel/encoder_publisher_ws/build/ultrasonic_sensors/CMakeFiles/edit_cache.dir
+/home/joel/encoder_publisher_ws/build/ultrasonic_sensors/CMakeFiles/list_install_components.dir
+/home/joel/encoder_publisher_ws/build/ultrasonic_sensors/CMakeFiles/test.dir
+/home/joel/encoder_publisher_ws/build/ultrasonic_sensors/CMakeFiles/install/local.dir
+/home/joel/encoder_publisher_ws/build/ultrasonic_sensors/CMakeFiles/rebuild_cache.dir
+/home/joel/encoder_publisher_ws/build/ultrasonic_sensors/CMakeFiles/install.dir

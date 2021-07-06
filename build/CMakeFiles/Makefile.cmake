@@ -42,8 +42,13 @@ set(CMAKE_MAKEFILE_DEPENDS
   "serial-example/catkin_generated/ordered_paths.cmake"
   "serial-example/catkin_generated/package.cmake"
   "serial/catkin_generated/package.cmake"
+  "ultrasonic_sensors/catkin_generated/ordered_paths.cmake"
+  "ultrasonic_sensors/catkin_generated/package.cmake"
   "/home/joel/encoder_publisher_ws/devel/share/ds4_driver/cmake/ds4_driver-msg-paths.cmake"
+  "/home/joel/encoder_publisher_ws/devel/share/local_planner/cmake/local_planner-msg-extras.cmake"
   "/home/joel/encoder_publisher_ws/devel/share/local_planner/cmake/local_planner-msg-paths.cmake"
+  "/home/joel/encoder_publisher_ws/devel/share/local_planner/cmake/local_plannerConfig-version.cmake"
+  "/home/joel/encoder_publisher_ws/devel/share/local_planner/cmake/local_plannerConfig.cmake"
   "/home/joel/encoder_publisher_ws/devel/share/panthera_locomotion/cmake/panthera_locomotion-msg-paths.cmake"
   "/home/joel/encoder_publisher_ws/devel/share/serial/cmake/serialConfig-version.cmake"
   "/home/joel/encoder_publisher_ws/devel/share/serial/cmake/serialConfig.cmake"
@@ -70,6 +75,8 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/home/joel/encoder_publisher_ws/src/serial/CMakeLists.txt"
   "/home/joel/encoder_publisher_ws/src/serial/package.xml"
   "/home/joel/encoder_publisher_ws/src/serial/tests/CMakeLists.txt"
+  "/home/joel/encoder_publisher_ws/src/ultrasonic_sensors/CMakeLists.txt"
+  "/home/joel/encoder_publisher_ws/src/ultrasonic_sensors/package.xml"
   "/opt/ros/melodic/share/actionlib/cmake/actionlib-msg-extras.cmake"
   "/opt/ros/melodic/share/actionlib/cmake/actionlibConfig-version.cmake"
   "/opt/ros/melodic/share/actionlib/cmake/actionlibConfig.cmake"
@@ -323,6 +330,7 @@ set(CMAKE_MAKEFILE_PRODUCTS
   "ds4_driver/CMakeFiles/CMakeDirectoryInformation.cmake"
   "roboclaw_node/CMakeFiles/CMakeDirectoryInformation.cmake"
   "panthera_locomotion/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "ultrasonic_sensors/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
