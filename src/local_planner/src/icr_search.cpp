@@ -260,7 +260,7 @@ class Robot
 		double distance_from_centre(int index)
 		{
 			geometry_msgs::Point32 pt = index_to_coordinates(index, res, len_x);
-			return distance(pt.x, pt.y, len_x/2, len_y/2);
+			return distance(pt.x, pt.y, len_x/2, len_y/2)*res;
 		}
 
 		double max_rotation(int index, double min_theta)
@@ -284,7 +284,7 @@ class Robot
 					}
 				}
 			}
-			return theta;
+			return abs(theta);
 		}
 
 		// subscriber for angle to turn
@@ -719,8 +719,6 @@ class Robot
 				return true;
 			}
 		}
-
-
 		
 };
 
