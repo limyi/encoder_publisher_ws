@@ -14,25 +14,6 @@
 #include <local_planner/icr_utils.h>
 #include <panthera_locomotion/Status.h>
 
-/** PARAMS:
-	- length of robot
-	- width of robot
-	- safety distance
-	- clear tolerance (# of occupied squares in search area)
-
-			b4				f4
-	l3	+---+---------------+---+ l4
-		|   b3				f3	|
-	l1	+---+---------------+---+ l2
-		|	|				|	|
-		|	|		x -->	|	|
-		|	|				|	|
-	r1	+---+---------------+---+ r2 
-		|	b2				f2	|
-	r3	+---+---------------+---+ r4
-			b1			   f1   
-**/
-
 class Robot
 {
 	private:
@@ -73,6 +54,7 @@ class Robot
 		// optimization params
 		float h_steer, h_max_rot, h_icr_dist;
 		int angle_interval;
+		bool gradient_descent;
 
 		// wheel seperation
 		float ws_length = 1.3;
@@ -106,6 +88,7 @@ class Robot
 			ws_length = nh->param("/front_back_wheel_sep", 1.5);
 			wz = nh->param("/turn_speed", 0.07);
 			operation = nh->param("/operation", false);
+			gradient_descent = nh->param("gradient_descent", false);
 
 			lb_stat = nh->serviceClient<panthera_locomotion::Status>("lb_steer_status");
 			rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
@@ -121,6 +104,7 @@ class Robot
 			double h3;
 			double h4;
 			std::vector<double> wheel_angles;
+			geometry_msgs::Point32 coordinates;
 		};
 
 		void publish_vel(geometry_msgs::Point32 icr, std::vector<geometry_msgs::Point32> wheel_vec)
@@ -283,33 +267,158 @@ class Robot
 			return abs(theta);
 		}
 
-		// subscriber for angle to turn
-		void rotation_angle(const std_msgs::Float64& theta)
-		{
-			angle = theta.data;
-			//std::cout << footprint_points.size() << std::endl;
-			received_angle = true;
-		}
-
 		// run search + optimize
 		void test_run()
 		{
 			bool j = rotation_clear(footprint_points[footprint_points.size()/2], angle, data_pts);
 		}
 
+		geometry_msgs::Point32 best_point(geometry_msgs::Point32 curr_point, std::vector<geometry_msgs::Point32>* neighbours, ICR* bfp)
+		{	
+			std::vector<ICR> vec;
+			ICR pt = optimize(curr_point);
+			vec.push_back(pt);
+			for (auto i : *neighbours)
+			{
+				if (rotation_clear(i, angle, data_pts) == true)
+				{
+					ICR x = optimize(i);
+					//std::cout << x.h4 << std::endl;
+					vec.push_back(x);
+				}
+			}
+			std::sort(vec.begin(), vec.end(), sort_h);
+			*bfp = vec[0];
+			return vec[0].coordinates;
+		}
+
+		void get_neighbours(geometry_msgs::Point32 point, std::vector<geometry_msgs::Point32>* neighbours)
+		{	
+			//geometry_msgs::Point32 p0;
+			//p0.x = point.x;
+			//p0.y = point.y;
+			for (int j=-1; j<=1; j++)
+			{
+				for (int i=-1; i<=1; i++)
+				{	
+					if ((j==0 && i==0) == false)
+					{
+						geometry_msgs::Point32 pt;
+						pt.x = point.x + i;
+						pt.y = point.y + j;
+						if (std::find(footprint_points.begin(), footprint_points.end(), pt) != footprint_points.end() && std::find(neighbours->begin(), neighbours->end(), pt) == neighbours->end())
+						{
+							neighbours->push_back(pt);
+						}
+					}
+				}
+			}
+			std::remove(neighbours->begin(), neighbours->end(), point);
+			if (std::find(neighbours->begin(), neighbours->end(), point) != neighbours->end())
+			{	
+				std::remove(neighbours->begin(), neighbours->end(), point);
+				printf("Failed to remove point\n");
+			}
+		}
+
 		void run()
 		{	
-			
+			geometry_msgs::Point32 current_pt = footprint_points[(int)(footprint_points.size()/2)]; // init middle point to start search
+			geometry_msgs::Point32 found_pt;
+			ICR best_found_point;
+
+			bool first_point_found;
+
+			first_point_found = rotation_clear(current_pt, angle, data_pts);
+			std::vector<geometry_msgs::Point32> neighbours;
+			get_neighbours(current_pt, &neighbours);
+
+			int c=0;
+			// searching for first point
+			while (first_point_found == false)
+			{
+				bool first_point_found = rotation_clear(current_pt, angle, data_pts);
+				if (first_point_found == false)
+				{
+					get_neighbours(current_pt, &neighbours);
+					current_pt = neighbours[0];
+					//std::cout << c << std::endl;
+					if (c == footprint_points.size())
+					{	
+						std::cout << c << std::endl;
+						std::cout << "Final pt: " << current_pt << std::endl;
+						std::cout << "No possible icr" << std::endl;
+						neighbours.clear();
+						break;
+					}
+				}
+				else
+				{	
+					//std::cout << neighbours.size() << std::endl;
+					current_pt = best_point(current_pt, &neighbours, &best_found_point);
+					std::cout << c << std::endl;
+					std::cout << current_pt << std::endl;
+					break;
+				}
+				c++;
+			}
+
+			if (neighbours.size() != 0)
+			{	
+				double start = ros::Time::now().toSec();
+				neighbours.clear();
+				int it=1;
+				while (it <= footprint_points.size())
+				{	
+					std::cout << "Current pt: " << current_pt << std::endl;
+					get_neighbours(current_pt, &neighbours);
+					/**
+					for (auto i : neighbours)
+					{	
+						std::cout <<"neightbour "<< i << std::endl;
+					}
+					**/
+					found_pt = best_point(current_pt, &neighbours,  &best_found_point);
+					if (current_pt == best_found_point.coordinates)
+					{	
+						printf("---------------------------------------\n");
+						std::cout << "h1: " << best_found_point.h1 << std::endl;
+						std::cout << "h2: " << best_found_point.h2 << std::endl;
+						std::cout << "h3: " << best_found_point.h3 << std::endl;
+						std::cout << "h4: " << best_found_point.h4 << std::endl;
+						std::cout << "Iterations: " << it << std::endl;
+						std::cout << "Completed search: " << found_pt << std::endl;
+						break;
+					}
+					else
+					{	
+						neighbours.clear();
+						current_pt = found_pt;
+						it++;
+						std::cout << "best h4: " << best_found_point.h4 << std::endl;
+					}
+				}
+				double end = ros::Time::now().toSec();
+				printf("----------------------------------------\n");
+				std::cout << "Time taken: " << end-start << "s" << std::endl;
+				printf("Search completed!\n");
+			}
+		}
+		void global_run()
+		{	
+			double start1 = ros::Time::now().toSec();
 			for (auto i : footprint_points)
 			{	
 				if (rotation_clear(i, angle, data_pts) == true)
 				{
 					possible_icr.push_back(i);
+					std::cout << "Searching" << std::endl;
 				}
 			}
 			
 			printf("Search Done\n");
-			
+			double end1 = ros::Time::now().toSec();
+			std::cout << "Search1 time: " << end1-start1 << "s" << std::endl;
 			std::cout << "Number of possible ICRs: " << possible_icr.size() << std::endl;
 			ICR best_pt;
 			
@@ -320,30 +429,44 @@ class Robot
 
 			else
 			{	
-				best_pt = optimize(possible_icr);
+				double start2 = ros::Time::now().toSec();
+				best_pt = global_optimize(possible_icr);
 				geometry_msgs::Point32 best_pt_coor = index_to_coordinates(best_pt.index, res, len_x);
 				std::cout << "Best point: " <<  index_to_coordinates(best_pt.index, res, len_x) << std::endl;
 				for (int i=0; i<4; i++)
 				{
 					std::cout <<"Wheel angle " << i << ": " << best_pt.wheel_angles[i]/PI*180 << std::endl;
 				}
+				double end2 = ros::Time::now().toSec();
+				std::cout << "Search2 time: " << end2-start2 << "s" << std::endl;
 				send_cmds(best_pt_coor, wheels, best_pt);
 			}
 			possible_icr.clear();
 		}
 
-		ICR optimize(std::vector<geometry_msgs::Point32> icrs)
+		ICR optimize(geometry_msgs::Point32 icrs)
+		{	
+			ICR x;
+			x.index = coordinates_to_index(icrs.x, icrs.y, len_x);
+			x.h1 = angle_change(x.index)[4];
+			x.h2 = max_rotation(x.index, angle);
+			x.h3 = distance_from_centre(x.index);
+			x.h4 = (x.h1*h_steer + x.h2*h_max_rot + x.h3*h_icr_dist)/(abs(h_icr_dist) + abs(h_max_rot) + abs(h_steer));
+			x.coordinates = icrs;
+			x.wheel_angles = angle_change(x.index);
+
+			return x;
+		}
+		
+		ICR global_optimize(std::vector<geometry_msgs::Point32> icrs)
 		{	
 			std::vector<ICR> icr_nodes;
 			for (auto icr : icrs)
 			{	
 				ICR* x = new ICR();
-				//printf("Optimizing\n");
 				x->index = coordinates_to_index(icr.x, icr.y, len_x);
 				x->h1 = angle_change(x->index)[4];
-				//printf("checking max rotation\n");
 				x->h2 = max_rotation(x->index, angle);
-				//printf("checking distance from centre\n");
 				x->h3 = distance_from_centre(x->index);
 				x->h4 = (x->h1*h_steer + x->h2*h_max_rot + x->h3*h_icr_dist)/(abs(h_icr_dist) + abs(h_max_rot) + abs(h_steer));
 				x->wheel_angles = angle_change(x->index);
@@ -358,17 +481,27 @@ class Robot
 
 			return icr_nodes[0];
 		}
-
+		
 		static bool sort_h(const ICR& a, const ICR& b)
 		{
-			return (a.h4 > b.h4);
+			return (a.h4 >= b.h4);
 		}
 
+		// subscriber for angle to turn
+		void rotation_angle(const std_msgs::Float64& theta)
+		{
+			angle = theta.data;
+			//std::cout << footprint_points.size() << std::endl;
+			received_angle = true;
+		}
+
+		// robot width subscriber
 		void widthCallback(const geometry_msgs::Twist& msg)
 		{
 			ws_width = (msg.angular.y + msg.angular.z)/2;
 		}
 
+		// occupancy grid subscriber
 		void mapCallback(const nav_msgs::OccupancyGrid& msg)
 		{	
 			len_x = msg.info.width;
@@ -383,7 +516,15 @@ class Robot
 			if (received_angle == true)
 			{
 				//test_run();
-				run();
+				//run();
+				if (gradient_descent == true)
+				{
+					run();
+				}
+				else
+				{
+					global_run();
+				}
 				received_angle = false;
 			}
 		}

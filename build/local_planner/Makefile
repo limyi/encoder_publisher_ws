@@ -693,6 +693,21 @@ visualization_msgs_generate_messages_eus/fast:
 .PHONY : visualization_msgs_generate_messages_eus/fast
 
 # Convenience name for target.
+local_planner/CMakeFiles/sonar_costmap_node.dir/rule:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/sonar_costmap_node.dir/rule
+.PHONY : local_planner/CMakeFiles/sonar_costmap_node.dir/rule
+
+# Convenience name for target.
+sonar_costmap_node: local_planner/CMakeFiles/sonar_costmap_node.dir/rule
+
+.PHONY : sonar_costmap_node
+
+# fast build rule for target.
+sonar_costmap_node/fast:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/sonar_costmap_node.dir/build.make local_planner/CMakeFiles/sonar_costmap_node.dir/build
+.PHONY : sonar_costmap_node/fast
+
+# Convenience name for target.
 local_planner/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/rule:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/rule
 .PHONY : local_planner/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/rule
@@ -901,21 +916,6 @@ jsk_recognition_msgs_generate_messages_eus: local_planner/CMakeFiles/jsk_recogni
 jsk_recognition_msgs_generate_messages_eus/fast:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir/build.make local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir/build
 .PHONY : jsk_recognition_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-local_planner/CMakeFiles/sonar_costmap.dir/rule:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/sonar_costmap.dir/rule
-.PHONY : local_planner/CMakeFiles/sonar_costmap.dir/rule
-
-# Convenience name for target.
-sonar_costmap: local_planner/CMakeFiles/sonar_costmap.dir/rule
-
-.PHONY : sonar_costmap
-
-# fast build rule for target.
-sonar_costmap/fast:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/sonar_costmap.dir/build.make local_planner/CMakeFiles/sonar_costmap.dir/build
-.PHONY : sonar_costmap/fast
 
 # Convenience name for target.
 local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_py.dir/rule:
@@ -1283,7 +1283,7 @@ src/sonar_costmap.o: src/sonar_costmap.cpp.o
 
 # target to build an object file
 src/sonar_costmap.cpp.o:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/sonar_costmap.dir/build.make local_planner/CMakeFiles/sonar_costmap.dir/src/sonar_costmap.cpp.o
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/sonar_costmap_node.dir/build.make local_planner/CMakeFiles/sonar_costmap_node.dir/src/sonar_costmap.cpp.o
 .PHONY : src/sonar_costmap.cpp.o
 
 src/sonar_costmap.i: src/sonar_costmap.cpp.i
@@ -1292,7 +1292,7 @@ src/sonar_costmap.i: src/sonar_costmap.cpp.i
 
 # target to preprocess a source file
 src/sonar_costmap.cpp.i:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/sonar_costmap.dir/build.make local_planner/CMakeFiles/sonar_costmap.dir/src/sonar_costmap.cpp.i
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/sonar_costmap_node.dir/build.make local_planner/CMakeFiles/sonar_costmap_node.dir/src/sonar_costmap.cpp.i
 .PHONY : src/sonar_costmap.cpp.i
 
 src/sonar_costmap.s: src/sonar_costmap.cpp.s
@@ -1301,7 +1301,7 @@ src/sonar_costmap.s: src/sonar_costmap.cpp.s
 
 # target to generate assembly for a file
 src/sonar_costmap.cpp.s:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/sonar_costmap.dir/build.make local_planner/CMakeFiles/sonar_costmap.dir/src/sonar_costmap.cpp.s
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f local_planner/CMakeFiles/sonar_costmap_node.dir/build.make local_planner/CMakeFiles/sonar_costmap_node.dir/src/sonar_costmap.cpp.s
 .PHONY : src/sonar_costmap.cpp.s
 
 src/twist_pub_node.o: src/twist_pub_node.cpp.o
@@ -1375,6 +1375,7 @@ help:
 	@echo "... grid_map_msgs_generate_messages_lisp"
 	@echo "... actionlib_msgs_generate_messages_lisp"
 	@echo "... visualization_msgs_generate_messages_eus"
+	@echo "... sonar_costmap_node"
 	@echo "... actionlib_msgs_generate_messages_eus"
 	@echo "... autoware_msgs_generate_messages_lisp"
 	@echo "... jsk_footstep_msgs_generate_messages_lisp"
@@ -1391,7 +1392,6 @@ help:
 	@echo "... grid_map_msgs_generate_messages_nodejs"
 	@echo "... actionlib_msgs_generate_messages_cpp"
 	@echo "... jsk_recognition_msgs_generate_messages_eus"
-	@echo "... sonar_costmap"
 	@echo "... jsk_footstep_msgs_generate_messages_py"
 	@echo "... visualization_msgs_generate_messages_lisp"
 	@echo "... visualization_msgs_generate_messages_nodejs"

@@ -1,6 +1,8 @@
-steering_function: -0.0 # steering angle function-
+steering_function: -1.0 # steering angle function-
 max_rotation_function: 1.0 # clearance function
-min_icr_dist: -0.0 # distance function
+min_icr_dist: -1.0 # distance function
+
+gradient_descent: false
 
 angle_interval: 10 # sampling interval for clearance function
 robot_length: 2.0 # physical length of robot

@@ -88,19 +88,19 @@ class RosHandler:
             distance_9 = self.Panthera_ultrasonic_9.readDistanceInfo()
             distance_10 = self.Panthera_ultrasonic_10.readDistanceInfo()
 
-            sonar.back_l = distance_1
-            sonar.back_r = distance_2
+            sonar.back_l = distance_1# if distance_1 != 0 else float("inf")
+            sonar.back_r = distance_2# if distance_2 != 0 else float("inf")
 
-            sonar.left_b = distance_3
-            sonar.left_m = distance_4
-            sonar.left_f = distance_5
+            sonar.left_b = distance_3# if distance_3 != 0 else float("inf")
+            sonar.left_m = distance_4# if distance_4 != 0 else float("inf")
+            sonar.left_f = distance_5# if distance_5 != 0 else float("inf")
 
-            sonar.front_l = distance_6
-            sonar.front_r = distance_7
+            sonar.front_l = distance_6# if distance_6 != 0 else float("inf")
+            sonar.front_r = distance_7# if distance_7 != 0 else float("inf")
 
-            sonar.right_b = distance_8
-            sonar.right_m = distance_9
-            sonar.right_f = distance_10
+            sonar.right_b = distance_8# if distance_8 != 0 else float("inf")
+            sonar.right_m = distance_9# if distance_9 != 0 else float("inf")
+            sonar.right_f = distance_10# if distance_10 != 0 else float("inf")
 
             self.sonar_pub.publish(sonar)
             '''

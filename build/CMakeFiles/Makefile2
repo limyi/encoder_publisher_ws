@@ -1740,7 +1740,7 @@ local_planner/all: local_planner/CMakeFiles/costmap_clear_node.dir/all
 local_planner/all: local_planner/CMakeFiles/local_planner_node.dir/all
 local_planner/all: local_planner/CMakeFiles/local_planner_generate_messages.dir/all
 local_planner/all: local_planner/CMakeFiles/twist_pub_node.dir/all
-local_planner/all: local_planner/CMakeFiles/sonar_costmap.dir/all
+local_planner/all: local_planner/CMakeFiles/sonar_costmap_node.dir/all
 
 .PHONY : local_planner/all
 
@@ -1780,6 +1780,7 @@ local_planner/clean: local_planner/CMakeFiles/autoware_msgs_generate_messages_no
 local_planner/clean: local_planner/CMakeFiles/grid_map_msgs_generate_messages_lisp.dir/clean
 local_planner/clean: local_planner/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/clean
 local_planner/clean: local_planner/CMakeFiles/visualization_msgs_generate_messages_eus.dir/clean
+local_planner/clean: local_planner/CMakeFiles/sonar_costmap_node.dir/clean
 local_planner/clean: local_planner/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/clean
 local_planner/clean: local_planner/CMakeFiles/autoware_msgs_generate_messages_lisp.dir/clean
 local_planner/clean: local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_lisp.dir/clean
@@ -1794,7 +1795,6 @@ local_planner/clean: local_planner/CMakeFiles/nav_msgs_generate_messages_py.dir/
 local_planner/clean: local_planner/CMakeFiles/grid_map_msgs_generate_messages_nodejs.dir/clean
 local_planner/clean: local_planner/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/clean
 local_planner/clean: local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir/clean
-local_planner/clean: local_planner/CMakeFiles/sonar_costmap.dir/clean
 local_planner/clean: local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_py.dir/clean
 local_planner/clean: local_planner/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/clean
 local_planner/clean: local_planner/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/clean
@@ -3412,6 +3412,112 @@ clean: local_planner/CMakeFiles/visualization_msgs_generate_messages_eus.dir/cle
 .PHONY : clean
 
 #=============================================================================
+# Target rules for target local_planner/CMakeFiles/sonar_costmap_node.dir
+
+# All Build rule for target.
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/std_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: serial-example/CMakeFiles/std_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/pcl_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/pcl_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/autoware_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/autoware_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/visualization_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/autoware_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/autoware_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/visualization_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/autoware_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/pcl_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/sensor_msgs_generate_messages_eus.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/sensor_msgs_generate_messages_py.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_lisp.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_nodejs.dir/all
+local_planner/CMakeFiles/sonar_costmap_node.dir/all: local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_py.dir/all
+	$(MAKE) -f local_planner/CMakeFiles/sonar_costmap_node.dir/build.make local_planner/CMakeFiles/sonar_costmap_node.dir/depend
+	$(MAKE) -f local_planner/CMakeFiles/sonar_costmap_node.dir/build.make local_planner/CMakeFiles/sonar_costmap_node.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=79,80 "Built target sonar_costmap_node"
+.PHONY : local_planner/CMakeFiles/sonar_costmap_node.dir/all
+
+# Include target in all.
+all: local_planner/CMakeFiles/sonar_costmap_node.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+local_planner/CMakeFiles/sonar_costmap_node.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/joel/encoder_publisher_ws/build/CMakeFiles 14
+	$(MAKE) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/sonar_costmap_node.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/joel/encoder_publisher_ws/build/CMakeFiles 0
+.PHONY : local_planner/CMakeFiles/sonar_costmap_node.dir/rule
+
+# Convenience name for target.
+sonar_costmap_node: local_planner/CMakeFiles/sonar_costmap_node.dir/rule
+
+.PHONY : sonar_costmap_node
+
+# clean rule for target.
+local_planner/CMakeFiles/sonar_costmap_node.dir/clean:
+	$(MAKE) -f local_planner/CMakeFiles/sonar_costmap_node.dir/build.make local_planner/CMakeFiles/sonar_costmap_node.dir/clean
+.PHONY : local_planner/CMakeFiles/sonar_costmap_node.dir/clean
+
+# clean rule for target.
+clean: local_planner/CMakeFiles/sonar_costmap_node.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
 # Target rules for target local_planner/CMakeFiles/actionlib_msgs_generate_messages_eus.dir
 
 # All Build rule for target.
@@ -3856,112 +3962,6 @@ local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir/clean:
 
 # clean rule for target.
 clean: local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir/clean
-
-.PHONY : clean
-
-#=============================================================================
-# Target rules for target local_planner/CMakeFiles/sonar_costmap.dir
-
-# All Build rule for target.
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/std_msgs_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: serial-example/CMakeFiles/std_msgs_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: can_encoder_pub/CMakeFiles/geometry_msgs_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/local_planner_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/pcl_msgs_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/pcl_msgs_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/visualization_msgs_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/autoware_msgs_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/autoware_msgs_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/visualization_msgs_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/autoware_msgs_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/autoware_msgs_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/nav_msgs_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/grid_map_msgs_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/jsk_footstep_msgs_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/visualization_msgs_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/visualization_msgs_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/visualization_msgs_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/autoware_msgs_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/pcl_msgs_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/sensor_msgs_generate_messages_eus.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/sensor_msgs_generate_messages_py.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_lisp.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_nodejs.dir/all
-local_planner/CMakeFiles/sonar_costmap.dir/all: local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_py.dir/all
-	$(MAKE) -f local_planner/CMakeFiles/sonar_costmap.dir/build.make local_planner/CMakeFiles/sonar_costmap.dir/depend
-	$(MAKE) -f local_planner/CMakeFiles/sonar_costmap.dir/build.make local_planner/CMakeFiles/sonar_costmap.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=79,80 "Built target sonar_costmap"
-.PHONY : local_planner/CMakeFiles/sonar_costmap.dir/all
-
-# Include target in all.
-all: local_planner/CMakeFiles/sonar_costmap.dir/all
-
-.PHONY : all
-
-# Build rule for subdir invocation for target.
-local_planner/CMakeFiles/sonar_costmap.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/joel/encoder_publisher_ws/build/CMakeFiles 14
-	$(MAKE) -f CMakeFiles/Makefile2 local_planner/CMakeFiles/sonar_costmap.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/joel/encoder_publisher_ws/build/CMakeFiles 0
-.PHONY : local_planner/CMakeFiles/sonar_costmap.dir/rule
-
-# Convenience name for target.
-sonar_costmap: local_planner/CMakeFiles/sonar_costmap.dir/rule
-
-.PHONY : sonar_costmap
-
-# clean rule for target.
-local_planner/CMakeFiles/sonar_costmap.dir/clean:
-	$(MAKE) -f local_planner/CMakeFiles/sonar_costmap.dir/build.make local_planner/CMakeFiles/sonar_costmap.dir/clean
-.PHONY : local_planner/CMakeFiles/sonar_costmap.dir/clean
-
-# clean rule for target.
-clean: local_planner/CMakeFiles/sonar_costmap.dir/clean
 
 .PHONY : clean
 

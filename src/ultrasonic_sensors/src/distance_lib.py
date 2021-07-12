@@ -74,7 +74,7 @@ class dis(object):
 				info = struct.unpack('<BBBBBB',raw)
 				print(info,info[4]*1.6)		 #Raw Value Multiply by 1.6 to get actual distance value (Sensor properties). Refer to manual for more information
 
-				return info[4]*1.6
+				return info[4]*1.6/100
 
 				
 		except:

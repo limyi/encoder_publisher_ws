@@ -1208,6 +1208,19 @@ visualization_msgs_generate_messages_eus/fast:
 .PHONY : visualization_msgs_generate_messages_eus/fast
 
 #=============================================================================
+# Target rules for targets named sonar_costmap_node
+
+# Build rule for target.
+sonar_costmap_node: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 sonar_costmap_node
+.PHONY : sonar_costmap_node
+
+# fast build rule for target.
+sonar_costmap_node/fast:
+	$(MAKE) -f local_planner/CMakeFiles/sonar_costmap_node.dir/build.make local_planner/CMakeFiles/sonar_costmap_node.dir/build
+.PHONY : sonar_costmap_node/fast
+
+#=============================================================================
 # Target rules for targets named actionlib_msgs_generate_messages_eus
 
 # Build rule for target.
@@ -1388,19 +1401,6 @@ jsk_recognition_msgs_generate_messages_eus: cmake_check_build_system
 jsk_recognition_msgs_generate_messages_eus/fast:
 	$(MAKE) -f local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir/build.make local_planner/CMakeFiles/jsk_recognition_msgs_generate_messages_eus.dir/build
 .PHONY : jsk_recognition_msgs_generate_messages_eus/fast
-
-#=============================================================================
-# Target rules for targets named sonar_costmap
-
-# Build rule for target.
-sonar_costmap: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 sonar_costmap
-.PHONY : sonar_costmap
-
-# fast build rule for target.
-sonar_costmap/fast:
-	$(MAKE) -f local_planner/CMakeFiles/sonar_costmap.dir/build.make local_planner/CMakeFiles/sonar_costmap.dir/build
-.PHONY : sonar_costmap/fast
 
 #=============================================================================
 # Target rules for targets named jsk_footstep_msgs_generate_messages_py
@@ -2314,6 +2314,7 @@ help:
 	@echo "... grid_map_msgs_generate_messages_lisp"
 	@echo "... actionlib_msgs_generate_messages_lisp"
 	@echo "... visualization_msgs_generate_messages_eus"
+	@echo "... sonar_costmap_node"
 	@echo "... actionlib_msgs_generate_messages_eus"
 	@echo "... autoware_msgs_generate_messages_lisp"
 	@echo "... jsk_footstep_msgs_generate_messages_lisp"
@@ -2328,7 +2329,6 @@ help:
 	@echo "... grid_map_msgs_generate_messages_nodejs"
 	@echo "... actionlib_msgs_generate_messages_cpp"
 	@echo "... jsk_recognition_msgs_generate_messages_eus"
-	@echo "... sonar_costmap"
 	@echo "... jsk_footstep_msgs_generate_messages_py"
 	@echo "... visualization_msgs_generate_messages_lisp"
 	@echo "... visualization_msgs_generate_messages_nodejs"
