@@ -296,6 +296,25 @@ class Ds4Controller():
 		self.reconfiguring.linear.y = self.rec_r * recon_move
 		self.reconfiguring.linear.z = self.rec_l * recon_move
 		self.reconfiguring.angular.x = self.rec_r * recon_move
+		
+		# check if expanded/contracted limit
+		if self.width <= self.contract_limit:
+			if self.reconfiguring.linear.y >= 0 or self.reconfiguring.angular.x >= 0:
+				self.reconfiguring.linear.y = 0
+				self.reconfiguring.angular.x = 0
+
+			if self.reconfiguring.linear.x <= 0 or self.reconfiguring.linear.z <= 0:
+				self.reconfiguring.linear.x = 0
+				self.reconfiguring.linear.z = 0
+
+		else if self.width >= self.expand_limit:
+			if self.reconfiguring.linear.y <= 0 or self.reconfiguring.angular.x <= 0:
+				self.reconfiguring.linear.y = 0
+				self.reconfiguring.angular.x = 0
+
+			if self.reconfiguring.linear.x >= 0 or self.reconfiguring.linear.z >= 0:
+				self.reconfiguring.linear.x = 0
+				self.reconfiguring.linear.z = 0
 		self.recon.publish(self.reconfiguring)
 
 		# cmd_vel for robot
