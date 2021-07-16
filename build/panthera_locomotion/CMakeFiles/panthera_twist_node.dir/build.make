@@ -114,8 +114,10 @@ panthera_twist_node_EXTERNAL_OBJECTS =
 /home/joel/encoder_publisher_ws/devel/lib/panthera_locomotion/panthera_twist_node: /usr/lib/x86_64-linux-gnu/libboost_chrono.so
 /home/joel/encoder_publisher_ws/devel/lib/panthera_locomotion/panthera_twist_node: /usr/lib/x86_64-linux-gnu/libboost_date_time.so
 /home/joel/encoder_publisher_ws/devel/lib/panthera_locomotion/panthera_twist_node: /usr/lib/x86_64-linux-gnu/libboost_atomic.so
-/home/joel/encoder_publisher_ws/devel/lib/panthera_locomotion/panthera_twist_node: /usr/lib/x86_64-linux-gnu/libpthread.so
 /home/joel/encoder_publisher_ws/devel/lib/panthera_locomotion/panthera_twist_node: /usr/lib/x86_64-linux-gnu/libconsole_bridge.so.0.4
+/home/joel/encoder_publisher_ws/devel/lib/panthera_locomotion/panthera_twist_node: /home/joel/encoder_publisher_ws/devel/lib/libserial.so
+/home/joel/encoder_publisher_ws/devel/lib/panthera_locomotion/panthera_twist_node: /usr/lib/x86_64-linux-gnu/librt.so
+/home/joel/encoder_publisher_ws/devel/lib/panthera_locomotion/panthera_twist_node: /usr/lib/x86_64-linux-gnu/libpthread.so
 /home/joel/encoder_publisher_ws/devel/lib/panthera_locomotion/panthera_twist_node: panthera_locomotion/CMakeFiles/panthera_twist_node.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/joel/encoder_publisher_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable /home/joel/encoder_publisher_ws/devel/lib/panthera_locomotion/panthera_twist_node"
 	cd /home/joel/encoder_publisher_ws/build/panthera_locomotion && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/panthera_twist_node.dir/link.txt --verbose=$(VERBOSE)

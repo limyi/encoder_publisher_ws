@@ -5916,6 +5916,7 @@ clean: panthera_locomotion/CMakeFiles/panthera_locomotion_generate_messages_lisp
 # Target rules for target panthera_locomotion/CMakeFiles/panthera_twist_node.dir
 
 # All Build rule for target.
+panthera_locomotion/CMakeFiles/panthera_twist_node.dir/all: serial/CMakeFiles/serial.dir/all
 panthera_locomotion/CMakeFiles/panthera_twist_node.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_py.dir/all
 panthera_locomotion/CMakeFiles/panthera_twist_node.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_eus.dir/all
 panthera_locomotion/CMakeFiles/panthera_twist_node.dir/all: serial-example/CMakeFiles/roscpp_generate_messages_lisp.dir/all
@@ -5983,7 +5984,7 @@ all: panthera_locomotion/CMakeFiles/panthera_twist_node.dir/all
 
 # Build rule for subdir invocation for target.
 panthera_locomotion/CMakeFiles/panthera_twist_node.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/joel/encoder_publisher_ws/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/joel/encoder_publisher_ws/build/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 panthera_locomotion/CMakeFiles/panthera_twist_node.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/joel/encoder_publisher_ws/build/CMakeFiles 0
 .PHONY : panthera_locomotion/CMakeFiles/panthera_twist_node.dir/rule
