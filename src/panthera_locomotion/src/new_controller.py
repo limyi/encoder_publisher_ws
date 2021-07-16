@@ -278,18 +278,28 @@ class Ds4Controller():
 		self.twist.angular.x = self.filter_input(rf - h_r - h_l + recon_r)
 		self.pub.publish(self.twist)
 
-		# check wheels aligned
+		# check wheels algined
 		if self.mode != 0:
 			if prev_mode == 0:
 				self.twist.angular.y = 0
 				self.twist.angular.z = 0
 				self.pub.publish(self.twist)
 				self.check()
-			else:
-				pass
+			elif self.rec_l == 1 or self.rec_r == 1 or self.holo_left == 1 or self.holo_right == 1:
+				self.twist.angular.y = 0
+				self.twist.angular.z = 0
+				self.pub.publish(self.twist)
+				self.check()
 		else:
-			self.check()
-			pass
+			if prev_mode == 1:
+				#print("Stopping")
+				self.twist.angular.y = 0
+				self.twist.angular.z = 0
+				self.pub.publish(self.twist)
+				self.check()
+			else:
+				#print("Not stopping")
+				self.check()
 
 		# wheel speeds for reconfig
 		self.reconfiguring.linear.x = self.rec_l * recon_move
