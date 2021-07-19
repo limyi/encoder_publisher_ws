@@ -17,7 +17,7 @@ private:
 
 	// lidar map
 	//std::vector<signed char> lidar_map;
-	std::vector<signed char> ult_map;
+	std::vector<signed char> ult_map, map_data;
 	double res;
 	int map_height, map_width;
 
@@ -50,6 +50,8 @@ public:
 		res = msg.info.resolution;
 		map_width = msg.info.width;
 		map_height = msg.info.height;
+		map_data = msg.data;
+
 		if (init == 0)
 		{
 			init_ult_sensors();
@@ -99,7 +101,7 @@ public:
 		}
 		
 		nav_msgs::OccupancyGrid og;
-		og.data = ult_map;
+		og.data = max(ult_map, map_data);
 		og.info.height = map_height;
 		og.info.width = map_width;
 		og.info.resolution = res;
