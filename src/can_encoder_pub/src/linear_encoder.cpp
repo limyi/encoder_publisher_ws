@@ -266,7 +266,7 @@ int main(int argc, char **argv)
                 uint d = can_array[i].data[3];
                 uint position = (d << 24) | (c << 16) | (b << 8) | (a);
                 double positionFloat = position;
-                positionFloat = ((positionFloat - 13977) * 0.02197) - 3.0;
+                positionFloat = ((positionFloat - 13977) * 0.02197) - 0.0;
                 /**std::cout << positionFloat << "\n";**/
                 msg.angular.x = positionFloat;
             }

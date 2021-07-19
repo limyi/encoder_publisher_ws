@@ -20,16 +20,17 @@ class RoboteqMotor():
 		self.ser.write("?CB\r")                      # select CB for hall sensor or C for encoder
 		self.ser.write("# 10\r")                     # read data every 10ms
 		self.ser.write("!CB 1 0_!CB 2 0\r")
+		self.ser.write("^BPOL 1 3\r")
 
 	def writeSpeed(self, speed):
 		rps = self.speed_to_rps(speed)
 		cmd = rps * self.ratio
 		#self.ser.write("!G {}\r".format(str(rps*60)))
-		self.ser.write("!G 1 {}\r".format(str(cmd)))
+		self.ser.write("!G {}\r".format(str(cmd)))
 		#print("Speed: ", cmd)
 
 	def writeTorque(self, data):
-		self.ser.write("!G 1 {}\r".format(str(data)))
+		self.ser.write("^GIQ 1 {}\r".format(str(1000)))
 
 	def speed_to_rps(self, speed):
 		return speed/self.wheel_diamter
@@ -54,7 +55,21 @@ class RoboteqMotor():
 			print("closed-loop speed mode")
 		elif mode == 5:
 			print("closed-loop torque mode")
-		self.ser.write("^MMOD 1 {}\r".format(str(mode)))
+		self.ser.write("^MMOD {}\r".format(str(mode)))
+		self.ser.write("?TRQ\r")
+		t = str(self.ser.readline())
+		for i in t:
+			print(I)
+		print(t)
 
 	def set_torque(self, data):
 		self.ser.write("!GIQ 1 {}\r".format(str(data*10)))
+
+	def torque_const(self, data):
+		self.ser.write("^TNM 1 1523\r") 
+
+	def read(self):
+		self.ser.read(1000)
+
+	def custom_write(self, msg):
+		self.ser.write(msg + "\r")

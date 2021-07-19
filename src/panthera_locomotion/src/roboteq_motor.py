@@ -5,7 +5,10 @@ import serial.tools.list_ports
 from std_msgs.msg import Int64
 
 def run_cmd(msg):
-	motor.writeSpeed(msg.data)
+	if mode == 0:
+		motor.writeSpeed(msg.data)
+	elif mode == 1:
+		motor.writeTorque(msg.data)
 
 
 def queries(msg):
@@ -15,8 +18,9 @@ def queries(msg):
 	else:
 		mode = 1
 		motor.set_mode(msg.data)
-		motor.writeTorque(1000)
+		#motor.writeTorque(1000)
 	print("mode: {}".format(str(mode)))
+	
 
 
 if __name__=="__main__":

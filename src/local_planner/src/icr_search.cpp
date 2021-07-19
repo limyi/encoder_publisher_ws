@@ -13,6 +13,7 @@
 #include <cmath>
 #include <local_planner/icr_utils.h>
 #include <panthera_locomotion/Status.h>
+#include <fstream>
 
 class Robot
 {
@@ -323,7 +324,8 @@ class Robot
 
 		void run()
 		{	
-			geometry_msgs::Point32 current_pt = footprint_points[(int)(footprint_points.size()/2)]; // init middle point to start search
+			std::ofstream MyFile("05icr.txt");
+			geometry_msgs::Point32 current_pt = footprint_points[0];//footprint_points[(int)(footprint_points.size()/2)]; // init middle point to start search
 			geometry_msgs::Point32 found_pt;
 			ICR best_found_point;
 
@@ -370,7 +372,7 @@ class Robot
 				int it=1;
 				while (it <= footprint_points.size())
 				{	
-					std::cout << "Current pt: " << current_pt << std::endl;
+					//std::cout << "Current pt: " << current_pt << std::endl;
 					get_neighbours(current_pt, &neighbours);
 					/**
 					for (auto i : neighbours)
@@ -386,7 +388,7 @@ class Robot
 						std::cout << "h2: " << best_found_point.h2 << std::endl;
 						std::cout << "h3: " << best_found_point.h3 << std::endl;
 						std::cout << "h4: " << best_found_point.h4 << std::endl;
-						std::cout << "Iterations: " << it << std::endl;
+						std::cout << "Iterations: " << it-1 << std::endl;
 						std::cout << "Completed search: " << found_pt << std::endl;
 						break;
 					}
@@ -394,14 +396,16 @@ class Robot
 					{	
 						neighbours.clear();
 						current_pt = found_pt;
+						std::cout << it << "," << best_found_point.h4 << std::endl;
+						MyFile << "best h4: " + std::to_string(best_found_point.h4) + " | Iteration: " + std::to_string(it);
 						it++;
-						std::cout << "best h4: " << best_found_point.h4 << std::endl;
 					}
 				}
 				double end = ros::Time::now().toSec();
 				printf("----------------------------------------\n");
 				std::cout << "Time taken: " << end-start << "s" << std::endl;
 				printf("Search completed!\n");
+				MyFile.close();
 			}
 		}
 		void global_run()

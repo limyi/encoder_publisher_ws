@@ -100,6 +100,9 @@ class Ds4Controller():
 		self.vb.rumble_duration = 0.5
 		self.vb.rumble_small = 0.5
 
+		self.contract_limit = 0.73
+		self.expand_limit = 0.85
+
 	def human_loc(self, data):
 		if self.vision.data == 1:
 			nearest_human = float('inf')
@@ -131,7 +134,7 @@ class Ds4Controller():
 			if abs(i) > 100:
 				#print(i)
 				self.vibrate.publish(self.vb)
-		self.width = (data.angular.y + data.angular.z)/2
+		self.width = data.angular.z
 		#self.width = data.angular.z
 
 	def cmd_sub(self, data):
@@ -317,7 +320,7 @@ class Ds4Controller():
 				self.reconfiguring.linear.x = 0
 				self.reconfiguring.linear.z = 0
 
-		else if self.width >= self.expand_limit:
+		elif self.width >= self.expand_limit:
 			if self.reconfiguring.linear.y <= 0 or self.reconfiguring.angular.x <= 0:
 				self.reconfiguring.linear.y = 0
 				self.reconfiguring.angular.x = 0
@@ -338,7 +341,7 @@ class Ds4Controller():
 		self.pub.publish(self.twist)
 
 	def run(self):
-		b = self.custom_twist(0, self.brush.data*-100)
+		b = self.custom_twist(0, self.brush.data*100)
 		self.brushes.publish(b)
 		a = self.custom_twist(0, self.act.data*100)
 		self.actuators.publish(a)
