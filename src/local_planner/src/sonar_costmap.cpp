@@ -12,8 +12,9 @@ private:
 	ros::Subscriber sonar_sensors, lidar_costmap, robot_width;
 
 	// robot params
-	double width, length, offset_x;
+	double width, length;
 	float side_spacing, fb_spacing;
+	bool combined;
 
 	// lidar map
 	//std::vector<signed char> lidar_map;
@@ -41,9 +42,9 @@ public:
 
 		length = nh->param("/robot_length", 2.2);
 		width = nh->param("robot_width", 1.0);
-		offset_x = nh->param("/offset_x", 0);
 		side_spacing = nh->param("/side_spacing", 0.3);
 		fb_spacing = nh->param("/fb_spacing", 0.5);
+		combined = nh->param("/combined", false);
 	}
 
 	void map_callback(const nav_msgs::OccupancyGrid& msg)
@@ -112,7 +113,14 @@ public:
 		//printf("\ncheck1\n");
 		for (auto i : sonar_readings)
 		{
-			check_valid(i[0], &map_data, i[1]);
+			if (combined == true)
+			{
+				check_valid(i[0], &map_data, i[1]);
+			}
+			else
+			{
+				check_valid(i[0], &ult_map, i[1]);
+			}
 			//std::cout << (int)(map_data[1000]) << std::endl;
 		}
 		
@@ -120,7 +128,14 @@ public:
 		nav_msgs::OccupancyGrid og;
 		og.header.frame_id = "velodyne";
 		og.info = mp.info;
-		og.data = map_data;
+		if (combined == true)
+		{
+			og.data = map_data;
+		}
+		else
+		{
+			og.data = ult_map;
+		}
 		//og.info.height = map_height;
 		//og.info.width = map_width;
 		//og.info.resolution = res;

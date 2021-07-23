@@ -1,0 +1,5 @@
+robot_length: 2.2
+robot_width: 1.0
+side_spacing: 0.3
+fb_spacing: 0.5
+combined: true
