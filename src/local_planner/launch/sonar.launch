@@ -1,6 +1,6 @@
 <launch>
 
-	<include file="$(find local_planner)/params/sonar_params.yaml"/>
+	<rosparam command="load" file="$(find local_planner)/params/sonar_params.yaml"/>
 	<node name="sonar_costmap_node" type="sonar_costmap_node" pkg="local_planner" output="screen"/>
 	<node name="robot_footprint" type="footprint_pub.py" pkg="panthera_locomotion" output="screen"/>
 </launch>
