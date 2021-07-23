@@ -31,16 +31,16 @@ class RosHandler:
         # ports 
         self.sn1 = list(serial.tools.list_ports.grep("AB0LHEK2"))#
         self.port1 = '/dev/' + self.sn1[0].name
-
+        '''
         self.sn2 = list(serial.tools.list_ports.grep("AQ00F1QY"))#
         self.port2 = '/dev/' + self.sn2[0].name
-
+        '''
         self.sn3 = list(serial.tools.list_ports.grep("A505HS9H"))#
         self.port3 = '/dev/' + self.sn3[0].name
-
+        '''
         self.sn4 = list(serial.tools.list_ports.grep("AB0LHQYF"))#
         self.port4 = '/dev/' + self.sn4[0].name
-
+        '''
         self.sn5 = list(serial.tools.list_ports.grep("AB0LH4YA"))#
         self.port5 = '/dev/' + self.sn5[0].name
 
@@ -61,9 +61,9 @@ class RosHandler:
 	   #"AI06B90T" "A505HS9H""AQ00F1QY"   "A505HS1X"   				#Examples of USB Serial Number. Linux Command: usb-devices to get USB Information and Serial Number
         
         self.Panthera_ultrasonic_1  = distance_lib.dis(self.port1, self.address1)
-        self.Panthera_ultrasonic_2  = distance_lib.dis(self.port2, self.address3)
+        #self.Panthera_ultrasonic_2  = distance_lib.dis(self.port2, self.address3)
         self.Panthera_ultrasonic_3  = distance_lib.dis(self.port3, self.address3)
-        self.Panthera_ultrasonic_4  = distance_lib.dis(self.port4, self.address5)
+        #self.Panthera_ultrasonic_4  = distance_lib.dis(self.port4, self.address5)
         self.Panthera_ultrasonic_5  = distance_lib.dis(self.port5, self.address5)
         self.Panthera_ultrasonic_6  = distance_lib.dis(self.port6, self.address2)
         self.Panthera_ultrasonic_7  = distance_lib.dis(self.port7, self.address4)
@@ -78,9 +78,9 @@ class RosHandler:
             sonar = Sonar()
            
             distance_1 = self.Panthera_ultrasonic_1.readDistanceInfo()
-            distance_2 = self.Panthera_ultrasonic_2.readDistanceInfo()
+            #distance_2 = self.Panthera_ultrasonic_2.readDistanceInfo()
             distance_3 = self.Panthera_ultrasonic_3.readDistanceInfo()  
-            distance_4 = self.Panthera_ultrasonic_4.readDistanceInfo()
+            #distance_4 = self.Panthera_ultrasonic_4.readDistanceInfo()
             distance_5 = self.Panthera_ultrasonic_5.readDistanceInfo()
             distance_6 = self.Panthera_ultrasonic_6.readDistanceInfo()
             distance_7 = self.Panthera_ultrasonic_7.readDistanceInfo()  
@@ -88,19 +88,19 @@ class RosHandler:
             distance_9 = self.Panthera_ultrasonic_9.readDistanceInfo()
             distance_10 = self.Panthera_ultrasonic_10.readDistanceInfo()
 
-            sonar.back_l = distance_1# if distance_1 != 0 else float("inf")
-            sonar.back_r = distance_2# if distance_2 != 0 else float("inf")
+            sonar.back_r = distance_1# if distance_1 != 0 else float("inf")
+            #sonar.back_r = distance_2# if distance_2 != 0 else float("inf")
 
-            sonar.left_b = distance_3# if distance_3 != 0 else float("inf")
-            sonar.left_m = distance_4# if distance_4 != 0 else float("inf")
+            sonar.front_r = distance_3# if distance_3 != 0 else float("inf")
+            #sonar.left_m = distance_4# if distance_4 != 0 else float("inf")
             sonar.left_f = distance_5# if distance_5 != 0 else float("inf")
 
-            sonar.front_l = distance_6# if distance_6 != 0 else float("inf")
-            sonar.front_r = distance_7# if distance_7 != 0 else float("inf")
+            sonar.left_m = distance_6# if distance_6 != 0 else float("inf")
+            sonar.right_m = distance_7# if distance_7 != 0 else float("inf")
 
-            sonar.right_b = distance_8# if distance_8 != 0 else float("inf")
-            sonar.right_m = distance_9# if distance_9 != 0 else float("inf")
-            sonar.right_f = distance_10# if distance_10 != 0 else float("inf")
+            sonar.back_l = distance_8# if distance_8 != 0 else float("inf")
+            sonar.front_l = distance_9# if distance_9 != 0 else float("inf")
+            sonar.right_b = distance_10# if distance_10 != 0 else float("inf")
 
             self.sonar_pub.publish(sonar)
             '''

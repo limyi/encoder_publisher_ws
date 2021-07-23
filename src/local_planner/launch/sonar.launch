@@ -1,0 +1,4 @@
+<launch>
+	<node name="sonar_costmap_node" type="sonar_costmap_node" pkg="local_planner" output="screen"/>
+	<node name="robot_footprint" type="footprint_pub.py" pkg="panthera_locomotion" output="screen"/>
+</launch>

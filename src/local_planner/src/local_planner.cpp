@@ -7,6 +7,7 @@
 #include <math.h>
 #include <cmath>
 #include <panthera_locomotion/Status.h>
+#include <panthera_locomotion/ICRsearch.h>
 #include <geometry_msgs/PointStamped.h>
 #include <tf/transform_datatypes.h>
 #include <tf/LinearMath/Matrix3x3.h>
@@ -24,9 +25,9 @@ private:
 	ros::Subscriber goal;
 	ros::Subscriber width_sub;
 	ros::Subscriber global_path_sub;
-	ros::Publisher twist_pub, path_pub;
+	ros::Publisher twist_pub, path_pub, vel_pub;
 
-	ros::ServiceClient lb_stat, rb_stat, lf_stat, rf_stat;
+	ros::ServiceClient lb_stat, rb_stat, lf_stat, rf_stat, rot_angle;
 
 	// state machine
 	int curr_state=1, prev_state=2, dir=0;
@@ -79,11 +80,13 @@ public:
 		global_path_sub = nh->subscribe("/lane_waypoints_array", 1000, &LocalPlanner::get_path, this);
 		twist_pub = nh->advertise<geometry_msgs::Twist>("panthera_cmd", 100);
 		path_pub = nh->advertise<nav_msgs::Path>("new_global_path", 100);
+		vel_pub = nh->advertise<geometry_msgs::Twist>("/reconfig", 100);
 		
 		lb_stat = nh->serviceClient<panthera_locomotion::Status>("lb_steer_status");
 		rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
 		lf_stat = nh->serviceClient<panthera_locomotion::Status>("lf_steer_status");
 		rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
+		rot_angle = nh->serviceClient<panthera_locomotion::Status>("rotation_angle");
 		
 		lb_stat.waitForExistence();
 		rb_stat.waitForExistence();
@@ -187,6 +190,7 @@ public:
 		curr_y = msg.pose.position.y;
 		curr_t = quat_to_rad(msg);
 
+		panthera_locomotion::ICRsearch angle_req;
 		// init start_x and start_y
 		if (n == 0)
 		{
@@ -247,9 +251,22 @@ public:
 					else if (radius_clear == false && back_clear == true)
 					{
 						if (rotate_dir != rotating)
-						{
-							reverse();
-							rotating = 4;
+						{	
+							angle_req.request.received_angle = true;
+							angle_req.request.turn_angle = angle_diff(curr_t, quat_to_rad(global_path[0], "rad"), "rad");
+							rot_angle.call(angle_req);
+							geometry_msgs::Twist wa = angle_req.response.wheel_angles;
+							geometry_msgs::Twist ws = angle_req.response.wheel_speeds;
+							if(angle_req.response.feasibility == true)
+							{
+								custom_rotate(wa, ws);
+								rotating = rotate_dir;
+							}
+							else
+							{
+								reverse();
+								rotating = 4;
+							}
 						}
 
 					}
@@ -629,6 +646,15 @@ public:
 
 		ts->angular.z = wz;
 		twist_pub.publish(*ts);
+	}
+
+	void custom_rotate(geometry_msgs::Twist wheel_angles, geometry_msgs::Twist wheel_speeds)
+	{
+		twist_pub.publish(wheel_angles);
+
+		check_steer();
+
+		vel_pub.publish(wheel_speeds);
 	}
 };
 
