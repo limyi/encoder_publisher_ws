@@ -185,6 +185,8 @@ cmath
 -
 panthera_locomotion/Status.h
 -
+panthera_locomotion/ICRsearch.h
+-
 geometry_msgs/PointStamped.h
 -
 tf/transform_datatypes.h

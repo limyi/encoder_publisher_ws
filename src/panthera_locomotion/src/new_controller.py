@@ -312,7 +312,7 @@ class Ds4Controller():
 		
 		# check if expanded/contracted limit
 		if self.width <= self.contract_limit:
-			if self.reconfiguring.linear.y >= 0 or self.reconfiguring.angular.x >= 0:
+			if self.reconfiguring.linear.y <= 0 or self.reconfiguring.angular.x <= 0:
 				self.reconfiguring.linear.y = 0
 				self.reconfiguring.angular.x = 0
 
@@ -321,7 +321,7 @@ class Ds4Controller():
 				self.reconfiguring.linear.z = 0
 
 		elif self.width >= self.expand_limit:
-			if self.reconfiguring.linear.y <= 0 or self.reconfiguring.angular.x <= 0:
+			if self.reconfiguring.linear.y >= 0 or self.reconfiguring.angular.x >= 0:
 				self.reconfiguring.linear.y = 0
 				self.reconfiguring.angular.x = 0
 
