@@ -38,7 +38,10 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/panthera_locomotion/srv" TYPE FILE FILES "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/panthera_locomotion/srv" TYPE FILE FILES
+    "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv"
+    "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv"
+    )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)

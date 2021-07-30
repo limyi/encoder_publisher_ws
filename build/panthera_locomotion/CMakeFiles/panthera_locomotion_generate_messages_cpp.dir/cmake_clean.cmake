@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/panthera_locomotion_generate_messages_cpp"
+  "/home/joel/encoder_publisher_ws/devel/include/panthera_locomotion/ICRsearch.h"
   "/home/joel/encoder_publisher_ws/devel/include/panthera_locomotion/Status.h"
 )
 

@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.cmake.em
 
-message(STATUS "panthera_locomotion: 0 messages, 1 services")
+message(STATUS "panthera_locomotion: 0 messages, 2 services")
 
 set(MSG_I_FLAGS "-Igeometry_msgs:/opt/ros/melodic/share/geometry_msgs/cmake/../msg;-Istd_msgs:/opt/ros/melodic/share/std_msgs/cmake/../msg")
 
@@ -17,6 +17,11 @@ add_custom_target(panthera_locomotion_generate_messages ALL)
 
 
 
+get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv" NAME_WE)
+add_custom_target(_panthera_locomotion_generate_messages_check_deps_${_filename}
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "panthera_locomotion" "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv" "geometry_msgs/Twist:geometry_msgs/Vector3"
+)
+
 get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv" NAME_WE)
 add_custom_target(_panthera_locomotion_generate_messages_check_deps_${_filename}
   COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "panthera_locomotion" "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv" ""
@@ -30,6 +35,12 @@ add_custom_target(_panthera_locomotion_generate_messages_check_deps_${_filename}
 ### Generating Messages
 
 ### Generating Services
+_generate_srv_cpp(panthera_locomotion
+  "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv"
+  "${MSG_I_FLAGS}"
+  "/opt/ros/melodic/share/geometry_msgs/cmake/../msg/Twist.msg;/opt/ros/melodic/share/geometry_msgs/cmake/../msg/Vector3.msg"
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/panthera_locomotion
+)
 _generate_srv_cpp(panthera_locomotion
   "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv"
   "${MSG_I_FLAGS}"
@@ -49,6 +60,8 @@ add_custom_target(panthera_locomotion_generate_messages_cpp
 add_dependencies(panthera_locomotion_generate_messages panthera_locomotion_generate_messages_cpp)
 
 # add dependencies to all check dependencies targets
+get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv" NAME_WE)
+add_dependencies(panthera_locomotion_generate_messages_cpp _panthera_locomotion_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv" NAME_WE)
 add_dependencies(panthera_locomotion_generate_messages_cpp _panthera_locomotion_generate_messages_check_deps_${_filename})
 
@@ -63,6 +76,12 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS panthera_locomotion_generate_messag
 ### Generating Messages
 
 ### Generating Services
+_generate_srv_eus(panthera_locomotion
+  "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv"
+  "${MSG_I_FLAGS}"
+  "/opt/ros/melodic/share/geometry_msgs/cmake/../msg/Twist.msg;/opt/ros/melodic/share/geometry_msgs/cmake/../msg/Vector3.msg"
+  ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/panthera_locomotion
+)
 _generate_srv_eus(panthera_locomotion
   "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv"
   "${MSG_I_FLAGS}"
@@ -82,6 +101,8 @@ add_custom_target(panthera_locomotion_generate_messages_eus
 add_dependencies(panthera_locomotion_generate_messages panthera_locomotion_generate_messages_eus)
 
 # add dependencies to all check dependencies targets
+get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv" NAME_WE)
+add_dependencies(panthera_locomotion_generate_messages_eus _panthera_locomotion_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv" NAME_WE)
 add_dependencies(panthera_locomotion_generate_messages_eus _panthera_locomotion_generate_messages_check_deps_${_filename})
 
@@ -96,6 +117,12 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS panthera_locomotion_generate_messag
 ### Generating Messages
 
 ### Generating Services
+_generate_srv_lisp(panthera_locomotion
+  "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv"
+  "${MSG_I_FLAGS}"
+  "/opt/ros/melodic/share/geometry_msgs/cmake/../msg/Twist.msg;/opt/ros/melodic/share/geometry_msgs/cmake/../msg/Vector3.msg"
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/panthera_locomotion
+)
 _generate_srv_lisp(panthera_locomotion
   "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv"
   "${MSG_I_FLAGS}"
@@ -115,6 +142,8 @@ add_custom_target(panthera_locomotion_generate_messages_lisp
 add_dependencies(panthera_locomotion_generate_messages panthera_locomotion_generate_messages_lisp)
 
 # add dependencies to all check dependencies targets
+get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv" NAME_WE)
+add_dependencies(panthera_locomotion_generate_messages_lisp _panthera_locomotion_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv" NAME_WE)
 add_dependencies(panthera_locomotion_generate_messages_lisp _panthera_locomotion_generate_messages_check_deps_${_filename})
 
@@ -129,6 +158,12 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS panthera_locomotion_generate_messag
 ### Generating Messages
 
 ### Generating Services
+_generate_srv_nodejs(panthera_locomotion
+  "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv"
+  "${MSG_I_FLAGS}"
+  "/opt/ros/melodic/share/geometry_msgs/cmake/../msg/Twist.msg;/opt/ros/melodic/share/geometry_msgs/cmake/../msg/Vector3.msg"
+  ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/panthera_locomotion
+)
 _generate_srv_nodejs(panthera_locomotion
   "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv"
   "${MSG_I_FLAGS}"
@@ -148,6 +183,8 @@ add_custom_target(panthera_locomotion_generate_messages_nodejs
 add_dependencies(panthera_locomotion_generate_messages panthera_locomotion_generate_messages_nodejs)
 
 # add dependencies to all check dependencies targets
+get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv" NAME_WE)
+add_dependencies(panthera_locomotion_generate_messages_nodejs _panthera_locomotion_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv" NAME_WE)
 add_dependencies(panthera_locomotion_generate_messages_nodejs _panthera_locomotion_generate_messages_check_deps_${_filename})
 
@@ -162,6 +199,12 @@ list(APPEND ${PROJECT_NAME}_EXPORTED_TARGETS panthera_locomotion_generate_messag
 ### Generating Messages
 
 ### Generating Services
+_generate_srv_py(panthera_locomotion
+  "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv"
+  "${MSG_I_FLAGS}"
+  "/opt/ros/melodic/share/geometry_msgs/cmake/../msg/Twist.msg;/opt/ros/melodic/share/geometry_msgs/cmake/../msg/Vector3.msg"
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/panthera_locomotion
+)
 _generate_srv_py(panthera_locomotion
   "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv"
   "${MSG_I_FLAGS}"
@@ -181,6 +224,8 @@ add_custom_target(panthera_locomotion_generate_messages_py
 add_dependencies(panthera_locomotion_generate_messages panthera_locomotion_generate_messages_py)
 
 # add dependencies to all check dependencies targets
+get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv" NAME_WE)
+add_dependencies(panthera_locomotion_generate_messages_py _panthera_locomotion_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv" NAME_WE)
 add_dependencies(panthera_locomotion_generate_messages_py _panthera_locomotion_generate_messages_check_deps_${_filename})
 

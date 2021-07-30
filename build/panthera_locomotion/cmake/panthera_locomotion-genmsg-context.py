@@ -1,7 +1,7 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
 messages_str = ""
-services_str = "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv"
+services_str = "/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/Status.srv;/home/joel/encoder_publisher_ws/src/panthera_locomotion/srv/ICRsearch.srv"
 pkg_name = "panthera_locomotion"
 dependencies_str = "geometry_msgs;std_msgs;std_srvs"
 langs = "gencpp;geneus;genlisp;gennodejs;genpy"

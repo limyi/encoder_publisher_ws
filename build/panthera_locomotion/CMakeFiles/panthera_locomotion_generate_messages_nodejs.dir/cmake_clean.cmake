@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/panthera_locomotion_generate_messages_nodejs"
+  "/home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/panthera_locomotion/srv/ICRsearch.js"
   "/home/joel/encoder_publisher_ws/devel/share/gennodejs/ros/panthera_locomotion/srv/Status.js"
 )
 
