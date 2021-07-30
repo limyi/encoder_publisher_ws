@@ -332,11 +332,10 @@ class Ds4Controller():
 				self.reconfiguring.linear.z = 0
 			self.recon.publish(self.reconfiguring)
 
-		else:
-			# cmd_vel for robot
-			self.twist.angular.y = f * (not self.rec_r and not self.rec_l)
-			self.twist.angular.z = s * (not self.rec_r and not self.rec_l)
-			self.pub.publish(self.twist)
+		# cmd_vel for robot
+		self.twist.angular.y = f * (not self.rec_r and not self.rec_l)
+		self.twist.angular.z = s * (not self.rec_r and not self.rec_l)
+		self.pub.publish(self.twist)
 
 	def e_stop(self):
 		self.twist.angular.y = 0
