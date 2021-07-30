@@ -319,6 +319,8 @@ class Ds4Controller():
 			if self.reconfiguring.linear.x <= 0 or self.reconfiguring.linear.z <= 0:
 				self.reconfiguring.linear.x = 0
 				self.reconfiguring.linear.z = 0
+			
+			self.recon.publish(self.reconfiguring)
 
 		elif self.width >= self.expand_limit:
 			if self.reconfiguring.linear.y >= 0 or self.reconfiguring.angular.x >= 0:
@@ -328,12 +330,13 @@ class Ds4Controller():
 			if self.reconfiguring.linear.x >= 0 or self.reconfiguring.linear.z >= 0:
 				self.reconfiguring.linear.x = 0
 				self.reconfiguring.linear.z = 0
-		self.recon.publish(self.reconfiguring)
+			self.recon.publish(self.reconfiguring)
 
-		# cmd_vel for robot
-		self.twist.angular.y = f * (not self.rec_r and not self.rec_l)
-		self.twist.angular.z = s * (not self.rec_r and not self.rec_l)
-		self.pub.publish(self.twist)
+		else:
+			# cmd_vel for robot
+			self.twist.angular.y = f * (not self.rec_r and not self.rec_l)
+			self.twist.angular.z = s * (not self.rec_r and not self.rec_l)
+			self.pub.publish(self.twist)
 
 	def e_stop(self):
 		self.twist.angular.y = 0
