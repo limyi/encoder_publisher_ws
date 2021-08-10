@@ -7,6 +7,8 @@ import math
 import numpy as np
 import tf
 
+# Publishes robot odom
+
 class RobotOdom():
 	def __init__(self):
 		#rospy.init_node('robot_odom')
@@ -85,6 +87,7 @@ class RobotOdom():
 		else:
 			self.rf_lin = (self.rf_lin + data.data)/2
 
+	# Convert wheel encoder values to radians
 	def wheel_encoders(self, data):
 		self.lb_steer = math.radians(data.linear.x)
 		self.rb_steer = math.radians(data.linear.y)

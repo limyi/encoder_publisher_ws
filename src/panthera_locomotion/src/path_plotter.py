@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# Records pose of robot
+
 import rospy
 from geometry_msgs.msg import PoseStamped
 from nav_msgs.msg import Path

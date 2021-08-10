@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+'''
+Same as new_controller.py, only difference is instead of subscribing to ds4 node, subscribe through mqtt
+'''
+
 import math
 import rospy
 import paho.mqtt.client as mqtt
@@ -13,9 +17,12 @@ from zed_interfaces.msg import ObjectsStamped
 class Ds4Controller():
 	def __init__(self):
 		rospy.init_node('Controller')
+
+		## MQTT STUFF ##
 		self.broker_address = "10.19.51.66"
 		self.client = mqtt.Client("Controller")
 		self.mode = 1 # mode 1:=smooth , mode 0:=reconfig
+		################
 
 		# Toggle buttons for roboclaw
 		self.brush = Button(0,0.01)
@@ -103,12 +110,14 @@ class Ds4Controller():
 		self.contract_limit = 0.73
 		self.expand_limit = 0.85
 
+		## MORE MQTT STUFF ##
 		self.client.connect(self.broker_address)
-		self.client.on_message = self.read_twist
+		self.client.on_message = self.read_twist # callback to read message from mqtt
 		self.client.loop_start()
-		self.client.subscribe("cmd_vel")
+		self.client.subscribe("cmd_vel") # MQTT topic
+		#####################
 
-		self.operation = False
+		self.operation = False # True: running with robot, False: not running with robot
 
 	def human_loc(self, data):
 		if self.vision.data == 1:
@@ -145,6 +154,7 @@ class Ds4Controller():
 		#self.width = data.angular.z
 
 	def read_twist(self, client, user_data, message):
+		# accepts string message separated by comma
 		msg = message.payload.split(",")
 		self.linear_x = float(msg[0])
 		self.angular_z = float(msg[1])

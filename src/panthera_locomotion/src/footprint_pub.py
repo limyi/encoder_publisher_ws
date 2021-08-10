@@ -4,10 +4,11 @@ from geometry_msgs.msg import PolygonStamped
 from geometry_msgs.msg import Twist, Point32
 
 def width_callback(msg):
+	# adjust footprint width to robot width
 	width = msg.angular.z + 0.3
 
 	ps = PolygonStamped()
-	ps.header.frame_id = "velodyne"
+	ps.header.frame_id = "velodyne" # fixed robot footprint to velodyne
 
 	lb = Point32()
 	lf = Point32()

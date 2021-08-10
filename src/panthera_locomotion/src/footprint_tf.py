@@ -8,11 +8,8 @@ from tf import TransformBroadcaster
 length = 2.2
 width = 0.7
 right_to_lidar = 0.35
-cover_offset = 0.1
-lb = 0
-lf = 0
-rb = 0
-rf = 0
+cover_offset = 0.1 # lidar offset from centre
+
 robot_pose = PoseStamped()
 
 def width_callback(msg):
@@ -47,6 +44,7 @@ def width_callback(msg):
 	ts = TransformStamped()
 	ts2 = TransformStamped()
 
+	# transform from velodyne to base link
 	ts.header.stamp = rospy.Time.now()
 	ts.header.frame_id = "base_link"
 	ts.child_frame_id = "velodyne"
@@ -62,7 +60,7 @@ def width_callback(msg):
 
 
 	br.sendTransform(ts)
-
+	# static tf base_link to footprint
 	ts2.header.stamp = rospy.Time.now()
 	ts2.header.frame_id = "base_link"
 	ts2.child_frame_id = "footprint"
@@ -79,25 +77,14 @@ def width_callback(msg):
 
 	br.sendTransform(ts2)
 
-def wheel_speeds(msg):
-	global lb, lf, rb, rf
-	if abs(msg.linear.x) > 0:
-		lb = 1
-	if abs(msg.linear.y) > 0:
-		rb = 1
-	if abs(msg.linear.z) > 0:
-		lf = 1
-	if abs(msg.angular.x) > 0:
-		rf = 1
-
 def pose_callback(msg):
+	# subscribe to robot pose
 	global robot_pose
 	robot_pose = msg.pose.orientation
 
 if __name__== "__main__":
 	rospy.init_node("adaptive_tf_node")
 	rospy.Subscriber("/can_encoder", Twist, width_callback)
-	rospy.Subscriber("/reconfig", Twist, wheel_speeds)
 	rospy.Subscriber("/ndt_pose", PoseStamped, pose_callback)
 	footprint_pub = rospy.Publisher("/footprint", PolygonStamped, queue_size=1)
 	rospy.spin()
