@@ -42,7 +42,7 @@ geometry_msgs::PoseStamped index_to_pose(int i, double res, int size_x)
 }
 
 double e_distance(int ind1, int ind2, int width)
-{
+{	// euclidean distance
 	int y1 = floor(ind1/width);
 	int x1 = ind1 - y1*width;
 

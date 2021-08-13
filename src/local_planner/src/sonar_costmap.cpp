@@ -68,22 +68,7 @@ public:
 	void sonar_callback(const local_planner::Sonar& msg)
 	{	
 		// distance in cells
-		
-		//sonar_readings[0] = sonar_pos[0][0] + sonar_pos[0][1]*map_width;//coordinates_to_index(sonar_pos[0][0], sonar_pos[0][1], map_width);
-		//sonar_readings[1] = sonar_pos[1][0] + sonar_pos[1][1]*map_width;
-		//sonar_readings[2] = sonar_pos[2][0] + sonar_pos[2][1]*map_width;
-
-		//sonar_readings[3] = sonar_pos[3][0] + sonar_pos[3][1]*map_width;
-		//sonar_readings[4] = sonar_pos[4][0] + sonar_pos[4][1]*map_width;
-		//sonar_readings[5] = sonar_pos[5][0] + sonar_pos[5][1]*map_width;
-
-		//sonar_readings[6] = sonar_pos[6][0] + sonar_pos[6][1]*map_width;
-		//sonar_readings[7] = sonar_pos[7][0] + sonar_pos[7][1]*map_width;
-
-		//sonar_readings[8] = sonar_pos[8][0] + sonar_pos[8][1]*map_width;
-		//sonar_readings[9] = sonar_pos[9][0] + sonar_pos[9][1]*map_width;
-		
-		
+		// left ultrasonic sensors
 		sonar_readings[0][0] = coordinates_to_index(sonar_pos[0][0], sonar_pos[0][1] + len_to_cell(msg.left_b), map_width); // index of object detected
 		sonar_readings[0][1] = len_to_cell(msg.left_b); // distance in cells
 		sonar_readings[1][0] = coordinates_to_index(sonar_pos[1][0], sonar_pos[1][1] + len_to_cell(msg.left_m), map_width);
@@ -91,6 +76,7 @@ public:
 		sonar_readings[2][0] = coordinates_to_index(sonar_pos[2][0], sonar_pos[2][1] + len_to_cell(msg.left_f), map_width);
 		sonar_readings[2][1] = len_to_cell(msg.left_f);
 
+		// right ultrasonic sensors
 		sonar_readings[3][0] = coordinates_to_index(sonar_pos[3][0], sonar_pos[3][1] - len_to_cell(msg.right_b), map_width);
 		sonar_readings[3][1] = len_to_cell(msg.right_b);
 		sonar_readings[4][0] = coordinates_to_index(sonar_pos[4][0], sonar_pos[4][1] - len_to_cell(msg.right_m), map_width);
@@ -98,19 +84,18 @@ public:
 		sonar_readings[5][0] = coordinates_to_index(sonar_pos[5][0], sonar_pos[5][1] - len_to_cell(msg.right_f), map_width);
 		sonar_readings[5][1] = len_to_cell(msg.right_f);
 
+		// back ultrasonic sensors
 		sonar_readings[6][0] = coordinates_to_index(sonar_pos[6][0] - len_to_cell(msg.back_l), sonar_pos[6][1], map_width);
 		sonar_readings[6][1] = len_to_cell(msg.back_l);
 		sonar_readings[7][0] = coordinates_to_index(sonar_pos[7][0] - len_to_cell(msg.back_r), sonar_pos[7][1], map_width);
 		sonar_readings[7][1] = len_to_cell(msg.back_r);
 
+		// front ultrasonic sensors
 		sonar_readings[8][0] = coordinates_to_index(sonar_pos[8][0] + len_to_cell(msg.front_l), sonar_pos[8][1], map_width);
 		sonar_readings[8][1] = len_to_cell(msg.front_l);
 		sonar_readings[9][0] = coordinates_to_index(sonar_pos[9][0] + len_to_cell(msg.front_r), sonar_pos[9][1], map_width);
 		sonar_readings[9][1] = len_to_cell(msg.front_r);
 		
-		//std::cout << msg << std::endl;
-		
-		//printf("\ncheck1\n");
 		for (auto i : sonar_readings)
 		{
 			if (combined == true)
@@ -121,10 +106,8 @@ public:
 			{
 				check_valid(i[0], &ult_map, i[1]); // make occ grid map from sonar readings
 			}
-			//std::cout << (int)(map_data[1000]) << std::endl;
 		}
-		
-		//printf("check2");
+
 		nav_msgs::OccupancyGrid og;
 		og.header.frame_id = "velodyne";
 		og.info = mp.info;
@@ -143,7 +126,7 @@ public:
 
 	void width_callback(const geometry_msgs::Twist& msg)
 	{
-		width = (msg.angular.y + msg.angular.z)/2 + 0.3;
+		width = (msg.angular.y + msg.angular.z)/2 + 0.3; // robot witdth incl +0.3 which is combined distance from wheel to cover on both sides (0.15 on each side)
 	}
 
 	int len_to_cell(double length)
@@ -170,9 +153,6 @@ public:
 					}
 				}
 			}
-			
-			//cmap->at(index) = (signed char)occ;
-			//std::cout << cmap[index] << std::endl;
 		}
 	}
 
@@ -182,7 +162,7 @@ public:
 		c[0] = map_width/2;
 		c[1] = map_height/2;
 
-		// sensor positions
+		// sensor positions: sensor_pos[n][0] -> x coordinate | sensor_pos[n][1] -> y coordinate
 		// back sensors
 		sonar_pos[6][0] = c[0] - (length/2/res);
 		sonar_pos[6][1] = c[1] + (fb_spacing/2/res);
@@ -211,11 +191,11 @@ public:
 		sonar_pos[5][0] = c[0] + side_spacing/res;
 		sonar_pos[5][1] = c[1] - (width/2/res);
 
+		// print out sensors coordinates
 		for (auto f : sonar_pos)
 		{
 			std::cout << f[0] << "," << f[1] << std::endl;
 		}
-		//std::cout << map_width << std::endl;
 	}
 
 	long int coordinates_to_index(double x, double y, int width)
