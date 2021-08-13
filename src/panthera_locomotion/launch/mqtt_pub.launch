@@ -1,0 +1,4 @@
+<launch>
+	<node name="mqtt_client" type="mqtt_node.py" pkg="panthera_locomotion" output="screen"/>
+	<include file="$(find ds4_driver)/launch/ds4_twist.launch"/>
+</launch>

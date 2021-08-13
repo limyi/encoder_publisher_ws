@@ -100,5 +100,15 @@ or:
 1. rosrun panthera_locomotion footprint_tf.py
 # publish tf between baselink and velodyne
 
+#################
+## MQTT launch ##
+#################
+On remote pc:
+1. Connect ds4 controller to pc
+2. roslaunch panthera_locomotion mqtt_pub.launch
+
+On panthera:
+1. roslaunch panthera_locomotion mqtt_sub.launch
+
 
 
