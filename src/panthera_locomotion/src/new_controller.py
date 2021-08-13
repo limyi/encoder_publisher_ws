@@ -33,7 +33,6 @@ class Ds4Controller():
 
 		self.pub = rospy.Publisher('/panthera_cmd', Twist, queue_size=1) # publisher for wheel angles and vx/wz
 		self.recon = rospy.Publisher('/reconfig', Twist, queue_size=1) # publisher for individual wheel speeds
-		self.vibrate = rospy.Publisher('/set_feedback', Feedback, queue_size=1) # not impt but vibrates when wheel angle more than 100 deg
 
 		####  publisher for roboclaw 
 		self.brushes = rospy.Publisher('/linear_actuator', Twist, queue_size=1)
@@ -200,7 +199,7 @@ class Ds4Controller():
 			rb = self.rb_status(req)
 			lf = self.lf_status(req)
 			rf = self.rf_status(req)
-			signal = (lb.status and rb.status and lf.status and rf.status)
+			signal = (lb.status and rb.status and lf.status and rf.status) # bool (all wheels are aligned)
 			print([lb.status, rb.status, lf.status, rf.status])
 			print("Status of steering motors:" + str(signal))
 

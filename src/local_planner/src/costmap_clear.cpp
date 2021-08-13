@@ -88,7 +88,7 @@ class Robot
 		void widthCallback(const geometry_msgs::Twist& msg)
 		{	
 			// robot width
-			width = (msg.angular.y + msg.angular.z)/2 + 0.3;
+			width = (msg.angular.y + msg.angular.z)/2 + 0.3; // +0.3 for length from wheel to cover, includes both sides
 		}
 
 		void mapCallback(const nav_msgs::OccupancyGrid& msg)
@@ -152,8 +152,8 @@ class Robot
 			float horz_dist = width/2; // y axis robot width
 			float vert_dist = length/2; // x axis robot length
 
-			int horz_pix = (int)ceil(horz_dist/res);
-			int vert_pix = (int)ceil(vert_dist/res);
+			int horz_pix = (int)ceil(horz_dist/res); // number of cells for robot width
+			int vert_pix = (int)ceil(vert_dist/res); // number of cells for robot length
 			buffer = (int)ceil(safety_dist/res);
 
 			left_back[0] = (int)floor(centre[0] - vert_pix);
@@ -192,7 +192,7 @@ class Robot
 			//std::cout << fp.polygon.points[0] << std::endl;
 			robot_footprint.publish(fp);
 
-			search_area_viz();
+			search_area_viz(); // visualize search area in rviz
 			//printf("footprinted\n");
 			/**
 			std::cout << buffer << std::endl;

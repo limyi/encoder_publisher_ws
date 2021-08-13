@@ -102,6 +102,7 @@ class Robot
 
 		struct ICR
 		{	
+			// index of icr wrt to occupancy grid
 			int index;
 
 			// objective functions
@@ -158,7 +159,8 @@ class Robot
 		}
 
 		void stop_pub()
-		{
+		{	
+			// publish command to stop robot
 			auto* ts = &cmd_angle;
 			ts->linear.x = 0;
 			ts->linear.y = 0;
@@ -179,12 +181,12 @@ class Robot
 			// function to send commands to publish angles/speeds
 			publish_angle(icr_node);
 
-			check_steer();
+			check_steer(); // check if wheels have aligned before moving
 			
 			publish_vel(icr, wheel_vec);
 			float t = abs(angle)/wz;
-			ros::Duration(t).sleep();
-			stop_pub();
+			ros::Duration(t).sleep(); // wait until robot has rotated correct amount before stopping. Estimated based on rads-1 and time
+			stop_pub(); // stop robot
 		}
 
 		void check_steer()
@@ -200,7 +202,7 @@ class Robot
 				bool signal = false;
 				ros::Rate rate(1);
 				int count = 0;
-				while (signal == false || count<2 )
+				while (signal == false || count<2 ) // count: makes sure wheel has stopped at correct angle and not overshooting. Check if wheel is at correct angle for 2 secs
 				{
 					lb_stat.call(lb_req);
 					rb_stat.call(rb_req);
@@ -232,9 +234,9 @@ class Robot
 			double total_angle;
 			for (auto w : wheels)
 			{
-				double theta = 	gradient_angle(ind.x, ind.y, w.x, w.y);
+				double theta = 	gradient_angle(ind.x, ind.y, w.x, w.y); // calculate angle req to turn
 				angles.push_back(theta);
-				total_angle += abs(theta);
+				total_angle += abs(theta); // sum the angles
 			}
 			angles.push_back(total_angle);
 			return angles;
@@ -256,18 +258,20 @@ class Robot
 		}
 
 		double distance_from_centre(int index)
-		{
+		{	
+			// calculate distance from cell to centre of robot
 			geometry_msgs::Point32 pt = index_to_coordinates(index, res, len_x);
 			return distance(pt.x, pt.y, len_x/2, len_y/2)*res;
 		}
 
 		double max_rotation(int index, double min_theta)
-		{
+		{	
+			// calculate max possible rotation checking every angle_interval
 			bool clear = true;
 			geometry_msgs::Point32 pt = index_to_coordinates(index, res, len_x);
 			double theta = min_theta;
 
-			while (clear == true && abs(theta) <= 2*PI)
+			while (clear == true && abs(theta) <= 2*PI) // while robot has not hit an obstacle with rotation theta
 			{	
 				clear = rotation_clear(pt, theta, data_pts);
 				if (clear == true)
@@ -315,23 +319,27 @@ class Robot
 			//geometry_msgs::Point32 p0;
 			//p0.x = point.x;
 			//p0.y = point.y;
+
+			// get neighbours of icr, cells surrounding point
 			for (int j=-1; j<=1; j++)
 			{
 				for (int i=-1; i<=1; i++)
 				{	
-					if ((j==0 && i==0) == false)
+					if ((j==0 && i==0) == false) // exclude point from neighbours vector
 					{
 						geometry_msgs::Point32 pt;
 						pt.x = point.x + i;
 						pt.y = point.y + j;
 						if (std::find(footprint_points.begin(), footprint_points.end(), pt) != footprint_points.end() && std::find(neighbours->begin(), neighbours->end(), pt) == neighbours->end())
 						{
-							neighbours->push_back(pt);
+							neighbours->push_back(pt); // check if neighbour is within footprint_points
 						}
 					}
 				}
 			}
 			std::remove(neighbours->begin(), neighbours->end(), point);
+
+			// double check to make sure point is not in neighbours
 			if (std::find(neighbours->begin(), neighbours->end(), point) != neighbours->end())
 			{	
 				std::remove(neighbours->begin(), neighbours->end(), point);
@@ -339,16 +347,16 @@ class Robot
 			}
 		}
 
-		void run()
+		void run() // gradient descent
 		{	
-			std::ofstream MyFile("05icr.txt");
-			geometry_msgs::Point32 current_pt = footprint_points[0];//footprint_points[(int)(footprint_points.size()/2)]; // init middle point to start search
+			geometry_msgs::Point32 current_pt = footprint_points[0]; // init corner point to start search
+			//footprint_points[(int)(footprint_points.size()/2)];
 			geometry_msgs::Point32 found_pt;
-			ICR best_found_point;
+			ICR best_found_point; // keep track of best found point while doing search
 
-			bool first_point_found;
+			bool first_point_found; // bool if first initial point has been found
 
-			first_point_found = rotation_clear(current_pt, angle, data_pts);
+			first_point_found = rotation_clear(current_pt, angle, data_pts); // check if corner point can be initiated
 			std::vector<geometry_msgs::Point32> neighbours;
 			get_neighbours(current_pt, &neighbours);
 
