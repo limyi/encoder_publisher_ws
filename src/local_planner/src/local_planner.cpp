@@ -152,7 +152,7 @@ public:
 	// Check if wheels have adjusted to correct angle
 	void check_steer()
 	{
-		if (operation == true) // skip if not running with robot
+		if (operation == true) // run if operating with robot
 		{
 			panthera_locomotion::Status lb_req,rb_req,lf_req,rf_req;
 			lb_req.request.reconfig = true;
@@ -162,13 +162,13 @@ public:
 			bool signal = false;
 			ros::Rate rate(1);
 			int count = 0;
-			while (signal == false || count<2 )
+			while (signal == false || count<2 ) // count makes sure the wheel has stopped at the correct angle and just moving past the correct angle
 			{
 				lb_stat.call(lb_req);
 				rb_stat.call(rb_req);
 				lf_stat.call(lf_req);
 				rf_stat.call(rf_req);
-				signal = ((bool)lb_req.response.status && (bool)lf_req.response.status && (bool)rb_req.response.status && (bool)rf_req.response.status);
+				signal = ((bool)lb_req.response.status && (bool)lf_req.response.status && (bool)rb_req.response.status && (bool)rf_req.response.status); // signal is if all the wheels are algined correctly
 				//std::cout << "Signal: " << signal << std::endl;
 				rate.sleep();
 				if (signal==true)
@@ -192,7 +192,7 @@ public:
 		curr_y = msg.pose.position.y;
 		curr_t = quat_to_rad(msg);
 
-		panthera_locomotion::ICRsearch angle_req;
+		panthera_locomotion::ICRsearch angle_req; // service to get robot locomotion cmds
 
 		// init start_x and start_y
 		if (n == 0)
@@ -219,14 +219,14 @@ public:
 				if (align_pose(curr_t, global_path[0]) == 1)
 				{
 					curr_state = 3; // move left
-					prev_state = 2; // previously moving up
+					prev_state = 2; // previously moving forward
 					dir = 0; // reset state = 0
 				}
 				else if (align_pose(curr_t, global_path[0]) == -1)
 				{
-					curr_state = 1;
-					prev_state = 2;
-					dir = 0;
+					curr_state = 1; // move right
+					prev_state = 2; // previously moving forward
+					dir = 0; // reset state = 0
 				}
 			}
 
@@ -267,9 +267,9 @@ public:
 							rot_angle.call(angle_req); // send request
 							geometry_msgs::Twist wa = angle_req.response.wheel_angles; // wheel angles to rotate
 							geometry_msgs::Twist ws = angle_req.response.wheel_speeds; // wheel speeds to rotate
-							if(angle_req.response.feasibility == true)
+							if(angle_req.response.feasibility == true) // if possible to rotate
 							{
-								custom_rotate(wa, ws);
+								custom_rotate(wa, ws); // rotate around icr
 								rotating = rotate_dir;
 							}
 							else
@@ -378,12 +378,12 @@ public:
 				}
 				else if (right_clear == true && finished_step == false) // if still possible to move right
 				{	
-					if (dir!=curr_state && static_turn==true)
+					if (dir!=curr_state && static_turn==true) // wheels steer before moving
 					{	
 						right(1);
 						dir = curr_state;
 					}
-					else if (static_turn==false)
+					else if (static_turn==false) // wheels steer while moving instead of wheels steering then moving
 					{
 						right(ratio);
 					}
@@ -391,8 +391,9 @@ public:
 			}
 			else
 			{
-				if (up_clear == true || right_clear == false || finished_step == true)
+				if (up_clear == true || right_clear == false || finished_step == true) // if previously moving left & currently moving right and maxed movement to the right
 				{	
+					// move forward
 					stop();
 					start_x = x;
 					start_y = y;
@@ -489,12 +490,12 @@ public:
 				}
 				else if (left_clear == true && finished_step == false) // continue moving left
 				{
-					if (dir!=curr_state && static_turn==true)
+					if (dir!=curr_state && static_turn==true) // publish cmd to move left once & wheels steer before moving off
 					{
 						left(1);
 						dir = curr_state;
 					}
-					else if (static_turn==false)
+					else if (static_turn==false) // wheels steer while moving off
 					{
 						left(ratio);
 					}
@@ -514,12 +515,12 @@ public:
 				}
 				else if (left_clear == true && finished_step == false) // continue moving left
 				{	
-					if (dir!=curr_state && static_turn==true)
+					if (dir!=curr_state && static_turn==true) // wheels steer before moving off
 					{	
 						left(1);
 						dir = curr_state;
 					}
-					else if (static_turn==false)
+					else if (static_turn==false) // wheels steer while moving off
 					{
 						left(ratio);
 					}
@@ -533,7 +534,7 @@ public:
 	bool goal_check(double x, double y, geometry_msgs::PoseStamped goal)
 	{
 		double dist = sqrt(pow(goal.pose.position.x - x, 2) + pow(goal.pose.position.y - y, 2));
-		if (dist < goal_stop)
+		if (dist < goal_stop) // if robot is within tolerance distance of goal
 		{
 			reached_goal = true;
 		}
