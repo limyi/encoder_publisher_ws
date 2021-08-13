@@ -2,7 +2,7 @@ import orienbus
 import getch
 import time
 
-port = '/dev/ttyUSB8' # modbus port 
+port = '/dev/ttyUSB8' # modbus port, change port to mootor you want to control
 
 # Create orienbus object with port name
 orienbus = orienbus.OrienBus(port)

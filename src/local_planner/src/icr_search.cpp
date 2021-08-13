@@ -14,7 +14,7 @@
 #include <local_planner/icr_utils.h>
 #include <panthera_locomotion/Status.h>
 #include <fstream>
-
+using namespace std;
 class Robot
 {
 	private:
@@ -67,6 +67,9 @@ class Robot
 		geometry_msgs::Twist cmd_vel;
 		float wz = 0.07;
 
+		// write to file
+		ofstream icr_points;
+
 	public:
 		Robot(ros::NodeHandle *nh)
 		{	
@@ -100,16 +103,25 @@ class Robot
 		struct ICR
 		{	
 			int index;
+
+			// objective functions
 			double h1;
 			double h2;
 			double h3;
+
+			// sum of objective functions
 			double h4;
+
+			// desired wheel angles
 			std::vector<double> wheel_angles;
+
+			// coordinates of icr
 			geometry_msgs::Point32 coordinates;
 		};
 
 		void publish_vel(geometry_msgs::Point32 icr, std::vector<geometry_msgs::Point32> wheel_vec)
-		{
+		{	
+			// publish wheel velocities
 			auto* ts = &cmd_vel;
 			if (withinWheelBase(icr) == true)
 			{
@@ -135,7 +147,8 @@ class Robot
 		}
 
 		void publish_angle(ICR icr)
-		{
+		{	
+			// publish wheel angles
 			auto* ts = &cmd_angle;
 			ts->linear.x = icr.wheel_angles[0]*180/PI;
 			ts->linear.y = icr.wheel_angles[1]*180/PI;
@@ -162,7 +175,8 @@ class Robot
 		}
 
 		void send_cmds(geometry_msgs::Point32 icr, std::vector<geometry_msgs::Point32> wheel_vec, ICR icr_node)
-		{
+		{	
+			// function to send commands to publish angles/speeds
 			publish_angle(icr_node);
 
 			check_steer();
@@ -174,7 +188,8 @@ class Robot
 		}
 
 		void check_steer()
-		{
+		{	
+			// check if wheel at the correct angles
 			if (operation == true)
 			{
 				panthera_locomotion::Status lb_req,rb_req,lf_req,rf_req;
@@ -211,6 +226,7 @@ class Robot
 		// Optimization functions
 		std::vector<double> angle_change(int index)
 		{	
+			// Total deg wheels need to rotate
 			geometry_msgs::Point32 ind = index_to_coordinates(index, res, len_x);
 			std::vector<double> angles;
 			double total_angle;
@@ -226,6 +242,7 @@ class Robot
 
 		double gradient_angle(int x0, int y0, double x1, double y1)
 		{
+			// diff in angle
 			double grad = atan(-(x1 - x0)/(y1 - y0));
 			if (grad >= PI/2)
 			{
@@ -464,6 +481,7 @@ class Robot
 		
 		ICR global_optimize(std::vector<geometry_msgs::Point32> icrs)
 		{	
+			icr_points.open("icr_points_01.txt", ios::out | ios::binary);
 			std::vector<ICR> icr_nodes;
 			for (auto icr : icrs)
 			{	
@@ -475,8 +493,10 @@ class Robot
 				x->h4 = (x->h1*h_steer + x->h2*h_max_rot + x->h3*h_icr_dist)/(abs(h_icr_dist) + abs(h_max_rot) + abs(h_steer));
 				x->wheel_angles = angle_change(x->index);
 				icr_nodes.push_back(*x);
+				icr_points << std::to_string(icr.x) + "," + std::to_string(icr.y) + "," + std::to_string(x->h4) + "\n";
 				delete x;
 			}
+			icr_points.close();
 			std::sort(icr_nodes.begin(), icr_nodes.end(), sort_h);
 			std::cout << "h1: " << icr_nodes[0].h1 << std::endl;
 			std::cout << "h2: " << icr_nodes[0].h2 << std::endl;
@@ -517,6 +537,12 @@ class Robot
 				n += 1;
 			}
 			data_pts = msg.data;
+			/**
+			ofstream myfile;
+			myfile.open("example.txt", ios::out | ios::binary);
+			myfile << "received map";
+			myfile.close();
+			**/
 			if (received_angle == true)
 			{
 				//test_run();

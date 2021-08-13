@@ -86,23 +86,23 @@ public:
 		rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
 		lf_stat = nh->serviceClient<panthera_locomotion::Status>("lf_steer_status");
 		rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
-		rot_angle = nh->serviceClient<panthera_locomotion::Status>("rotation_angle");
+		rot_angle = nh->serviceClient<panthera_locomotion::Status>("rotation_angle"); // angle from icr search
 		
 		lb_stat.waitForExistence();
 		rb_stat.waitForExistence();
 		lf_stat.waitForExistence();
 		rf_stat.waitForExistence();
 		
-		length = nh->param("/robot_length", 1.5);
-		goal_stop = nh->param("/goal_stop", 0.5);
-		forward_limit = nh->param("/forward_limit", 0.5);
-		horizontal_limit = nh->param("/horizontal_limit", 10.0);
-		delta_theta = nh->param("/delta_theta", 10);
-		pose_tolerance = nh->param("/pose_tolerance", 5);
-		wp_interval = nh->param("/wp_interval", 10);
+		length = nh->param("/robot_length", 1.5); // length of robot
+		goal_stop = nh->param("/goal_stop", 0.5); // goal tolerance
+		forward_limit = nh->param("/forward_limit", 0.5); // distance robot moves forward
+		horizontal_limit = nh->param("/horizontal_limit", 10.0); // distance robot moves horizontally
+		delta_theta = nh->param("/delta_theta", 10); // angle tolerance
+		pose_tolerance = nh->param("/pose_tolerance", 5); // robot pose tolerance
+		wp_interval = nh->param("/wp_interval", 10); // take wp every _ number of waypoints
 		vx = nh->param("/vx", 0.085);
 		wz = nh->param("/wz", 0.05);
-		factor = nh->param("/factor", 1.5);
+		factor = nh->param("/factor", 1.5); // lateral acceleration
 	}
 
 	// get global path (edit to add points if dtheta is more than certain angle)
@@ -112,6 +112,8 @@ public:
 		geometry_msgs::PoseStamped pt = msg.lanes[0].waypoints[0].pose;
 		global_path.push_back(pt);
 		int i = 1, last_pt = 1;
+
+		// get waypoints if they differ by delta_theta deg or every wp_interval
 		while (i<msg.lanes[0].waypoints.size())
 		{
 			if (std::abs(angle_diff(quat_to_rad(pt,"rad"), quat_to_rad(msg.lanes[0].waypoints[i].pose, "rad"), "deg")) >= delta_theta || i == msg.lanes[0].waypoints.size()-1 || i-last_pt >=wp_interval)
@@ -131,7 +133,7 @@ public:
 	// Wheel separation of robot
 	void read_width(const geometry_msgs::Twist& msg)
 	{	
-		if (operation == true)
+		if (operation == true) // check if running with physical robot
 		{
 			width = (msg.angular.y + msg.angular.z)/2;
 		}
@@ -141,7 +143,7 @@ public:
 		}
 	}
 
-	// Subscribe goal location
+	// Subscribe goal location from rviz
 	void goal_location(const geometry_msgs::PoseStamped& msg)
 	{	
 		final_goal = msg;
@@ -150,7 +152,7 @@ public:
 	// Check if wheels have adjusted to correct angle
 	void check_steer()
 	{
-		if (operation == true)
+		if (operation == true) // skip if not running with robot
 		{
 			panthera_locomotion::Status lb_req,rb_req,lf_req,rf_req;
 			lb_req.request.reconfig = true;
@@ -180,17 +182,18 @@ public:
 			}
 			printf("Clear!\n");
 		}
-		else{}
 	}
 	
 	// Robot pose subscriber
 	void poseCheck(const geometry_msgs::PoseStamped& msg)
-	{
+	{	
+		// get current pose
 		curr_x = msg.pose.position.x;
 		curr_y = msg.pose.position.y;
 		curr_t = quat_to_rad(msg);
 
 		panthera_locomotion::ICRsearch angle_req;
+
 		// init start_x and start_y
 		if (n == 0)
 		{
@@ -202,19 +205,22 @@ public:
 		int aligned;
 		if (global_path.size() != 0)
 		{	
-			int rotate_dir = align_pose(curr_t, global_path[0]);
-			if (goal_check(curr_x, curr_y, global_path[1]) == true)
+			int rotate_dir = align_pose(curr_t, global_path[0]); // get rotation direction to align to next point
+
+			if (goal_check(curr_x, curr_y, global_path[1]) == true) // if robot is within goal tolerance to next point in path
 			{
 				global_path.erase(global_path.begin());
 				path.poses = global_path;
 				path_pub.publish(path);
 
 				// clean left if path turns right & clean right if path turns left
+				// 1: path goes right
+				// -1: path goes left
 				if (align_pose(curr_t, global_path[0]) == 1)
 				{
-					curr_state = 3;
-					prev_state = 2;
-					dir = 0;
+					curr_state = 3; // move left
+					prev_state = 2; // previously moving up
+					dir = 0; // reset state = 0
 				}
 				else if (align_pose(curr_t, global_path[0]) == -1)
 				{
@@ -223,40 +229,44 @@ public:
 					dir = 0;
 				}
 			}
+
+			// if havent reached next point in path
 			else
 			{
-				if (rotate_dir != 0)
+				if (rotate_dir != 0) // if robot needs to rotate
 				{	
-					if (radius_clear == true)
+					if (radius_clear == true) // if robot is able to rotate
 					{
-						if (rotate_dir == 1)
+						if (rotate_dir == 1) // robot needs to rotate right
 						{
-							if (rotate_dir != rotating)
+							if (rotate_dir != rotating) // if robot is not already rotating
 							{	
 								stop();
 								rotate_right();
-								rotating = rotate_dir;
+								rotating = rotate_dir; // set robot to be already rotating
 							}
 						}
-						else if (rotate_dir == -1)
+						else if (rotate_dir == -1) // robot needs to rotate left
 						{
-							if (rotate_dir != rotating)
+							if (rotate_dir != rotating) // if robot is not already rotating
 							{	
 								stop();
 								rotate_left();
-								rotating = rotate_dir;
+								rotating = rotate_dir; // set robot to be already rotating
 							}
 						}
 					}
+
+					// if robot cannot rotate (Work in progress)
 					else if (radius_clear == false && back_clear == true)
 					{
 						if (rotate_dir != rotating)
 						{	
 							angle_req.request.received_angle = true;
-							angle_req.request.turn_angle = angle_diff(curr_t, quat_to_rad(global_path[0], "rad"), "rad");
-							rot_angle.call(angle_req);
-							geometry_msgs::Twist wa = angle_req.response.wheel_angles;
-							geometry_msgs::Twist ws = angle_req.response.wheel_speeds;
+							angle_req.request.turn_angle = angle_diff(curr_t, quat_to_rad(global_path[0], "rad"), "rad"); // calculate angle to rotate
+							rot_angle.call(angle_req); // send request
+							geometry_msgs::Twist wa = angle_req.response.wheel_angles; // wheel angles to rotate
+							geometry_msgs::Twist ws = angle_req.response.wheel_speeds; // wheel speeds to rotate
 							if(angle_req.response.feasibility == true)
 							{
 								custom_rotate(wa, ws);
@@ -264,6 +274,7 @@ public:
 							}
 							else
 							{
+								// if cannot rotate try to reverse
 								reverse();
 								rotating = 4;
 							}
@@ -272,7 +283,8 @@ public:
 					}
 				}
 				else
-				{
+				{	
+					// prevent robot from oscillating near tolerance
 					if (rotating != 0)
 					{	
 						ros::Duration(1).sleep();
@@ -280,6 +292,8 @@ public:
 						rotating = 0;
 						dir = 0;
 					}
+
+					// continue normal state machine
 					else
 					{
 						sm(curr_x, curr_y);
@@ -307,15 +321,15 @@ public:
 		std::cout << "Angle diff: " << diff << std::endl;
 		if (std::round(diff) >= pose_tolerance)
 		{
-			return 1;
+			return 1; // goal is to the right of current orientation
 		}
 		else if (std::round(diff) <= -pose_tolerance)
 		{
-			return -1;
+			return -1; // goal is to the left of current orientation
 		}
 		else
 		{
-			return 0;
+			return 0; // no need to rotate
 		}
 	}
 
@@ -341,27 +355,28 @@ public:
 		//////////////////////////// MOVING RIGHT ////////////////////////////////////
 		if (curr_state == 1)
 		{	
-			if (prev_state != 3)
+			if (prev_state != 3) // if robot was not moving left previously
 			{
-				if (right_clear == 0 || finished_step == true)
+				if (right_clear == 0 || finished_step == true) // if robot has reached horizontal limit or right not clear
 				{	
 					stop();
 					start_x = x;
 					start_y = y;
-					if (up_clear == false)
+					if (up_clear == false) // if front not clear, move left
 					{
 						curr_state = 3;
 						prev_state = 1;
 						step = horizontal_limit;
 					}
 					else
-					{
+					{	
+						// if front clear, move forward
 						step = forward_limit;
 						curr_state = 2;
 						prev_state = 1;
 					}
 				}
-				else if (right_clear == true && finished_step == false)
+				else if (right_clear == true && finished_step == false) // if still possible to move right
 				{	
 					if (dir!=curr_state && static_turn==true)
 					{	
@@ -387,12 +402,12 @@ public:
 				}
 				else if (right_clear == true && finished_step == false)
 				{	
-					if (dir!=curr_state && static_turn==true)
+					if (dir!=curr_state && static_turn==true) // static_turn is steering the wheels if the turn while robot remains stationary
 					{	
 						right(1);
 						dir = curr_state;
 					}
-					else if (static_turn==false)
+					else if (static_turn==false) // robot moves while wheel steer
 					{
 						right(ratio);
 					}
@@ -402,9 +417,9 @@ public:
 		//////////////////////////// MOVING UP ////////////////////////////////////
 		else if (curr_state == 2)
 		{	
-			if (prev_state == 1)
+			if (prev_state == 1) // if robot moving right previously
 			{
-				if (finished_step == true || up_clear == false)
+				if (finished_step == true || up_clear == false) // move left if reached horizontal limit  or obstacle
 				{
 					stop();
 					curr_state = 3;
@@ -413,7 +428,7 @@ public:
 					start_y = y;
 					step = horizontal_limit;
 				}
-				else if (up_clear == true  && finished_step == false)
+				else if (up_clear == true  && finished_step == false) // continue moving up
 				{
 					if (dir!=curr_state)
 					{
@@ -422,9 +437,9 @@ public:
 					}
 				}
 			}
-			else if (prev_state == 3)
+			else if (prev_state == 3) // if moving left previously
 			{
-				if (finished_step == true || up_clear == false)
+				if (finished_step == true || up_clear == false) // move right if reached horizontal limit or obstacle
 				{
 					stop();
 					curr_state = 1;
@@ -433,7 +448,7 @@ public:
 					start_y = y;
 					step = horizontal_limit;
 				}
-				else if (up_clear == true && finished_step == false)
+				else if (up_clear == true && finished_step == false) // continue moving up
 				{
 					if (dir!=curr_state)
 					{
@@ -450,27 +465,29 @@ public:
 		//////////////////////////// MOVING LEFT ////////////////////////////////////
 		else if (curr_state == 3)
 		{
-			if (prev_state != 1)
+			if (prev_state != 1) // was not moving right previously
 			{
-				if (left_clear == false || finished_step == true)
+				if (left_clear == false || finished_step == true) // if reached limit or obstacle
 				{
 					stop();
 					start_x = x;
 					start_y = y;
-					if (up_clear == false)
-					{
+					if (up_clear == false) // obstacle in front
+					{	
+						// move right
 						curr_state = 1;
 						prev_state = 3;
 						step = horizontal_limit;
 					}
 					else
-					{
+					{	
+						// move forward
 						step = forward_limit;
 						curr_state = 2;
 						prev_state = 3;
 					}
 				}
-				else if (left_clear == true && finished_step == false)
+				else if (left_clear == true && finished_step == false) // continue moving left
 				{
 					if (dir!=curr_state && static_turn==true)
 					{
@@ -486,7 +503,7 @@ public:
 			else
 			{
 
-				if (up_clear == true || left_clear == false || finished_step == true)
+				if (up_clear == true || left_clear == false || finished_step == true) // move forward if was moving right previously
 				{	
 					stop();
 					start_x = x;
@@ -495,7 +512,7 @@ public:
 					curr_state = 2;
 					prev_state = 1;
 				}
-				else if (left_clear == true && finished_step == false)
+				else if (left_clear == true && finished_step == false) // continue moving left
 				{	
 					if (dir!=curr_state && static_turn==true)
 					{	

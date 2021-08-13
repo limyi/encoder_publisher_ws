@@ -50,7 +50,7 @@ def width_callback(msg):
 	ts.child_frame_id = "velodyne"
 
 	ts.transform.translation.x = 0
-	ts.transform.translation.y = -(width/2-cover_offset)
+	ts.transform.translation.y = -(width/2-cover_offset) # horizontal displacement
 	ts.transform.translation.z = 0
 
 	ts.transform.rotation.x = 0

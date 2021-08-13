@@ -10,6 +10,7 @@ def width_callback(msg):
 	ps = PolygonStamped()
 	ps.header.frame_id = "velodyne" # fixed robot footprint to velodyne
 
+	# corners of footprint
 	lb = Point32()
 	lf = Point32()
 	rf = Point32()

@@ -38,8 +38,8 @@ class Ds4Controller():
 		self.human_stop = 1.5
 		##############
 
-		self.pub = rospy.Publisher('/panthera_cmd', Twist, queue_size=1)
-		self.recon = rospy.Publisher('/reconfig', Twist, queue_size=1)
+		self.pub = rospy.Publisher('/panthera_cmd', Twist, queue_size=1) # publish desired wheel angles, cmd_vel
+		self.recon = rospy.Publisher('/reconfig', Twist, queue_size=1) # publish individual wheel speeds
 		self.vibrate = rospy.Publisher('/set_feedback', Feedback, queue_size=1)
 
 		####  publisher for roboclaw
@@ -53,6 +53,7 @@ class Ds4Controller():
 		rospy.wait_for_service('/rb_steer_status')
 		rospy.wait_for_service('/rf_steer_status')
 		'''
+		# services to check if wheel has reached target angle
 		self.lb_status = rospy.ServiceProxy('lb_steer_status', Status)
 		self.lf_status = rospy.ServiceProxy('lf_steer_status', Status)
 		self.rb_status = rospy.ServiceProxy('rb_steer_status', Status)
@@ -63,6 +64,8 @@ class Ds4Controller():
 		rospy.wait_for_service('/rb_reconfig_status')
 		rospy.wait_for_service('/rf_reconfig_status')
 		'''
+		# services to toggle reconfig mode of robot
+		# reconfig mode allows wheels to steer independently of each other
 		self.lb_stat = rospy.ServiceProxy('lb_reconfig_status', Status)
 		self.lf_stat = rospy.ServiceProxy('lf_reconfig_status', Status)
 		self.rb_stat = rospy.ServiceProxy('rb_reconfig_status', Status)
@@ -75,6 +78,7 @@ class Ds4Controller():
 		self.linear_x = 0
 		self.angular_z = 0
 
+		# commands from ds4 controller
 		self.rot_right = 0
 		self.rot_left = 0
 
@@ -100,13 +104,9 @@ class Ds4Controller():
 		self.reconfiguring = Twist()
 		self.input_list = []
 
-		self.pub_once = 0
+		self.pub_once = 0 # check if cmd has been published
 
-		self.vb = Feedback()
-		self.vb.set_rumble = True
-		self.vb.rumble_duration = 0.5
-		self.vb.rumble_small = 0.5
-
+		# width limits of wheel base (distance between right and left wheel)
 		self.contract_limit = 0.73
 		self.expand_limit = 0.85
 
@@ -120,17 +120,18 @@ class Ds4Controller():
 		self.operation = False # True: running with robot, False: not running with robot
 
 	def human_loc(self, data):
-		if self.vision.data == 1:
+		if self.vision.data == 1: # if camera is on
 			nearest_human = float('inf')
 			for person in data.objects:
 				if person.position[0] <= nearest_human:
-					nearest_human = person.position[0]
+					nearest_human = person.position[0] # find the neareset person using the camera
 			self.human_dist = nearest_human
 		else:
-			self.human_dist = float('inf')
+			self.human_dist = float('inf') # if camera is off
 		#print(self.human_dist)
 
 	def custom_twist(self, val1, val2):
+		# custom twist msg for roboclaw actuators, vacuum mouth and brushes
 		ts = Twist()
 		ts.linear.x = val1
 		ts.linear.y = val1
@@ -141,42 +142,37 @@ class Ds4Controller():
 		return ts
 
 	def encoder_pos(self,data):
+		# wheel positions 
 		lb = data.linear.x
 		rb = data.linear.y
 		lf = data.linear.z
 		rf = data.angular.x
-		wheels = [lb,rb,lf,rf]
-		for i in wheels:
-			if abs(i) > 100:
-				#print(i)
-				self.vibrate.publish(self.vb)
-		self.width = data.angular.z
-		#self.width = data.angular.z
+		self.width = data.angular.z # width of robot, 1 wire encoder
 
 	def read_twist(self, client, user_data, message):
 		# accepts string message separated by comma
 		msg = message.payload.split(",")
-		self.linear_x = float(msg[0])
-		self.angular_z = float(msg[1])
+		self.linear_x = float(msg[0]) # vx
+		self.angular_z = float(msg[1]) # wz
 
-		self.rot_right = int(msg[2])
-		self.rot_left = int(msg[3])
+		self.rot_right = int(msg[2]) # static rotate right
+		self.rot_left = int(msg[3]) # static rotate left
 
 		## VISION ##
-		self.vision.value = int(msg[4])
-		self.vision.change_state()
+		self.vision.value = int(msg[4]) # toggle on/off vision
+		self.vision.change_state() # change vision mode
 		############
-		self.holo_right = int(msg[5])
-		self.holo_left = int(msg[6])
+		self.holo_right = int(msg[5]) # holo movement right
+		self.holo_left = int(msg[6]) # holo movement left
 
-		self.rec_r = int(msg[7])
-		self.rec_l = int(msg[8])
+		self.rec_r = int(msg[7]) # reconfig right half of robot
+		self.rec_l = int(msg[8]) # reconfig left half of robot
 
-		self.d_vx = int(msg[9])
-		self.d_wz = int(msg[10])
+		self.d_vx = int(msg[9]) # change max vx
+		self.d_wz = int(msg[10]) # change max wz
 		self.decrease = int(msg[11])
 
-		### Brushes roboclaw stuff
+		### on/off brushes, actuators, vacuum mouth motor
 		self.brush.value = int(msg[12])
 		self.act.value = int(msg[13])
 		self.vac.value = int(msg[14])
@@ -187,15 +183,14 @@ class Ds4Controller():
 
 		self.input_list = [self.linear_x, self.angular_z, self.rot_right, self.rot_left,
 						   self.holo_right, self.holo_left, self.d_vx, self.d_wz, self.decrease, self.rec_r, self.rec_l]
-		#print(msg)
 
 	def change_vx(self):
 		if self.d_vx == 0:
 			pass
 		else:
-			while self.d_vx == 1:
+			while self.d_vx == 1: # if theres a command to change vx
 				pass
-			self.vx += (1*(not self.decrease) + self.decrease) * self.step
+			self.vx += (1*(not self.decrease) + self.decrease) * self.step # change vx accordingly if decrease button is pressed
 
 	def change_wz(self):
 		if self.d_wz == 0:
@@ -203,16 +198,17 @@ class Ds4Controller():
 		else:
 			while self.d_wz == 1:
 				pass
-			self.wz += (1*(not self.decrease) + self.decrease) * self.step
+			self.wz += (1*(not self.decrease) + self.decrease) * self.step # change wz accordingly if decrease button is pressed
 		
 	def check(self):
-		if self.operation == True:
+		if self.operation == True: # if running code with motor
 			req = StatusRequest()
-			req.reconfig = True
-			signal = False
+			req.reconfig = True # switch to reconfig mode
+			signal = False # check if all wheels have reached desired angle
 			rate = rospy.Rate(2)
 			while signal == False and not rospy.is_shutdown():
 				rate.sleep()
+				# check if wheels have reached desired angle
 				lb = self.lb_status(req)
 				rb = self.rb_status(req)
 				lf = self.lf_status(req)
@@ -224,9 +220,10 @@ class Ds4Controller():
 	def reconfig(self, state):
 		if self.operation == True:
 			req = StatusRequest()
+			# switch reconfig state
 			req.reconfig = state
 			stat = not state
-			while stat!= state:
+			while stat!= state: # make sure all wheels have switched state
 				lb = self.lb_stat(req)
 				lf = self.lf_stat(req)
 				rb = self.rb_stat(req)
@@ -234,6 +231,7 @@ class Ds4Controller():
 				stat = (lb.status and rb.status and lf.status and rf.status)
 
 	def adjust_wheels(self, vx, wz): # radius in m, direction c(-1) or ccw(1)
+		# calculate desired wheel angles with cmd_vel input
 		if wz == 0:
 			radius = float('inf')
 		else:
@@ -248,6 +246,7 @@ class Ds4Controller():
 		return (lb,rb,lf,rf)
 
 	def filter_input(self, x):
+		# make sure the wheel angles do not go more than +- 90deg
 		output = 0
 		if x < -90:
 			output = -90
@@ -264,14 +263,15 @@ class Ds4Controller():
 		self.mode = 1 * (not self.rot_right) * (not self.rot_left) * (not self.holo_right) * (not self.holo_left) * (not self.rec_l) * (not self.rec_r)
 		self.reconfig(not self.mode)
 
+		# if no input from ds4 controller, default reconfig mode
 		if sum(self.input_list) == 0:
 			self.reconfig(True)
 
 		# update vx and wz
 		f = self.linear_x * self.vx
+		s = self.angular_z * self.wz
 		self.change_vx()
 		self.change_wz()
-		s = self.angular_z * self.wz
 
 		### control max wz wrt to vx ###
 		if s >= 0:
@@ -288,7 +288,7 @@ class Ds4Controller():
 			pass
 
 		# determine and publish wheel angles and speed
-		h_r = self.holo_right * 90
+		h_r = self.holo_right * 90 
 		h_l = -self.holo_left * 90
 		recon_r = -self.rec_r * 90
 		recon_l = self.rec_l * 90
@@ -307,7 +307,7 @@ class Ds4Controller():
 				self.twist.angular.z = 0
 				self.pub.publish(self.twist)
 				self.check()
-			elif self.rec_l == 1 or self.rec_r == 1 or self.holo_left == 1 or self.holo_right == 1:
+			elif self.rec_l == 1 or self.rec_r == 1 or self.holo_left == 1 or self.holo_right == 1: # during reconfiguration/holo movement, stop robot to turn wheels
 				self.twist.angular.y = 0
 				self.twist.angular.z = 0
 				self.pub.publish(self.twist)
@@ -331,6 +331,7 @@ class Ds4Controller():
 		
 		# check if expanded/contracted limit
 		if self.width <= self.contract_limit:
+			# make sure wheels can only expand robot
 			if self.reconfiguring.linear.y <= 0 or self.reconfiguring.angular.x <= 0:
 				self.reconfiguring.linear.y = 0
 				self.reconfiguring.angular.x = 0
@@ -342,6 +343,7 @@ class Ds4Controller():
 			self.recon.publish(self.reconfiguring)
 
 		elif self.width >= self.expand_limit:
+			# make sure wheels can only contract robot
 			if self.reconfiguring.linear.y >= 0 or self.reconfiguring.angular.x >= 0:
 				self.reconfiguring.linear.y = 0
 				self.reconfiguring.angular.x = 0
@@ -362,29 +364,29 @@ class Ds4Controller():
 		self.pub.publish(self.twist)
 
 	def run(self):
+		# on/off brushes and actuators
 		b = self.custom_twist(0, self.brush.data*100)
 		self.brushes.publish(b)
 		a = self.custom_twist(0, self.act.data*100)
 		self.actuators.publish(a)
 		v = self.custom_twist(self.vac.data*100, 0)
 		self.vacuum.publish(v)
-		if sum(self.input_list) != self.pub_once:
+
+		# make sure no more than 3 buttons are being pressed
+		if sum(self.input_list) != self.pub_once: # if command has not been published
 			if sum(self.input_list) > 3:
 				print("Error: Pressing more than 2 buttons")
 			else:
 				if self.human_dist > self.human_stop:
 					self.pub_once = sum(self.input_list)
 					self.locomotion()
-					#self.print_instructions()
 				else:
 					self.e_stop()
 		else:
-			self.pub_once = sum(self.input_list)
+			self.pub_once = sum(self.input_list) # if command has not been changed
 			#self.print_instructions()
 			if self.human_dist <= self.human_stop:
-				self.e_stop()
-
-		#print(sum(self.input_list), self.mode)
+				self.e_stop() # stop robot if human is within range
 
 	def print_instructions(self):
 		print('\n')
@@ -421,6 +423,7 @@ class Ds4Controller():
 		print("[circle]: Vacuum -> " + str(self.vac.data))
 
 class Button():
+	# class for toggle button
 	def __init__(self, low_limit, high_limit):
 		self.state = 0
 		self.value = 0

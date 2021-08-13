@@ -12,16 +12,11 @@ if __name__ == "__main__":
 	try:
 		rospy.init_node('lb_trans_motor')
 		lb_motor = TransMotor('lb', 4, 1)
-		#rate = rospy.Rate(1)
 		while not rospy.is_shutdown():
-			
-			if lb_motor.wheel_speed == 0:
+			if lb_motor.wheel_speed == 0: # normal steering locomotion
 				lb_motor.adjust_speed(lb_motor.linear_x, lb_motor.angular_z)
-				#lb_motor.control_speed(lb_motor.linear_x, lb_motor.angular_z)
-			else:
-				#print("lf rpm: " + str(lf_motor.wheel_speed))
+			else: # reconfig mode
 				lb_motor.motor.writeSpeed(lb_motor.wheel_speed)
 			lb_motor.pub_wheel_vel()
-			#rate.sleep()
 	except rospy.ROSInterruptException:
 		pass

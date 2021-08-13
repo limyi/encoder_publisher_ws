@@ -10,21 +10,22 @@ import serial.tools.list_ports
 class TransMotor():
 
 	def __init__(self, name, address, sign):
-		#rospy.init_node('rf_trans_motor')
-		rospy.Subscriber('/panthera_cmd', Twist, self.callback)
-		rospy.Subscriber('/reconfig', Twist, self.reconfig)
-		rospy.Subscriber('/can_encoder', Twist, self.encoder_position) # CHANGE THE TOPIC NAME
-		self.wheel_vel_pub = rospy.Publisher('/{}_wheel_vel'.format(name), Float32, queue_size=1)
-		self.tolerance = rospy.get_param('/angle_tolerance')
+		rospy.Subscriber('/panthera_cmd', Twist, self.callback) # subscriber for desired angles and cmd_vel
+		rospy.Subscriber('/reconfig', Twist, self.reconfig) # individual wheel speeds
+		rospy.Subscriber('/can_encoder', Twist, self.encoder_position) # subscriber for current wheel angles
+		self.wheel_vel_pub = rospy.Publisher('/{}_wheel_vel'.format(name), Float32, queue_size=1) # publish current wheel velocity
 
-		self.sign = sign
-		self.address = address
-		self.name = name
+		self.sign = sign # specific to each motor, to standardize direction motor turns
+		self.address = address # address of motor
+		self.name = name # name of motor: lb,rb,lf,rf
+
+		# code to get serial port of motor
 		p = list(serial.tools.list_ports.grep(rospy.get_param('/{}_sn'.format(name))))
 		self.port = '/dev/' + p[0].name
 		self.orienbus = orienbus.OrienBus(self.port)
 		self.motor = self.orienbus.initialize(self.address)
 
+		# robot parameters
 		self.width = 0.66
 		self.length = 1.34
 		self.wheel_radius = 0.1
@@ -39,6 +40,7 @@ class TransMotor():
 		self.motor_rpm = 0
 
 	def encoder_position(self, data):
+		# positions of wheel and its complement
 		if self.name == 'lb':
 			self.position = data.linear.x
 			self.complement = data.linear.y
@@ -55,10 +57,11 @@ class TransMotor():
 			self.position = data.angular.x
 			self.complement = data.linear.z
 
-		#self.width = data.angular.z
-		self.width = (data.angular.z + data.angular.y)/2
+		self.width = data.angular.z # 1 wire encoder
+		#self.width = (data.angular.z + data.angular.y)/2 # 2 wire encoders
 
-	def reconfig(self, data): ###
+	def reconfig(self, data):
+		# individual speed of motor in m/s
 		if self.name == 'lb':
 			self.reconfig_speed = data.linear.x
 		elif self.name == 'rb':
@@ -70,10 +73,12 @@ class TransMotor():
 		self.wheel_speed = self.rads_to_rpm(self.reconfig_speed / self.wheel_radius)
 
 	def callback(self, data):
-		self.linear_x = data.angular.y
-		self.angular_z = data.angular.z
+		# cmd_vel for robot 
+		self.linear_x = data.angular.y # vx
+		self.angular_z = data.angular.z # wz
 
 	def motor_lin_vel(self, vx, wz):
+		# calculate motor speed in m/s
 		sign = wz / abs(wz)
 		r = vx / wz
 		rot_dir = vx / abs(vx)
@@ -85,18 +90,21 @@ class TransMotor():
 		return speed # check motor direction 
 
 	def rads_to_rpm(self, x):
+		# convert rads-1 to rpm
 		rpm = (x / (2*math.pi)) * 60 * self.gear_ratio
 		return int(-rpm)
 
 	def rpm_to_rads(self, x):
+		# convert rpm to rads-1
 		rads = (x/60) * 2 * math.pi / self.gear_ratio
 		return (-rads)
 
 	def adjust_speed(self, vx, wz):
+		# control speed of wheel
 		speed = 0
 		#if run_mode == True:
-		if vx == 0:
-			if wz == 0:
+		if vx == 0: # if cmd is to stop robot
+			if wz == 0: # if no rotation cmd
 				rpm = 0
 				speed = 0
 				self.motor_rpm = rpm
@@ -104,14 +112,15 @@ class TransMotor():
 				#print(" rpm: 0")
 
 			else:
-				speed = -self.sign*wz * math.sqrt((self.length/2)**2 + (self.width/2)**2) / self.wheel_radius
-				rpm = self.rads_to_rpm(speed)
+				# static rotation of robot
+				speed = -self.sign*wz * math.sqrt((self.length/2)**2 + (self.width/2)**2) / self.wheel_radius # speed of the wheel
+				rpm = self.rads_to_rpm(speed) # convert to rpm
 				#print("lf rpm: " + str(rpm))
 				self.motor_rpm = rpm
-				self.motor.writeSpeed(rpm)			
+				self.motor.writeSpeed(rpm)
 
 		else:
-			if wz == 0:
+			if wz == 0: # moving straight
 				speed = vx / self.wheel_radius
 				rpm = self.rads_to_rpm(speed)
 				#print("lf rpm: " + str(rpm))
@@ -119,7 +128,7 @@ class TransMotor():
 				self.motor.writeSpeed(rpm)
 
 			else:
-				
+				# robot making a turn
 				lin_vel  = self.motor_lin_vel(vx, wz)
 				speed = lin_vel / self.wheel_radius
 				rpm = self.rads_to_rpm(speed)
@@ -128,6 +137,7 @@ class TransMotor():
 				self.motor.writeSpeed(rpm)
 	
 	def pub_wheel_vel(self):
+		# publish wheel velocity
 		self.wheel_velocity = self.sign*self.rpm_to_rads(self.motor.readSpeed()) * self.wheel_radius
 		self.wheel_vel_pub.publish(self.wheel_velocity)
 		#print(self.name, self.wheel_velocity, self.motor_rpm)

@@ -21,9 +21,9 @@ class Ds4Controller():
 		self.vac = Button(-1,1)
 		self.vision = Button(0,1)
 
-		rospy.Subscriber('/cmd_vel', Twist, self.cmd_sub)
-		rospy.Subscriber('/status', st, self.ds4_sub)
-		rospy.Subscriber('/can_encoder', Twist, self.encoder_pos)
+		rospy.Subscriber('/cmd_vel', Twist, self.cmd_sub) # subscribe to ds4 controller vx/wz
+		rospy.Subscriber('/status', st, self.ds4_sub) # subscribe to ds4 buttons
+		rospy.Subscriber('/can_encoder', Twist, self.encoder_pos) # subscribe to wheel encoders and robot width
 
 		### VISION ###
 		rospy.Subscriber('/zed2/zed_node/obj_det/objects', ObjectsStamped, self.human_loc)
@@ -35,7 +35,7 @@ class Ds4Controller():
 		self.recon = rospy.Publisher('/reconfig', Twist, queue_size=1) # publisher for individual wheel speeds
 		self.vibrate = rospy.Publisher('/set_feedback', Feedback, queue_size=1) # not impt but vibrates when wheel angle more than 100 deg
 
-		####  publisher for roboclaw
+		####  publisher for roboclaw 
 		self.brushes = rospy.Publisher('/linear_actuator', Twist, queue_size=1)
 		self.actuators = rospy.Publisher('/actuators_topic', Twist, queue_size=1)
 		self.vacuum = rospy.Publisher('/vacuum_topic', Twist, queue_size=1)
@@ -63,8 +63,8 @@ class Ds4Controller():
 		self.rb_stat = rospy.ServiceProxy('rb_reconfig_status', Status)
 		self.rf_stat = rospy.ServiceProxy('rf_reconfig_status', Status)
 		
-		self.width = 0.6
-		self.length = 1.31
+		self.width = 0.6 # init width of wheelbase
+		self.length = 1.31 # init distance between front and back wheels
 
 		# cmd vel
 		self.linear_x = 0
@@ -95,14 +95,9 @@ class Ds4Controller():
 		self.reconfiguring = Twist()
 		self.input_list = []
 
-		self.pub_once = 0
+		self.pub_once = 0 # check track to make sure same command not published more than once
 
-		# not important vibration for ds4 controller
-		self.vb = Feedback()
-		self.vb.set_rumble = True
-		self.vb.rumble_duration = 0.5
-		self.vb.rumble_small = 0.5
-
+		# expansion and contraction limits of robot, measured between left and right wheels
 		self.contract_limit = 0.73
 		self.expand_limit = 0.85
 
@@ -111,12 +106,11 @@ class Ds4Controller():
 		if self.vision.data == 1:
 			nearest_human = float('inf')
 			for person in data.objects:
-				if person.position[0] <= nearest_human:
-					nearest_human = person.position[0]
+				if person.position[0] <= nearest_human: # find the nearest human detected by the zed camera
+					nearest_human = person.position[0] # keep track of nearest human
 			self.human_dist = nearest_human
 		else:
-			self.human_dist = float('inf')
-		#print(self.human_dist)
+			self.human_dist = float('inf') # if not using camera
 
 	def custom_twist(self, val1, val2):
 		# custom twist for brushes, actuators and vacuum motor
@@ -135,13 +129,8 @@ class Ds4Controller():
 		rb = data.linear.y
 		lf = data.linear.z
 		rf = data.angular.x
-		wheels = [lb,rb,lf,rf]
-		for i in wheels:
-			if abs(i) > 100:
-				#print(i)
-				self.vibrate.publish(self.vb)
-		self.width = data.angular.z
-		#self.width = data.angular.z
+		self.width = data.angular.z # 1 wire encoder
+		#self.width = (data.angular.z + data.angular.y)/2 # width of wheelbase, 2 wire encoders
 
 	def cmd_sub(self, data):
 		# subsribe ds4 controller cmd_vel
@@ -203,7 +192,7 @@ class Ds4Controller():
 		# check if wheel is at correct angle
 		req = StatusRequest()
 		req.reconfig = True
-		signal = False
+		signal = False # check if all the wheels are aligned to desired angles
 		rate = rospy.Rate(2)
 		while signal == False and not rospy.is_shutdown():
 			rate.sleep()
@@ -220,6 +209,7 @@ class Ds4Controller():
 		req = StatusRequest()
 		req.reconfig = state
 		stat = not state
+		# make sure all the wheels are changed to/from reconfig mode
 		while stat!= state:
 			lb = self.lb_stat(req)
 			lf = self.lf_stat(req)
@@ -293,6 +283,8 @@ class Ds4Controller():
 		recon_l = self.rec_l * 90
 		recon_move = (self.rec_r or self.rec_l) * f # reconfiguration speed
 		lb,rb,lf,rf = self.adjust_wheels(f, s) # get wheel angles
+
+		# desired wheel angles
 		self.twist.linear.x = self.filter_input(lb - h_r - h_l + recon_l)
 		self.twist.linear.y = self.filter_input(rb - h_r - h_l + recon_r)
 		self.twist.linear.z = self.filter_input(lf - h_r - h_l + recon_l)
@@ -374,25 +366,24 @@ class Ds4Controller():
 		v = self.custom_twist(self.vac.data*100, 0)
 		self.vacuum.publish(v)
 
-		# prevent from pressing more than _ number of buttons
+		# prevent from pressing more than 3 buttons
 		if sum(self.input_list) != self.pub_once:
 			if sum(self.input_list) > 3:
 				print("Error: Pressing more than 2 buttons")
 			else:
 				if self.human_dist > self.human_stop:
+					# continue to run if human not within range
 					self.pub_once = sum(self.input_list)
 					self.locomotion()
 					self.print_instructions()
 				else:
-					self.e_stop()
+					self.e_stop() # stop robot if human detected within range
 		else:
 			self.pub_once = sum(self.input_list)
 			self.print_instructions()
 			# stop if theres a human in front of robot
 			if self.human_dist <= self.human_stop:
 				self.e_stop()
-
-		#print(sum(self.input_list), self.mode)
 
 	def print_instructions(self):
 		print('\n')
@@ -439,18 +430,19 @@ class Button():
 		self.high_limit = high_limit
 
 	def change_state(self):
-		if self.check == self.value:
+		if self.check == self.value: # pass if button has been preseed and hasnt been let go
 			pass
 		else:
+			# button has been presssed once 
 			if self.value == 1 and self.state == 0:
 				self.state = 1 # init press
 				self.data = self.high_limit
 
-			elif self.value == 0 and self.state == 1:
+			elif self.value == 0 and self.state == 1: # button is been let go 
 				self.state = 2 # button pressed
 				self.data = self.high_limit
 
-			elif self.value == 1 and self.state == 2:
+			elif self.value == 1 and self.state == 2: # button pressed again
 				self.state = 0
 				self.data = self.low_limit
 

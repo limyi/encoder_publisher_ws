@@ -86,7 +86,8 @@ class Robot
 		}
 
 		void widthCallback(const geometry_msgs::Twist& msg)
-		{
+		{	
+			// robot width
 			width = (msg.angular.y + msg.angular.z)/2 + 0.3;
 		}
 
@@ -97,17 +98,19 @@ class Robot
 			res = msg.info.resolution;
 			if (n == 0)
 			{
+				// init footprint points, does not consider reconfiguration
 				fpCoordinates();
 				n += 1;
 			}
-			std::vector<signed char> data_pts = msg.data;
-			checkclear(data_pts);
-			robot_footprint.publish(fp);
-			search_area_pub.publish(sa);
+			std::vector<signed char> data_pts = msg.data; // occupancy grid data
+			checkclear(data_pts); // check if area around robot is clear
+			robot_footprint.publish(fp); // publishes robot footprint (PolygonStamped)
+			search_area_pub.publish(sa); // publishes search area (PolygonStamped)
 		}
 
 		void searchArea()
-		{
+		{	
+			// Refer to top figure for corner names
 			// left area search [l1:l2] and [l3:l4]
 			l1 = left_back[0] - buffer + left_back[1] * len_x;
 			l2 = left_front[0] + buffer + left_front[1] * len_x;
@@ -165,6 +168,7 @@ class Robot
 			right_front[0] = (int)ceil(centre[0] + vert_pix);
 			right_front[1] = (int)ceil(centre[1] - horz_pix);
 
+			// set search area for radius around robot
 			set_radial_area(centre);
 
 			searchArea();
@@ -225,8 +229,10 @@ class Robot
 		bool radius_clearing(int index, float centre[2])
 		{
 			int coor[2];
-			clear_radius = 1.1/0.05;
-			//std::cout << "clear radius: " << clear_radius << std::endl;
+			//clear_radius = 1.1/0.05;
+			clear_radius = sqrt(pow(length/2,2) + pow(width/2,2))/res; // radius around robot during static rotation
+			
+			// convert index to x-y coordinates
 			if (index <= len_x)
 			{
 				coor[0] = index;
@@ -238,18 +244,23 @@ class Robot
 				coor[1] = (int)(index/len_x);
 			}
 			double dist = sqrt(pow(coor[0]-centre[0],2) + pow(coor[1]-centre[1], 2));
+
+			// check if point is within radius 
 			return (dist > clear_radius);
 		}
 
 		void set_radial_area(float c[2])
 		{
 			for (int i=0; i <= len_x*len_y; i++)
-			{
+			{	
+				// add point to seach area if it is within robot radius
 				if (radius_clearing(i, c) == false)
 				{
 					radial_area.push_back(i);
 				}
 			}
+
+			// search area for visualization
 			geometry_msgs::Point32 p1,p2,p3,p4;
 			p1.y = -width/2 - safety_dist;
 			p1.x = -length/2 - safety_dist;
@@ -271,7 +282,15 @@ class Robot
 
 		void checkclear(const std::vector<signed char>& cmap)
 		{	
+			// check if areas are clear
 
+			/**
+			 * Right: right_front + right_back + right
+			 * Left: left_front + left + left_back
+			 * Up: left_front + up + right_up
+			 * Back: left_back + back + right_back
+			**/
+			
 			bool left_clear=true, right_clear=true, up_clear=true, radius_clear=true, back_clear=true;
 			/////////////////////////////////////////////
 			int l=0, lf=0, f=0, rf=0, r=0, rb=0, b=0, lb=0, u=0, o=0;
@@ -284,7 +303,7 @@ class Robot
 					if (cmap[j] > 0)
 					{	
 						lf++;
-						if (lf>=clear_tolerance)
+						if (lf>=clear_tolerance) // if number of points are more than tolerance for noise, mark area as not clear
 						{
 							left_clear = false;
 							up_clear = false;
@@ -451,6 +470,8 @@ class Robot
 			}
 
 			//std::cout << l << " " << r << " " << u << std::endl;
+
+			// publish checked areas
 			auto* bl = &bools;
 			bl->right = right_clear;
 			bl->left = left_clear;

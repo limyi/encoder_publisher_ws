@@ -58,10 +58,10 @@ public:
 
 		if (init == 0)
 		{
-			init_ult_sensors();
+			init_ult_sensors(); // initi ultrasonic sensor positions
 			printf("Initialized\n");
 			init = 1;
-			ult_map.resize(map_width*map_height, 0);
+			ult_map.resize(map_width*map_height, 0); // size ultrasonic occ grid map to same as occ grid
 		}
 	}
 
@@ -84,8 +84,8 @@ public:
 		//sonar_readings[9] = sonar_pos[9][0] + sonar_pos[9][1]*map_width;
 		
 		
-		sonar_readings[0][0] = coordinates_to_index(sonar_pos[0][0], sonar_pos[0][1] + len_to_cell(msg.left_b), map_width);
-		sonar_readings[0][1] = len_to_cell(msg.left_b);
+		sonar_readings[0][0] = coordinates_to_index(sonar_pos[0][0], sonar_pos[0][1] + len_to_cell(msg.left_b), map_width); // index of object detected
+		sonar_readings[0][1] = len_to_cell(msg.left_b); // distance in cells
 		sonar_readings[1][0] = coordinates_to_index(sonar_pos[1][0], sonar_pos[1][1] + len_to_cell(msg.left_m), map_width);
 		sonar_readings[1][1] = len_to_cell(msg.left_m);
 		sonar_readings[2][0] = coordinates_to_index(sonar_pos[2][0], sonar_pos[2][1] + len_to_cell(msg.left_f), map_width);
@@ -115,11 +115,11 @@ public:
 		{
 			if (combined == true)
 			{
-				check_valid(i[0], &map_data, i[1]);
+				check_valid(i[0], &map_data, i[1]); // combine sonar readings with lidar occ grid (not tested)
 			}
 			else
 			{
-				check_valid(i[0], &ult_map, i[1]);
+				check_valid(i[0], &ult_map, i[1]); // make occ grid map from sonar readings
 			}
 			//std::cout << (int)(map_data[1000]) << std::endl;
 		}
@@ -134,15 +134,11 @@ public:
 		}
 		else
 		{
-			og.data = ult_map;
+			og.data = max(ult_map, map_data); // merge lidar and sonar occ grid
 		}
-		//og.info.height = map_height;
-		//og.info.width = map_width;
-		//og.info.resolution = res;
 		fused_cmap.publish(og);
 		ult_map.clear();
 		ult_map.resize(map_width*map_height, 0);
-		//std::cout << og << std::endl;
 	}
 
 	void width_callback(const geometry_msgs::Twist& msg)
@@ -151,18 +147,21 @@ public:
 	}
 
 	int len_to_cell(double length)
-	{
+	{	
+		// convert length in (m) to cells
 		return (length/res);
 	}
 
 	void check_valid(int index, std::vector<signed char>* cmap, int value)
 	{
-		if (index >= 0 && index < map_width*map_height)
+		if (index >= 0 && index < map_width*map_height) // check if index is within valid range
 		{	
+			// if object detected
 			if (value > 0)
 			{
 				int occ = 100;
-			
+				
+				// mark surrounding points as occupied
 				for (int i=-1; i<=1; i++)
 				{
 					for (int j=-1; j<=1; j++)
@@ -179,10 +178,11 @@ public:
 
 	void init_ult_sensors()
 	{	
-		double c[2];
+		double c[2]; // centre of occupancy grid
 		c[0] = map_width/2;
 		c[1] = map_height/2;
 
+		// sensor positions
 		// back sensors
 		sonar_pos[6][0] = c[0] - (length/2/res);
 		sonar_pos[6][1] = c[1] + (fb_spacing/2/res);
@@ -219,7 +219,8 @@ public:
 	}
 
 	long int coordinates_to_index(double x, double y, int width)
-	{
+	{	
+		// convert coordinates to index
 		long int index = x + y*width;
 		return index;
 	}
