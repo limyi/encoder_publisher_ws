@@ -8,6 +8,7 @@ from geometry_msgs.msg import TransformStamped
 from tf import TransformBroadcaster
 
 def tf_br(msg):
+	# transform odom to base link
 	br = tf2_ros.transform_broadcaster.TransformBroadcaster()
 	ts = TransformStamped()
 
@@ -23,11 +24,6 @@ def tf_br(msg):
 	ts.transform.rotation.y = msg.pose.pose.orientation.y
 	ts.transform.rotation.z = msg.pose.pose.orientation.z
 	ts.transform.rotation.w = msg.pose.pose.orientation.w
-
-	#translation = (msg.pose.pose.position.x, msg.pose.pose.position.y, 0)
-	#rotation = (msg.pose.pose.orientation.x, msg.pose.pose.orientation.y, msg.pose.pose.orientation.z, msg.pose.pose.orientation.w)
-	#time = rospy.Time.now()
-
 
 	br.sendTransform(ts)
 

@@ -110,5 +110,44 @@ On remote pc:
 On panthera:
 1. roslaunch panthera_locomotion mqtt_sub.launch
 
+########################################
+## Robot Odometry from wheel encoders ##
+########################################
+1. roslaunch panthera_locomotion odom.launch
+
+----------------------------------------------------------------------------------------
+
+#################################
+## Autoware with local planner ##
+#################################
+1. roslaunch runtime_manager runtime_manager.launch
+2. roslaunch velodyne_pointcloud VLP16_points.launch # launch velodyne
+
+SETUP TAB
+---------
+1. If static tf base link to velodyne, press the TF button
+
+MAP TAB
+-------
+1. Load point_cloud, vector_map and tf file
+2. Click on Point Cloud, Vector Map, TF buttons to activate
+
+SENSING TAB
+-----------
+1. Click on [app] for voxel_grid_filter and make sure correct points topic
+2. Check the voxel_grid_filter box
+3. Click on [app] for ray_ground_filter and make sure correct points topic and base_frame
+4. Check the ray_ground_filer box
+
+COMPUTING TAB
+-------------
+1. check ndt_matching
+2. Make sure costmap_generator parameters are correct and lidar_frame is velodyne before checking the box
+
+for zig-zag motion:
+3. check op_global_planner
+4. go into rviz and use pose estimate the guage robot location
+5. use 2D Nav Goal to set goal for robot to move
+
 
 

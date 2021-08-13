@@ -11,51 +11,63 @@ import tf
 
 class RobotOdom():
 	def __init__(self):
-		#rospy.init_node('robot_odom')
+		# subscribers to wheel velocities in m/s
 		rospy.Subscriber('/lb_wheel_vel', Float32, self.lb_lin_vel)
 		rospy.Subscriber('/lf_wheel_vel', Float32, self.lf_lin_vel)
 		rospy.Subscriber('/rb_wheel_vel', Float32, self.rb_lin_vel)
 		rospy.Subscriber('/rf_wheel_vel', Float32, self.rf_lin_vel)
-		rospy.Subscriber('/can_encoder', Twist, self.wheel_encoders)
+		rospy.Subscriber('/can_encoder', Twist, self.wheel_encoders) # subscribe to wheel steering angle
+
+		# publish odometry
 		self.odom_pub = rospy.Publisher('/panthera_odom', Odometry, queue_size=1)
 
+		# wheels speed in m/s
 		self.lb_lin = 0
 		self.lf_lin = 0
 		self.rb_lin = 0
 		self.rf_lin = 0
 
+		# wheels steering angle
 		self.lb_steer = 0
 		self.lf_steer = 0
 		self.rb_steer = 0
 		self.rf_steer = 0
 
-		self.length = 1.31
-		self.width = 0.89
+		# wheel base dimensions
+		self.length = 1.31 # distance between front and back wheels
+		self.width = 0.89 # distance between left and right wheels
 		self.wheel_radius = 0.1
 
+		# x, y and w velocities of the left half of the robot
 		self.left_x_dot = 0
 		self.left_y_dot = 0
 		self.left_theta_dot = 0
+
+		# x, y and w velocities of the right half of the robot
 		self.right_x_dot = 0
 		self.right_y_dot = 0
 		self.right_theta_dot = 0
 
+		# x, y and w velocities of the robot
 		self.x_dot = 0
 		self.y_dot = 0
 		self.theta_dot = 0
 
+		# x,y,theta positions of both halves of the robot
 		self.right_x = 0
-		self.right_y = self.width/2
+		self.right_y = -self.width/2
 		self.right_theta = 0
 		self.left_x = 0
-		self.left_y = -self.width/2
+		self.left_y = self.width/2
 		self.left_theta = 0
 
+		# x,y,theta positions of the robot
 		self.x_pos = 0
 		self.y_pos = 0
 		self.theta_pos = 0
-		self.phi = math.pi / 2
+		self.phi = math.pi / 2 # orientation of the robot
 
+		# global position and velocity of the robot
 		self.global_x = 0
 		self.global_y = 0
 		self.global_theta = self.phi
@@ -63,6 +75,7 @@ class RobotOdom():
 		self.global_y_dot = 0
 		self.global_theta_dot = 0
 
+	#### wheel speed subscribers ####
 	def lb_lin_vel(self, data):
 		if abs(data.data) - abs(self.lb_lin) >= 1:
 			pass
@@ -86,6 +99,7 @@ class RobotOdom():
 			pass
 		else:
 			self.rf_lin = (self.rf_lin + data.data)/2
+	###############################
 
 	# Convert wheel encoder values to radians
 	def wheel_encoders(self, data):
@@ -94,11 +108,12 @@ class RobotOdom():
 		self.lf_steer = math.radians(data.linear.z)
 		self.rf_steer = math.radians(data.angular.x)
 
-# Local velocity
+	# Local velocity
 	def left_vel(self):
-		self.left_x_dot = (self.lf_lin*math.cos(self.lf_steer) + self.lb_lin*math.cos(self.lb_steer))/2
-		self.left_y_dot = (self.lf_lin*math.sin(self.lf_steer) + self.lb_lin*math.sin(self.lb_steer))/2
-		if abs(self.lf_steer - self.lb_steer) <= 1:
+		# velocity of the left half of the robot
+		self.left_x_dot = (self.lf_lin*math.cos(self.lf_steer) + self.lb_lin*math.cos(self.lb_steer))/2 # x-component
+		self.left_y_dot = (self.lf_lin*math.sin(self.lf_steer) + self.lb_lin*math.sin(self.lb_steer))/2 # y-component
+		if abs(self.lf_steer - self.lb_steer) <= 1: # if difference between front and back wheel is small, consider as facing straight
 			self.left_theta_dot = 0
 		else:
 			m1 = np.array([[1, math.tan(math.pi/2 - self.lf_steer)], [1, -math.tan(math.pi/2 + self.lb_steer)]])
@@ -122,13 +137,14 @@ class RobotOdom():
 			self.right_theta_dot = ((self.rf_lin/r1 + self.rb_lin/r2)/2)
 
 	def calc_robot_vel(self):
+		# robot local velocity
 		self.left_vel()
 		self.right_vel()
 		self.x_dot = (self.left_x_dot + self.right_x_dot) / 2
 		self.y_dot = (self.left_y_dot + self.right_y_dot) / 2
 		self.theta_dot = (self.left_theta_dot + self.right_theta_dot) / 2
 
-# Local position
+	# Local position
 	def right_pos(self, dt):
 		self.right_x += self.right_x_dot * dt
 		self.right_y += self.right_y_dot * dt
@@ -163,7 +179,7 @@ class RobotOdom():
 		'''
 		self.phi += self.theta_dot * dt
 
-# Global velocity and position
+	# Global velocity and position
 	def global_vel(self):
 		rot_mat = np.array([[math.cos(self.phi), -math.sin(self.phi), 0],
 							[math.sin(self.phi), math.cos(self.phi), 0],
@@ -193,7 +209,7 @@ class RobotOdom():
 		self.global_y += self.global_y_dot * dt
 		self.global_theta += self.global_theta_dot * dt
 
-# Calculate Odometry
+	# Calculate Odometry
 	def odom_loop(self,dt):
 		self.calc_robot_vel()
 		self.calc_robot_pos(dt)
