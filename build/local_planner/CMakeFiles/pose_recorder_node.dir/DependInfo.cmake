@@ -19,9 +19,9 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/home/joel/encoder_publisher_ws/devel/include"
   "/home/joel/encoder_publisher_ws/src/local_planner/include"
-  "/home/joel/autoware.ai/install/autoware_msgs/include"
   "/opt/ros/melodic/include"
   "/opt/ros/melodic/share/xmlrpcpp/cmake/../../../include/xmlrpcpp"
+  "/home/joel/autoware.ai/install/autoware_msgs/include"
   )
 
 # Targets to which this target links.

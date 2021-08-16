@@ -424,7 +424,6 @@ class Robot
 						neighbours.clear();
 						current_pt = found_pt;
 						std::cout << it << "," << best_found_point.h4 << std::endl;
-						MyFile << "best h4: " + std::to_string(best_found_point.h4) + " | Iteration: " + std::to_string(it);
 						it++;
 					}
 				}
@@ -432,7 +431,6 @@ class Robot
 				printf("----------------------------------------\n");
 				std::cout << "Time taken: " << end-start << "s" << std::endl;
 				printf("Search completed!\n");
-				MyFile.close();
 			}
 		}
 		void global_run()

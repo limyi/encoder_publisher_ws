@@ -7,7 +7,7 @@ from std_msgs.msg import Empty
 from panthera_locomotion.srv import Status, StatusRequest, StatusResponse
 from ds4_driver.msg import Status as st
 from ds4_driver.msg import Feedback
-from zed_interfaces.msg import ObjectsStamped
+#from zed_interfaces.msg import ObjectsStamped
 
 class Ds4Controller():
 	def __init__(self):
@@ -26,7 +26,7 @@ class Ds4Controller():
 		rospy.Subscriber('/can_encoder', Twist, self.encoder_pos) # subscribe to wheel encoders and robot width
 
 		### VISION ###
-		rospy.Subscriber('/zed2/zed_node/obj_det/objects', ObjectsStamped, self.human_loc)
+		#rospy.Subscriber('/zed2/zed_node/obj_det/objects', ObjectsStamped, self.human_loc)
 		self.human_dist = float('inf')
 		self.human_stop = 1.5
 		##############
@@ -98,7 +98,7 @@ class Ds4Controller():
 
 		# expansion and contraction limits of robot, measured between left and right wheels
 		self.contract_limit = 0.73
-		self.expand_limit = 0.85
+		self.expand_limit = 0.86
 
 	def human_loc(self, data):
 		# if vision mode on, check if object is within safety distance
@@ -332,19 +332,19 @@ class Ds4Controller():
 				self.reconfiguring.linear.x = 0
 				self.reconfiguring.linear.z = 0
 			
-			self.recon.publish(self.reconfiguring)
+			#self.recon.publish(self.reconfiguring)
 
 		elif self.width >= self.expand_limit:
 			# robot can only contract at expansion limit
-			if self.reconfiguring.linear.y >= 0 or self.reconfiguring.angular.x >= 0:
+			if self.reconfiguring.linear.y > 0 or self.reconfiguring.angular.x > 0:
 				self.reconfiguring.linear.y = 0
 				self.reconfiguring.angular.x = 0
 
-			if self.reconfiguring.linear.x >= 0 or self.reconfiguring.linear.z >= 0:
+			if self.reconfiguring.linear.x > 0 or self.reconfiguring.linear.z > 0:
 				self.reconfiguring.linear.x = 0
 				self.reconfiguring.linear.z = 0
-			self.recon.publish(self.reconfiguring)
-
+			#self.recon.publish(self.reconfiguring)
+		self.recon.publish(self.reconfiguring)
 		# cmd_vel for robot
 		self.twist.angular.y = f * (not self.rec_r and not self.rec_l)
 		self.twist.angular.z = s * (not self.rec_r and not self.rec_l)

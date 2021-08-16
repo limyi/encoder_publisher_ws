@@ -30,6 +30,6 @@ if __name__ == "__main__":
             rb_steer.adjust_speed(period)
             rate.sleep()
             end = rospy.get_time()
-            period = end - startt
+            period = end - start
     except rospy.ROSInterruptException:
         pass
