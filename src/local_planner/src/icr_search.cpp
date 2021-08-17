@@ -69,6 +69,7 @@ class Robot
 
 		// write to file
 		ofstream icr_points;
+		std::string filename = "new_file.txt";
 
 	public:
 		Robot(ros::NodeHandle *nh)
@@ -93,6 +94,9 @@ class Robot
 			wz = nh->param("/turn_speed", 0.07);
 			operation = nh->param("/operation", false);
 			gradient_descent = nh->param("gradient_descent", false);
+
+			// write to file name
+			filename = nh->param("filename", filename);
 
 			lb_stat = nh->serviceClient<panthera_locomotion::Status>("lb_steer_status");
 			rb_stat = nh->serviceClient<panthera_locomotion::Status>("rb_steer_status");
@@ -490,7 +494,7 @@ class Robot
 		
 		ICR global_optimize(std::vector<geometry_msgs::Point32> icrs)
 		{	
-			icr_points.open("icr_points_01.txt", ios::out | ios::binary); // create file to write to
+			icr_points.open(filename, ios::out | ios::binary); // create file to write to
 			std::vector<ICR> icr_nodes; // keep track of icrs
 			for (auto icr : icrs) // iterate through all possible icrs
 			{	
