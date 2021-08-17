@@ -7,7 +7,7 @@ from std_msgs.msg import Empty
 from panthera_locomotion.srv import Status, StatusRequest, StatusResponse
 from ds4_driver.msg import Status as st
 from ds4_driver.msg import Feedback
-#from zed_interfaces.msg import ObjectsStamped
+from zed_interfaces.msg import ObjectsStamped
 
 class Ds4Controller():
 	def __init__(self):
@@ -26,7 +26,7 @@ class Ds4Controller():
 		rospy.Subscriber('/can_encoder', Twist, self.encoder_pos) # subscribe to wheel encoders and robot width
 
 		### VISION ###
-		#rospy.Subscriber('/zed2/zed_node/obj_det/objects', ObjectsStamped, self.human_loc)
+		rospy.Subscriber('/zed2/zed_node/obj_det/objects', ObjectsStamped, self.human_loc)
 		self.human_dist = float('inf')
 		self.human_stop = 1.5
 		##############

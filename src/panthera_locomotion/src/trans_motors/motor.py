@@ -28,9 +28,9 @@ class RoboteqMotor():
 		speed = rpm * 15.8
 		#self.ser.write("!G {}\r".format(str(rps*60)))
 		self.ser.write("!G {}\r".format(str(speed)))
-		self.ser.write("?F 1\r")
-		ln = self.ser.read(100)
-		print(ln)
+		#self.ser.write("?F 1\r")
+		#ln = self.ser.read(100)
+		#print(ln)
 		#print("Speed: ", cmd)
 
 	def writeTorque(self, data):
