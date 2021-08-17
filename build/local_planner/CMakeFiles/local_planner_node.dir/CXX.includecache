@@ -125,6 +125,20 @@ panthera_locomotion/ICRsearchResponse.h
 -
 
 /home/joel/encoder_publisher_ws/devel/include/panthera_locomotion/ICRsearchRequest.h
+string
+-
+vector
+-
+map
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
 
 /home/joel/encoder_publisher_ws/devel/include/panthera_locomotion/ICRsearchResponse.h
 string
@@ -155,6 +169,20 @@ panthera_locomotion/StatusResponse.h
 -
 
 /home/joel/encoder_publisher_ws/devel/include/panthera_locomotion/StatusRequest.h
+string
+-
+vector
+-
+map
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
 
 /home/joel/encoder_publisher_ws/devel/include/panthera_locomotion/StatusResponse.h
 string

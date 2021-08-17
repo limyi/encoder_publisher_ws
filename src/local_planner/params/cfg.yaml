@@ -14,6 +14,10 @@ wp_interval: 10 # number of wp in between each goal
 pose_tolerance: 10 # adjust if pose deviates more than this
 goal_stop: 1.0 # reached goal if within this distance from goal
 
+# run mode
+operation: false # false: not running with robot
+icr: false # false: does not search for optimal icr
+
 # ultrasonic sensor
 side_spacing: 0.3
 

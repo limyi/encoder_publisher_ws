@@ -63,6 +63,7 @@ private:
 
 	// trying to align
 	bool align_attempt = false;
+	bool icr = false;
 
 	double delta_theta;
 
@@ -88,10 +89,10 @@ public:
 		rf_stat = nh->serviceClient<panthera_locomotion::Status>("rf_steer_status");
 		rot_angle = nh->serviceClient<panthera_locomotion::Status>("rotation_angle"); // angle from icr search
 		
-		lb_stat.waitForExistence();
-		rb_stat.waitForExistence();
-		lf_stat.waitForExistence();
-		rf_stat.waitForExistence();
+		//lb_stat.waitForExistence();
+		//rb_stat.waitForExistence();
+		//lf_stat.waitForExistence();
+		//rf_stat.waitForExistence();
 		
 		length = nh->param("/robot_length", 1.5); // length of robot
 		goal_stop = nh->param("/goal_stop", 0.5); // goal tolerance
@@ -100,9 +101,11 @@ public:
 		delta_theta = nh->param("/delta_theta", 10); // angle tolerance
 		pose_tolerance = nh->param("/pose_tolerance", 5); // robot pose tolerance
 		wp_interval = nh->param("/wp_interval", 10); // take wp every _ number of waypoints
+		operation = nh->param("/operation", true); // true means running with robot
 		vx = nh->param("/vx", 0.085);
 		wz = nh->param("/wz", 0.05);
 		factor = nh->param("/factor", 1.5); // lateral acceleration
+		icr = nh->param("/icr_search", false); // false: does not search for optimal icr
 	}
 
 	// get global path (edit to add points if dtheta is more than certain angle)
@@ -262,19 +265,27 @@ public:
 					{
 						if (rotate_dir != rotating)
 						{	
-							angle_req.request.received_angle = true;
-							angle_req.request.turn_angle = angle_diff(curr_t, quat_to_rad(global_path[0], "rad"), "rad"); // calculate angle to rotate
-							rot_angle.call(angle_req); // send request
-							geometry_msgs::Twist wa = angle_req.response.wheel_angles; // wheel angles to rotate
-							geometry_msgs::Twist ws = angle_req.response.wheel_speeds; // wheel speeds to rotate
-							if(angle_req.response.feasibility == true) // if possible to rotate
+							if (icr == true)
 							{
-								custom_rotate(wa, ws); // rotate around icr
-								rotating = rotate_dir;
+								angle_req.request.received_angle = true;
+								angle_req.request.turn_angle = angle_diff(curr_t, quat_to_rad(global_path[0], "rad"), "rad"); // calculate angle to rotate
+								rot_angle.call(angle_req); // send request
+								geometry_msgs::Twist wa = angle_req.response.wheel_angles; // wheel angles to rotate
+								geometry_msgs::Twist ws = angle_req.response.wheel_speeds; // wheel speeds to rotate
+								if(angle_req.response.feasibility == true) // if possible to rotate
+								{
+									custom_rotate(wa, ws); // rotate around icr
+									rotating = rotate_dir;
+								}
+								else
+								{
+									// if cannot rotate try to reverse
+									reverse();
+									rotating = 4;
+								}
 							}
 							else
 							{
-								// if cannot rotate try to reverse
 								reverse();
 								rotating = 4;
 							}
