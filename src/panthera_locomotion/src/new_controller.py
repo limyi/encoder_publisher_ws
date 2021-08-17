@@ -1,4 +1,14 @@
 #!/usr/bin/env python
+'''
+TO INSTALL ZED PKG:
+-------------------
+$ cd ~/catkin_ws/src
+$ git clone https://github.com/stereolabs/zed-ros-interfaces.git
+$ cd ../
+$ rosdep install --from-paths src --ignore-src -r -y
+$ catkin_make -DCMAKE_BUILD_TYPE=Release
+$ source ./devel/setup.bash
+'''
 
 import math
 import rospy

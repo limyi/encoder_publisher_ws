@@ -131,7 +131,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/joel/encoder_publisher_ws/build/gtest/cmake_install.cmake")
-  include("/home/joel/encoder_publisher_ws/build/serial/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/can_encoder_pub/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/key_command_pub/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/local_planner/cmake_install.cmake")
@@ -139,10 +138,6 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/joel/encoder_publisher_ws/build/roboclaw_node/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/panthera_locomotion/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/ultrasonic_sensors/cmake_install.cmake")
-  include("/home/joel/encoder_publisher_ws/build/zed-ros-wrapper/zed_interfaces/cmake_install.cmake")
-  include("/home/joel/encoder_publisher_ws/build/zed-ros-wrapper/zed_nodelets/cmake_install.cmake")
-  include("/home/joel/encoder_publisher_ws/build/zed-ros-wrapper/zed_ros/cmake_install.cmake")
-  include("/home/joel/encoder_publisher_ws/build/zed-ros-wrapper/zed_wrapper/cmake_install.cmake")
 
 endif()
 

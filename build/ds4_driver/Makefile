@@ -102,16 +102,6 @@ edit_cache/fast: edit_cache
 
 .PHONY : edit_cache/fast
 
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
-
 # Special rule for the target test
 test:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Running tests..."
@@ -134,6 +124,16 @@ install/strip/fast: preinstall/fast
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
 	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
 .PHONY : install/strip/fast
+
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
+
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
+
+.PHONY : list_install_components/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -166,51 +166,6 @@ preinstall/fast:
 depend:
 	cd /home/joel/encoder_publisher_ws/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
-
-# Convenience name for target.
-ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Status.dir/rule:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Status.dir/rule
-.PHONY : ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Status.dir/rule
-
-# Convenience name for target.
-_ds4_driver_generate_messages_check_deps_Status: ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Status.dir/rule
-
-.PHONY : _ds4_driver_generate_messages_check_deps_Status
-
-# fast build rule for target.
-_ds4_driver_generate_messages_check_deps_Status/fast:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Status.dir/build.make ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Status.dir/build
-.PHONY : _ds4_driver_generate_messages_check_deps_Status/fast
-
-# Convenience name for target.
-ds4_driver/CMakeFiles/ds4_driver_geneus.dir/rule:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ds4_driver/CMakeFiles/ds4_driver_geneus.dir/rule
-.PHONY : ds4_driver/CMakeFiles/ds4_driver_geneus.dir/rule
-
-# Convenience name for target.
-ds4_driver_geneus: ds4_driver/CMakeFiles/ds4_driver_geneus.dir/rule
-
-.PHONY : ds4_driver_geneus
-
-# fast build rule for target.
-ds4_driver_geneus/fast:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_geneus.dir/build.make ds4_driver/CMakeFiles/ds4_driver_geneus.dir/build
-.PHONY : ds4_driver_geneus/fast
-
-# Convenience name for target.
-ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/rule:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/rule
-.PHONY : ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-ds4_driver_generate_messages_cpp: ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/rule
-
-.PHONY : ds4_driver_generate_messages_cpp
-
-# fast build rule for target.
-ds4_driver_generate_messages_cpp/fast:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/build
-.PHONY : ds4_driver_generate_messages_cpp/fast
 
 # Convenience name for target.
 ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Report.dir/rule:
@@ -256,6 +211,66 @@ _ds4_driver_generate_messages_check_deps_Trackpad: ds4_driver/CMakeFiles/_ds4_dr
 _ds4_driver_generate_messages_check_deps_Trackpad/fast:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Trackpad.dir/build.make ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Trackpad.dir/build
 .PHONY : _ds4_driver_generate_messages_check_deps_Trackpad/fast
+
+# Convenience name for target.
+ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Feedback.dir/rule:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Feedback.dir/rule
+.PHONY : ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Feedback.dir/rule
+
+# Convenience name for target.
+_ds4_driver_generate_messages_check_deps_Feedback: ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Feedback.dir/rule
+
+.PHONY : _ds4_driver_generate_messages_check_deps_Feedback
+
+# fast build rule for target.
+_ds4_driver_generate_messages_check_deps_Feedback/fast:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Feedback.dir/build.make ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Feedback.dir/build
+.PHONY : _ds4_driver_generate_messages_check_deps_Feedback/fast
+
+# Convenience name for target.
+ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Status.dir/rule:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Status.dir/rule
+.PHONY : ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Status.dir/rule
+
+# Convenience name for target.
+_ds4_driver_generate_messages_check_deps_Status: ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Status.dir/rule
+
+.PHONY : _ds4_driver_generate_messages_check_deps_Status
+
+# fast build rule for target.
+_ds4_driver_generate_messages_check_deps_Status/fast:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Status.dir/build.make ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Status.dir/build
+.PHONY : _ds4_driver_generate_messages_check_deps_Status/fast
+
+# Convenience name for target.
+ds4_driver/CMakeFiles/ds4_driver_geneus.dir/rule:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ds4_driver/CMakeFiles/ds4_driver_geneus.dir/rule
+.PHONY : ds4_driver/CMakeFiles/ds4_driver_geneus.dir/rule
+
+# Convenience name for target.
+ds4_driver_geneus: ds4_driver/CMakeFiles/ds4_driver_geneus.dir/rule
+
+.PHONY : ds4_driver_geneus
+
+# fast build rule for target.
+ds4_driver_geneus/fast:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_geneus.dir/build.make ds4_driver/CMakeFiles/ds4_driver_geneus.dir/build
+.PHONY : ds4_driver_geneus/fast
+
+# Convenience name for target.
+ds4_driver/CMakeFiles/_catkin_empty_exported_target.dir/rule:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ds4_driver/CMakeFiles/_catkin_empty_exported_target.dir/rule
+.PHONY : ds4_driver/CMakeFiles/_catkin_empty_exported_target.dir/rule
+
+# Convenience name for target.
+_catkin_empty_exported_target: ds4_driver/CMakeFiles/_catkin_empty_exported_target.dir/rule
+
+.PHONY : _catkin_empty_exported_target
+
+# fast build rule for target.
+_catkin_empty_exported_target/fast:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/_catkin_empty_exported_target.dir/build.make ds4_driver/CMakeFiles/_catkin_empty_exported_target.dir/build
+.PHONY : _catkin_empty_exported_target/fast
 
 # Convenience name for target.
 ds4_driver/CMakeFiles/ds4_driver_genpy.dir/rule:
@@ -318,19 +333,19 @@ ds4_driver_generate_messages_py/fast:
 .PHONY : ds4_driver_generate_messages_py/fast
 
 # Convenience name for target.
-ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Feedback.dir/rule:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Feedback.dir/rule
-.PHONY : ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Feedback.dir/rule
+ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/rule:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/rule
+.PHONY : ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/rule
 
 # Convenience name for target.
-_ds4_driver_generate_messages_check_deps_Feedback: ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Feedback.dir/rule
+ds4_driver_generate_messages_cpp: ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/rule
 
-.PHONY : _ds4_driver_generate_messages_check_deps_Feedback
+.PHONY : ds4_driver_generate_messages_cpp
 
 # fast build rule for target.
-_ds4_driver_generate_messages_check_deps_Feedback/fast:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Feedback.dir/build.make ds4_driver/CMakeFiles/_ds4_driver_generate_messages_check_deps_Feedback.dir/build
-.PHONY : _ds4_driver_generate_messages_check_deps_Feedback/fast
+ds4_driver_generate_messages_cpp/fast:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_cpp.dir/build
+.PHONY : ds4_driver_generate_messages_cpp/fast
 
 # Convenience name for target.
 ds4_driver/CMakeFiles/ds4_driver_gencpp.dir/rule:
@@ -363,21 +378,6 @@ ds4_driver_generate_messages_lisp/fast:
 .PHONY : ds4_driver_generate_messages_lisp/fast
 
 # Convenience name for target.
-ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/rule:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/rule
-.PHONY : ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-ds4_driver_generate_messages_nodejs: ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/rule
-
-.PHONY : ds4_driver_generate_messages_nodejs
-
-# fast build rule for target.
-ds4_driver_generate_messages_nodejs/fast:
-	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/build
-.PHONY : ds4_driver_generate_messages_nodejs/fast
-
-# Convenience name for target.
 ds4_driver/CMakeFiles/ds4_driver_genlisp.dir/rule:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ds4_driver/CMakeFiles/ds4_driver_genlisp.dir/rule
 .PHONY : ds4_driver/CMakeFiles/ds4_driver_genlisp.dir/rule
@@ -392,6 +392,21 @@ ds4_driver_genlisp/fast:
 	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_genlisp.dir/build.make ds4_driver/CMakeFiles/ds4_driver_genlisp.dir/build
 .PHONY : ds4_driver_genlisp/fast
 
+# Convenience name for target.
+ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/rule:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f CMakeFiles/Makefile2 ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/rule
+.PHONY : ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+ds4_driver_generate_messages_nodejs: ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/rule
+
+.PHONY : ds4_driver_generate_messages_nodejs
+
+# fast build rule for target.
+ds4_driver_generate_messages_nodejs/fast:
+	cd /home/joel/encoder_publisher_ws/build && $(MAKE) -f ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/build.make ds4_driver/CMakeFiles/ds4_driver_generate_messages_nodejs.dir/build
+.PHONY : ds4_driver_generate_messages_nodejs/fast
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -402,24 +417,25 @@ help:
 	@echo "... install"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
+	@echo "... _ds4_driver_generate_messages_check_deps_Report"
+	@echo "... ds4_driver_generate_messages_eus"
+	@echo "... test"
+	@echo "... _ds4_driver_generate_messages_check_deps_Trackpad"
+	@echo "... install/strip"
+	@echo "... _ds4_driver_generate_messages_check_deps_Feedback"
 	@echo "... _ds4_driver_generate_messages_check_deps_Status"
 	@echo "... list_install_components"
 	@echo "... ds4_driver_geneus"
-	@echo "... ds4_driver_generate_messages_cpp"
-	@echo "... _ds4_driver_generate_messages_check_deps_Report"
-	@echo "... ds4_driver_generate_messages_eus"
-	@echo "... _ds4_driver_generate_messages_check_deps_Trackpad"
-	@echo "... test"
+	@echo "... _catkin_empty_exported_target"
 	@echo "... ds4_driver_genpy"
 	@echo "... ds4_driver_generate_messages"
 	@echo "... ds4_driver_gennodejs"
 	@echo "... ds4_driver_generate_messages_py"
-	@echo "... install/strip"
-	@echo "... _ds4_driver_generate_messages_check_deps_Feedback"
+	@echo "... ds4_driver_generate_messages_cpp"
 	@echo "... ds4_driver_gencpp"
 	@echo "... ds4_driver_generate_messages_lisp"
-	@echo "... ds4_driver_generate_messages_nodejs"
 	@echo "... ds4_driver_genlisp"
+	@echo "... ds4_driver_generate_messages_nodejs"
 .PHONY : help
 
 

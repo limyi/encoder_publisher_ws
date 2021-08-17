@@ -18,7 +18,8 @@ find_package(catkin REQUIRED COMPONENTS
   tf
   tf_conversions
   tf2_ros
-  serial
+  #serial
+  
 )
 
 ## System dependencies are found with CMake's conventions
