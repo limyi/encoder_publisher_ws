@@ -139,6 +139,10 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/joel/encoder_publisher_ws/build/roboclaw_node/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/panthera_locomotion/cmake_install.cmake")
   include("/home/joel/encoder_publisher_ws/build/ultrasonic_sensors/cmake_install.cmake")
+  include("/home/joel/encoder_publisher_ws/build/zed-ros-wrapper/zed_interfaces/cmake_install.cmake")
+  include("/home/joel/encoder_publisher_ws/build/zed-ros-wrapper/zed_nodelets/cmake_install.cmake")
+  include("/home/joel/encoder_publisher_ws/build/zed-ros-wrapper/zed_ros/cmake_install.cmake")
+  include("/home/joel/encoder_publisher_ws/build/zed-ros-wrapper/zed_wrapper/cmake_install.cmake")
 
 endif()
 
