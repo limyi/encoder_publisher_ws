@@ -1,8 +1,8 @@
 Download Workspace:
 -------------------
 1. git clone https://github.com/jcch96/encoder_publisher_ws.git
-2. git checkout teleop
-3. git status (optional check make sure in "teleop" branch)
+2. git checkout teleop (for teleop else can ignore)
+3. git status
 
 Set up workspace:
 -----------------
@@ -10,7 +10,7 @@ Set up workspace:
 2. delete build & devel folders
 3. run: 
 ./ds4_install
-./m
+./m (runs catkin_make and source devel/setup.bash for shortcut)
 
 ##################
 ## TELEOP SETUP ##
