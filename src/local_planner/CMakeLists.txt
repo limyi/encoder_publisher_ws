@@ -144,7 +144,7 @@ add_executable(twist_pub_node src/twist_pub_node.cpp)
 add_executable(${PROJECT_NAME}_node src/local_planner.cpp)
 add_executable(sonar_costmap_node src/sonar_costmap.cpp)
 add_executable(pose_recorder_node src/pose_recorder.cpp)
-add_executable(global_planner_node src/global_planner.cpp)
+#add_executable(global_planner_node src/global_planner.cpp)
 add_executable(icr_search_node src/icr_search.cpp)
 
 ## Rename C++ executable without prefix
@@ -160,7 +160,7 @@ add_dependencies(twist_pub_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXP
 add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(sonar_costmap_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(pose_recorder_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
-add_dependencies(global_planner_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+#add_dependencies(global_planner_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 add_dependencies(icr_search_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
@@ -189,10 +189,6 @@ target_link_libraries(
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries(
-  global_planner_node
-  ${catkin_LIBRARIES}
-)
 
 target_link_libraries(
   icr_search_node
