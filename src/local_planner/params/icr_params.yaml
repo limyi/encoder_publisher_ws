@@ -12,4 +12,4 @@ turn_speed: 0.05
 
 operation: false # false means not connected to robot
 
-filename: 'rosbag1.txt' # write to this file name in .ros folder
+filename: 'icr3_.txt' # write to this file name in .ros folder

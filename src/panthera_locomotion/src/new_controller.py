@@ -31,10 +31,6 @@ class Ds4Controller():
 		self.vac = Button(-1,1)
 		self.vision = Button(0,1)
 
-		rospy.Subscriber('/cmd_vel', Twist, self.cmd_sub) # subscribe to ds4 controller vx/wz
-		rospy.Subscriber('/status', st, self.ds4_sub) # subscribe to ds4 buttons
-		rospy.Subscriber('/can_encoder', Twist, self.encoder_pos) # subscribe to wheel encoders and robot width
-
 		### VISION ###
 		rospy.Subscriber('/zed2/zed_node/obj_det/objects', ObjectsStamped, self.human_loc)
 		self.human_dist = float('inf')
@@ -109,6 +105,10 @@ class Ds4Controller():
 		# expansion and contraction limits of robot, measured between left and right wheels
 		self.contract_limit = 0.73
 		self.expand_limit = 0.86
+
+		rospy.Subscriber('/cmd_vel', Twist, self.cmd_sub) # subscribe to ds4 controller vx/wz
+		rospy.Subscriber('/status', st, self.ds4_sub) # subscribe to ds4 buttons
+		rospy.Subscriber('/can_encoder', Twist, self.encoder_pos) # subscribe to wheel encoders and robot width
 
 	def human_loc(self, data):
 		# if vision mode on, check if object is within safety distance

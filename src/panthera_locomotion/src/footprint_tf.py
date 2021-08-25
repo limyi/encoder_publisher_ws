@@ -34,7 +34,7 @@ def width_callback(msg):
 	rb_pt.x = -length/2
 	rb_pt.y = -(width+2*cover_offset)/2
 
-	fp.header.frame_id = "footprint"
+	fp.header.frame_id = "baselink"
 	fp.header.stamp = rospy.Time.now()
 	fp.polygon.points = [lb_pt, lf_pt, rf_pt, rb_pt]
 	footprint_pub.publish(fp)
@@ -50,7 +50,7 @@ def width_callback(msg):
 	ts.child_frame_id = "velodyne"
 
 	ts.transform.translation.x = 0
-	ts.transform.translation.y = -(width/2-cover_offset) # horizontal displacement
+	ts.transform.translation.y = 0#-(width/2-cover_offset) # horizontal displacement
 	ts.transform.translation.z = 0
 
 	ts.transform.rotation.x = 0
@@ -63,7 +63,7 @@ def width_callback(msg):
 	# static tf base_link to footprint
 	ts2.header.stamp = rospy.Time.now()
 	ts2.header.frame_id = "base_link"
-	ts2.child_frame_id = "footprint"
+	ts2.child_frame_id = "baselink"
 
 	ts2.transform.translation.x = 0
 	ts2.transform.translation.y = 0
@@ -71,8 +71,8 @@ def width_callback(msg):
 
 	ts2.transform.rotation.x = 0
 	ts2.transform.rotation.y = 0
-	ts2.transform.rotation.z = 0
-	ts2.transform.rotation.w = 1
+	ts2.transform.rotation.z = 1
+	ts2.transform.rotation.w = 0
 
 
 	br.sendTransform(ts2)

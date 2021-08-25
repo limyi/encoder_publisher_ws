@@ -5,7 +5,7 @@ from geometry_msgs.msg import Twist, Point32
 
 def width_callback(msg):
 	# adjust footprint width to robot width
-	width = msg.angular.z + 0.3
+	width = msg.angular.z + 0.1
 
 	ps = PolygonStamped()
 	ps.header.frame_id = "velodyne" # fixed robot footprint to velodyne
@@ -33,8 +33,8 @@ def width_callback(msg):
 
 if __name__=="__main__":
 	rospy.init_node("robot_footprint")
-	length = 2.2
-	width = 0.7
+	length = 2.6
+	width = 1.5
 	rospy.Subscriber("/can_encoder", Twist, width_callback)
 	footprint_pub = rospy.Publisher("/footprint", PolygonStamped, queue_size=1)
 	rospy.spin()
