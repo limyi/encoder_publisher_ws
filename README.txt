@@ -140,6 +140,7 @@ SENSING TAB
 4. Check the ray_ground_filer box
 
 COMPUTING TAB
+
 -------------
 1. check ndt_matching
 2. Make sure costmap_generator parameters are correct and lidar_frame is velodyne before checking the box
@@ -150,4 +151,16 @@ for zig-zag motion:
 5. use 2D Nav Goal to set goal for robot to move
 
 
+-----Install Dual Shock 4----------
+#!/bin/bash
+
+cd
+sudo apt install python-pip
+pip3 install rospkg
+git clone https://github.com/naoki-mizuno/ds4drv --branch devel
+cd ds4drv
+python3 setup.py install --prefix ~/.local
+sudo cp udev/50-ds4drv.rules /etc/udev/rules.d/
+sudo udevadm control --reload-rules
+sudo udevadm trigger
 
