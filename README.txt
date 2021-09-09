@@ -1,16 +1,19 @@
 Download Workspace:
 -------------------
-1. git clone https://github.com/jcch96/encoder_publisher_ws.git
-2. git checkout teleop (for teleop else can ignore)
+1. git clone https://github.com/limyi/encoder_publisher_ws.git
+2. git checkout test_branch
 3. git status
+
 
 Set up workspace:
 -----------------
 1. navigate to /encoder_publisher_ws
 2. delete build & devel folders
-3. run: 
-./ds4_install
+3. sudo apt install ros-melodic-autoware-msgs   #This is to install autoware message
+4. run: 
+./ds4_install  #Install dualshock 4 dependecies
 ./m (runs catkin_make and source devel/setup.bash for shortcut)
+
 
 ##################
 ## TELEOP SETUP ##
@@ -23,7 +26,7 @@ Pair PC with ds4 controller using bluetooth:
 1st Terminal:
 -------------
 cd encoder_publisher_ws
-./can_init.sh
+./can_init.sh          #Makes the SIKO Encoder operational mode to publish data
 
 2nd Terminal:
 -------------
@@ -33,7 +36,7 @@ roscore
 -------------
 cd encoder_publisher_ws
 source devel/setup.bash
-rosrun can_encoder_pub can_encoder_pub_node
+rosrun can_encoder_pub can_encoder_pub_node               #If SIKO encoder not publishing data. Try updating linux kernal 5.10 in Ubuntu (See below for commands)
 
 4th Terminal:
 -------------
@@ -45,7 +48,7 @@ roslaunch panthera_locomotion run2.launch
 -------------
 cd encoder_publisher_ws
 source devel/setup.bash
-roslaunch panthera_locomotion ds4controller.launch
+roslaunch panthera_locomotion ds4controller.launch      
 
 6th Terminal: (Optional for brushes/vacuum/actuators)
 -------------
