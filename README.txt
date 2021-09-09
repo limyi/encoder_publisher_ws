@@ -10,7 +10,9 @@ Set up workspace:
 1. navigate to /encoder_publisher_ws
 2. delete build & devel folders
 3. sudo apt install ros-melodic-autoware-msgs   #This is to install autoware message
-4. run: 
+4. Install ZED Camera ROS Package and copy inside src folder. Link:  https://www.stereolabs.com/docs/ros/                #Requires NVIDIA
+  If computer has no NVIDIA, comment out ZED dependencies in new_controller.py
+5. run: 
 ./ds4_install  #Install dualshock 4 dependecies
 ./m (runs catkin_make and source devel/setup.bash for shortcut)
 
