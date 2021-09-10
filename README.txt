@@ -1,8 +1,10 @@
 Download Workspace:
 -------------------
 1. git clone https://github.com/limyi/encoder_publisher_ws.git
-2. git checkout test_branch
-3. git status
+2. cd encoder_publisher_ws/
+3. git branch
+4. git checkout test_branch
+5. git status
 
 
 Set up workspace:
