@@ -89,7 +89,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    printf("before while loop\r\n");
+    //printf("before while loop\r\n");
 
     while (ros::ok())
     {
@@ -97,7 +97,7 @@ int main(int argc, char **argv)
         geometry_msgs::Twist msg;
         struct can_frame can_array[10];
 
-        printf("before read\r\n");
+        //printf("before read\r\n");
 
         nbytes = read(s, &frame, sizeof(struct can_frame));
         nbytes2 = read(s, &frame2, sizeof(struct can_frame));
@@ -146,7 +146,7 @@ int main(int argc, char **argv)
         can_array[8] = frame9;
         can_array[9] = frame10;
 
-        printf("CAN array\r");
+        //printf("CAN array\r");
         /**
         can_array[10] = frame11;
         can_array[11] = frame12;
@@ -173,7 +173,7 @@ int main(int argc, char **argv)
         can_array[30] = frame31;
         can_array[31] = frame32;**/
 
-        printf("before if\r\n");
+        //printf("before if\r\n");
 
         if (nbytes < 0 or nbytes2 < 0 or nbytes3 < 0 or nbytes4 < 0 or nbytes5 < 0 or nbytes6 < 0 or nbytes7 < 0 or nbytes8 < 0 or nbytes9 < 0 or nbytes10 < 0/** or nbytes11 < 0 or nbytes12 < 0 or nbytes13 < 0 or nbytes14 < 0 or nbytes15 < 0 or nbytes16 < 0 or 
             nbytes < 17 or nbytes18 < 0/** or nbytes19 < 0 or nbytes20 < 0 or nbytes21 < 0 or nbytes22 < 0 or nbytes23 < 0 or nbytes24 < 0 or nbytes25 < 0 or nbytes26 < 0 or nbytes27 < 0 or nbytes28 < 0 or nbytes29 < 0 or nbytes30 < 0 or nbytes31 < 0 or nbytes32 < 0**/)
@@ -204,7 +204,7 @@ int main(int argc, char **argv)
                 uint position = (b << 8) | (a);
                 double positionFloat = position;
                 positionFloat = (positionFloat / 40.96 + 325)/1000 + 0.032;
-                std::cout << positionFloat << "\n";
+                //std::cout << positionFloat << "\n";
                 msg.angular.y = positionFloat;
             }
             else if (can_array[i].can_id == 0x191)
@@ -214,7 +214,7 @@ int main(int argc, char **argv)
                 uint position = (b << 8) | (a);
                 double positionFloat = position;
                 positionFloat = (positionFloat / 40.96 + 330)/1000 + 0.032;
-                std::cout << positionFloat << "\n";
+                //std::cout << positionFloat << "\n";
                 msg.angular.z = positionFloat;
             }
             //***************************************************************************************************************************//
@@ -230,7 +230,7 @@ int main(int argc, char **argv)
                 uint position = (d << 24) | (c << 16) | (b << 8) | (a);
                 double positionFloat = position;
                 positionFloat = ((positionFloat - 67063944) * 0.02197) + 87.5; //67063944
-                std::cout << positionFloat << "\n";
+                //std::cout << positionFloat << "\n";
                 msg.linear.x = positionFloat;
             }
 
@@ -243,7 +243,7 @@ int main(int argc, char **argv)
                 uint position = (d << 24) | (c << 16) | (b << 8) | (a);
                 double positionFloat = position;
                 positionFloat = ((positionFloat - 137458) * 0.02197) - 1482.5;
-                std::cout << positionFloat << "\n";
+                //std::cout << positionFloat << "\n";
                 msg.linear.y = positionFloat;
             }
 
@@ -256,7 +256,7 @@ int main(int argc, char **argv)
                 uint position = (d << 24) | (c << 16) | (b << 8) | (a);
                 double positionFloat = position;
                 positionFloat = ((positionFloat - 241754) * 0.02197) - 32.0;
-                std::cout << positionFloat << "\n";
+                //std::cout << positionFloat << "\n";
                 msg.linear.z = positionFloat;
             }
 
@@ -269,7 +269,7 @@ int main(int argc, char **argv)
                 uint position = (d << 24) | (c << 16) | (b << 8) | (a);
                 double positionFloat = position;
                 positionFloat = ((positionFloat - 13977) * 0.02197) - 0.0;
-                std::cout << positionFloat << "\n";
+                //std::cout << positionFloat << "\n";
                 msg.angular.x = positionFloat;
             }
         };
